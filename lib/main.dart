@@ -3,15 +3,18 @@ import 'dart:async';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:feedback/feedback.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:notredame/firebase_messaging_handler.dart';
 import 'package:notredame/firebase_options.dart';
 import 'package:notredame/ui/views/outage_view.dart';
 import 'package:notredame/ui/widgets/custom_feedback.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -55,6 +58,9 @@ Future<void> main() async {
   final AppWidgetService appWidgetService = locator<AppWidgetService>();
   await appWidgetService.init();
 
+  // Notifs
+  initNotifications();
+
   if (kDebugMode) {
     FlutterConfig.loadEnvVariables();
   }
@@ -81,7 +87,8 @@ class ETSMobile extends StatelessWidget {
     return ChangeNotifierProvider<SettingsManager>(
       create: (_) => settingsManager,
       child: Consumer<SettingsManager>(builder: (context, model, child) {
-        return BetterFeedback(
+        return OverlaySupport.global(
+            child: BetterFeedback(
           mode: FeedbackMode.navigate,
           feedbackBuilder: (context, onSubmit, scrollController) =>
               CustomFeedbackForm(
@@ -120,7 +127,7 @@ class ETSMobile extends StatelessWidget {
               ),
             ),
           ),
-        );
+        ));
       }),
     );
   }

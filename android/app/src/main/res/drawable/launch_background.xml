@@ -6,5 +6,5 @@
     <!-- You can insert your own image assets here -->
     <item
         android:gravity="center"
-        android:drawable="@drawable/ets_logo"/>>
+        android:drawable="@drawable/ets_logo"/>
 </layer-list>

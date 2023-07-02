@@ -41,3 +41,9 @@ if [[ -n $ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD ]]; then
   echo "Decoding iOS service account credentials"
   openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD" -in ./encryptedFiles/ios_service_account_credentials.json.enc -out ./ios/service_account_credentials.json -md md5
 fi
+
+if [[ -n $ENCRYPTED_AWS_KEY ]]; then
+  echo "Decoding AWS_KEY service account credentials"
+  # ENCODE: openssl aes-256-cbc -pbkdf2 -e -k "$ENCRYPTED_AWS_KEY" -in ./lib/core/notifications/aws_keys.dart -out ./encryptedFiles/aws_keys.dart.enc -md md5
+  openssl aes-256-cbc -pbkdf2 -d -k "$ENCRYPTED_AWS_KEY" -in ./encryptedFiles/aws_keys.dart.enc -out ./lib/core/notifications/aws_keys.dart -md md5
+fi

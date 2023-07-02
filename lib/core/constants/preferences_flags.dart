@@ -46,6 +46,9 @@ enum PreferencesFlag {
 
   // Issues flag
   ghIssues,
+
+  // Notifications flag
+  awsEndpointArn
 }
 
 /// This class can be used instead of the conventional enum to save data to shared Prefs,
