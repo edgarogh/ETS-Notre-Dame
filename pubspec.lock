@@ -50,13 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  aws_sns_api:
-    dependency: "direct main"
-    description:
-      name: aws_sns_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -975,13 +968,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
-  shared_aws_api:
-    dependency: transitive
-    description:
-      name: shared_aws_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   shared_preferences:
     dependency: "direct main"
     description:
