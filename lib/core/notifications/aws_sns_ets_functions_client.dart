@@ -76,12 +76,12 @@ exports.setEndpointAttributes = onRequest(async (request, response) => {
 import 'package:http/http.dart' as http;
 
 mixin AWSSNSEtsFunctionsClient {
-  static const String _baseUrl =
-      'http://127.0.0.1:5001/etsmobile-14206/us-central1/';
   static const String _createPlatformEndpointFunction =
-      'createPlatformEndpoint';
-  static const String _getEndpointAttributesFunction = 'getEndpointAttributes';
-  static const String _setEndpointAttributesFunction = 'setEndpointAttributes';
+      'https://createplatformendpoint-dpvjwynfaq-uc.a.run.app';
+  static const String _getEndpointAttributesFunction =
+      'https://setendpointattributes-dpvjwynfaq-uc.a.run.app';
+  static const String _setEndpointAttributesFunction =
+      'https://getendpointattributes-dpvjwynfaq-uc.a.run.app';
 
   static Future createPlatformEndpoint(String region, String token) async {
     final response =
@@ -106,7 +106,7 @@ mixin AWSSNSEtsFunctionsClient {
       String functionName, String region, String endpointArn,
       [String token]) async {
     final url =
-        '$_baseUrl$functionName?region=$region&endpointArn=$endpointArn${token != null ? '&token=$token' : ''}';
+        '$functionName?region=$region&endpointArn=$endpointArn${token != null ? '&token=$token' : ''}';
     final response = await http.get(Uri.parse(url));
     return response;
   }
