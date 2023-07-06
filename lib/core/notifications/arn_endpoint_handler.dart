@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
-import 'package:notredame/core/notifications/aws_keys.dart';
 import 'package:notredame/core/notifications/aws_sns_ets_functions_client.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/locator.dart';
@@ -25,8 +24,6 @@ class ArnEndpointHandler {
   String _endpointArn;
 
   Future<void> loadAwsConfig() async {
-    _platformApplicationArn = AWSKeys.platformApplicationArn;
-
     _endpointArn =
         await _preferencesService.getString(PreferencesFlag.awsEndpointArn);
 
