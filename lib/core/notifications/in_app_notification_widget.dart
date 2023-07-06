@@ -28,7 +28,7 @@ class InAppNotification extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         color: isLightMode
-            ? Color.fromARGB(255, 158, 155, 155)
+            ? const Color.fromARGB(255, 158, 155, 155)
             : AppTheme.etsBlack,
       ),
       child: Padding(
