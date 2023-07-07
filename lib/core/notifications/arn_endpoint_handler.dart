@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:notredame/core/constants/preferences_flags.dart';
+import 'package:notredame/core/managers/user_repository.dart';
 import 'package:notredame/core/notifications/aws_sns_ets_functions_client.dart';
 import 'package:notredame/core/services/preferences_service.dart';
 import 'package:notredame/locator.dart';
@@ -18,17 +19,16 @@ class ArnEndpointHandler {
     'us-gov-west-1'
   ];
   final PreferencesService _preferencesService = locator<PreferencesService>();
+  final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
 
   String _region;
-  String _platformApplicationArn;
   String _endpointArn;
 
   Future<void> loadAwsConfig() async {
     _endpointArn =
         await _preferencesService.getString(PreferencesFlag.awsEndpointArn);
 
-    _region = _platformApplicationArn.split(':')[3];
-    print(_platformApplicationArn);
+    _region = 'us-east-1';
     print(_region);
   }
 
@@ -59,12 +59,16 @@ class ArnEndpointHandler {
 
     final res = await AWSSNSEtsFunctionsClient.getEndpointAttributes(
         _region, _endpointArn);
-    final needUpdate =
-        res.attributes['Token'] != token || res.attributes['Enabled'] != 'true';
 
+    final universalCode =
+        await _secureStorage.read(key: UserRepository.usernameSecureKey);
+    final attributes = res['Attributes'] as Map<String, dynamic>;
+    final needUpdate = attributes['Token'] != token ||
+        attributes['Enabled'] != 'true' ||
+        attributes['CustomUserData'] != 'ENS\\$universalCode';
     if (needUpdate) {
       await AWSSNSEtsFunctionsClient.setEndpointAttributes(
-          _region, _endpointArn, token);
+          _region, _endpointArn, token, universalCode);
       saveAWSEndpoint(_endpointArn);
     }
   }
@@ -78,11 +82,29 @@ class ArnEndpointHandler {
       throw Exception('Region $_region is not supported');
     }
 
-    final result =
-        await AWSSNSEtsFunctionsClient.createPlatformEndpoint(_region, token);
+    final universalCode =
+        await _secureStorage.read(key: UserRepository.usernameSecureKey);
 
-    _endpointArn = result.endpointArn as String;
+    final result = await AWSSNSEtsFunctionsClient.createPlatformEndpoint(
+        _region, token, universalCode);
+
+    _endpointArn = result['EndpointArn'] as String;
     saveAWSEndpoint(_endpointArn);
+  }
+
+  Future deleteEndpoint() async {
+    if (kDebugMode) {
+      print("[deleteEndpoint]");
+    }
+
+    if (!_endpointArnIsValid()) {
+      throw Exception('EndpointArn is not valid');
+    }
+
+    await AWSSNSEtsFunctionsClient.deleteEndpoint(_region, _endpointArn);
+    _endpointArn = null;
+    await _preferencesService
+        .removePreferencesFlag(PreferencesFlag.awsEndpointArn);
   }
 
   bool _endpointArnIsValid() {

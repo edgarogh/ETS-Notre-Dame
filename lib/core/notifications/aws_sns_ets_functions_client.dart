@@ -1,113 +1,59 @@
-/*
-  create functions to send to the 3 endpoints defined in this file:
-  /**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
-const {
-  SNSClient,
-  CreatePlatformEndpointCommand,
-  GetEndpointAttributesCommand,
-  SetEndpointAttributesCommand,
-} = require("@aws-sdk/client-sns");
-
-
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-exports.createPlatformEndpoint = onRequest(async (request, response) => {
-  logger.info("[createPlatformEndpoint]", {structuredData: true});
-  const region = request.query.region;
-  const token = request.query.token;
-  const client = new SNSClient({region: region, credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY}});
-  const command = new CreatePlatformEndpointCommand({
-    PlatformApplicationArn: process.env.PLATFORM_APPLICATION_ARN,
-    Token: token,
-  });
-  response.send(await client.send(command));
-});
-
-
-exports.getEndpointAttributes = onRequest(async (request, response) => {
-  logger.info("[getEndpointAttributes]", {structuredData: true});
-
-  const region = request.query.region;
-  const endpointArn = request.query.endpointArn;
-  const client = new SNSClient({region: region, credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY}});
-  const command = new GetEndpointAttributesCommand({
-    EndpointArn: endpointArn,
-  });
-  response.send(await client.send(command));
-});
-
-
-exports.setEndpointAttributes = onRequest(async (request, response) => {
-  logger.info("[setEndpointAttributes]", {structuredData: true});
-
-  const region = request.query.region;
-  const endpointArn = request.query.endpointArn;
-  const client = new SNSClient({region: region, credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY}});
-
-  const command = new SetEndpointAttributesCommand({
-    EndpointArn: endpointArn,
-    Attributes: {
-      Token: request.query.token,
-      Enabled: "true",
-    },
-  });
-  response.send(await client.send(command));
-});
-
-
-*/
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 mixin AWSSNSEtsFunctionsClient {
   static const String _createPlatformEndpointFunction =
       'https://createplatformendpoint-dpvjwynfaq-uc.a.run.app';
   static const String _getEndpointAttributesFunction =
-      'https://setendpointattributes-dpvjwynfaq-uc.a.run.app';
-  static const String _setEndpointAttributesFunction =
       'https://getendpointattributes-dpvjwynfaq-uc.a.run.app';
+  static const String _setEndpointAttributesFunction =
+      'https://setendpointattributes-dpvjwynfaq-uc.a.run.app';
+  static const String _deleteEndpointFunction =
+      'https://deleteendpoint-dpvjwynfaq-uc.a.run.app';
 
-  static Future createPlatformEndpoint(String region, String token) async {
-    final response =
-        await _callFunction(_createPlatformEndpointFunction, region, token);
-    return response;
-  }
-
-  static Future getEndpointAttributes(String region, String endpointArn) async {
+  static Future<Map<String, dynamic>> createPlatformEndpoint(
+      String region, String token, String universalCode) async {
     final response = await _callFunction(
-        _getEndpointAttributesFunction, region, endpointArn);
+        _createPlatformEndpointFunction, region,
+        token: token, universalCode: universalCode);
     return response;
   }
 
-  static Future setEndpointAttributes(
-      String region, String endpointArn, String token) async {
-    final response = await _callFunction(
-        _setEndpointAttributesFunction, region, endpointArn, token);
+  static Future<Map<String, dynamic>> getEndpointAttributes(
+      String region, String endpointArn) async {
+    final response = await _callFunction(_getEndpointAttributesFunction, region,
+        endpointArn: endpointArn);
     return response;
   }
 
-  static Future _callFunction(
-      String functionName, String region, String endpointArn,
-      [String token]) async {
+  static Future<Map<String, dynamic>> setEndpointAttributes(String region,
+      String endpointArn, String token, String universalCode) async {
+    final response = await _callFunction(_setEndpointAttributesFunction, region,
+        endpointArn: endpointArn, token: token, universalCode: universalCode);
+    print(response);
+    return response;
+  }
+
+  static Future<Map<String, dynamic>> deleteEndpoint(
+      String region, String endpointArn) async {
+    final response = await _callFunction(_deleteEndpointFunction, region,
+        endpointArn: endpointArn);
+
+    return response;
+  }
+
+  static Future<Map<String, dynamic>> _callFunction(
+      String functionName, String region,
+      {String endpointArn, String token, String universalCode}) async {
     final url =
-        '$functionName?region=$region&endpointArn=$endpointArn${token != null ? '&token=$token' : ''}';
+        '$functionName?region=$region${endpointArn != null ? '&endpointArn=$endpointArn' : ''}${token != null ? '&token=$token' : ''}${universalCode != null ? '&universalCode=$universalCode' : ''}';
     final response = await http.get(Uri.parse(url));
-    return response;
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to call function $functionName');
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 }

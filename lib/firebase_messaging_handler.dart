@@ -35,9 +35,9 @@ Future<void> initNotifications() async {
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   // arn init
-  // final arnEndpoint = locator<ArnEndpointHandler>();
-  // await arnEndpoint.loadAwsConfig();
-  // await arnEndpoint.createOrUpdateEndpoint(fcmToken);
+  final arnEndpoint = locator<ArnEndpointHandler>();
+  await arnEndpoint.loadAwsConfig();
+  await arnEndpoint.createOrUpdateEndpoint(fcmToken);
 
   // background notif
   FirebaseMessaging.onMessage.listen(firebaseMessagingForegroundHandler);
