@@ -2,7 +2,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/core/notifications/arn_endpoint_handler.dart';
 
 // SERVICES
 import 'package:notredame/core/services/navigation_service.dart';
@@ -17,6 +16,8 @@ import 'package:notredame/core/services/app_widget_service.dart';
 import 'package:notredame/core/services/in_app_review_service.dart';
 import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:notredame/core/services/launch_url_service.dart';
+import 'package:notredame/core/notifications/arn_endpoint_handler.dart';
+import 'package:notredame/core/notifications/ets_notification_service.dart';
 
 // MANAGERS
 import 'package:notredame/core/managers/user_repository.dart';
@@ -44,6 +45,8 @@ void setupLocator() {
   locator.registerLazySingleton(() => InAppReviewService());
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
+  locator.registerLazySingleton(() => ETSNotificationService());
+  locator.registerLazySingleton(() => ArnEndpointHandler());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
@@ -55,5 +58,4 @@ void setupLocator() {
   locator.registerLazySingleton(() => SignetsAPIClient());
   locator.registerLazySingleton(() => MonETSAPIClient());
   locator.registerLazySingleton(() => Logger());
-  locator.registerLazySingleton(() => ArnEndpointHandler());
 }
