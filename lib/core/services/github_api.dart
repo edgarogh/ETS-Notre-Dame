@@ -27,13 +27,13 @@ class GithubApi {
   static const String _repositorySlug = "ApplETS/Notre-Dame";
   static const String _repositoryReportSlug = "ApplETS/Notre-Dame-Bug-report";
 
-  GitHub _github;
+  late GitHub _github;
 
-  final Logger _logger = locator<Logger>();
+  final Logger? _logger = locator<Logger>();
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
 
-  final InternalInfoService _internalInfoService =
+  final InternalInfoService? _internalInfoService =
       locator<InternalInfoService>();
 
   GithubApi() {
@@ -48,7 +48,7 @@ class GithubApi {
   }
 
   /// Upload a file to the ApplETS/Notre-Dame-Bug-report repository
-  void uploadFileToGithub({@required String filePath, @required File file}) {
+  void uploadFileToGithub({required String filePath, required File file}) {
     _github.repositories
         .createFile(
             RepositorySlug.full(_repositoryReportSlug),
@@ -61,8 +61,8 @@ class GithubApi {
                 branch: 'main'))
         .catchError((error) {
       // ignore: avoid_dynamic_calls
-      _logger.e("uploadFileToGithub error: ${error.message}");
-      _analyticsService.logError(
+      _logger!.e("uploadFileToGithub error: ${error.message}");
+      _analyticsService!.logError(
           tag,
           // ignore: avoid_dynamic_calls
           "uploadFileToGithub: ${error.message}",
@@ -74,10 +74,10 @@ class GithubApi {
   /// The bug report will contain a file, a description [feedbackText] and also some information about the
   /// application/device.
   Future<Issue> createGithubIssue(
-      {@required String feedbackText,
-      @required String fileName,
-      @required String feedbackType,
-      String email}) async {
+      {required String feedbackText,
+      required String fileName,
+      required String feedbackType,
+      String? email}) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return _github.issues
         .create(
@@ -88,7 +88,7 @@ class GithubApi {
                     "```$feedbackText```\n\n"
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}"
+                    "${await _internalInfoService!.getDeviceInfoForErrorReporting()}"
                     "- **Email:** ${email ?? 'Not provided'} \n",
                 labels: [
                   feedbackType,
@@ -96,8 +96,8 @@ class GithubApi {
                 ]))
         .catchError((error) {
       // ignore: avoid_dynamic_calls
-      _logger.e("createGithubIssue error: ${error.message}");
-      _analyticsService.logError(
+      _logger!.e("createGithubIssue error: ${error.message}");
+      _analyticsService!.logError(
           tag,
           // ignore: avoid_dynamic_calls
           "createGithubIssue: ${error.message}",
@@ -106,15 +106,15 @@ class GithubApi {
   }
 
   Future<List<FeedbackIssue>> fetchIssuesByNumbers(
-      List<int> numbers, AppIntl appIntl) async {
+      List<int> numbers, AppIntl? appIntl) async {
     final List<FeedbackIssue> issues = [];
     for (int i = 0; i < numbers.length; i++) {
       issues.add(FeedbackIssue(await _github.issues
           .get(RepositorySlug.full(_repositorySlug), numbers[i])
           .catchError((error) {
         // ignore: avoid_dynamic_calls
-        _logger.e("fetchIssuesByNumbers error: ${error.message}");
-        _analyticsService.logError(
+        _logger!.e("fetchIssuesByNumbers error: ${error.message}");
+        _analyticsService!.logError(
             tag,
             // ignore: avoid_dynamic_calls
             "fetchIssuesByNumbers: ${error.message}",

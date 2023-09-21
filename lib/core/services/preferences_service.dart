@@ -18,7 +18,7 @@ class PreferencesService {
     PreferencesFlag.hasRatingBeenRequested
   ];
 
-  Future<bool> setBool(PreferencesFlag flag, {@required bool value}) async {
+  Future<bool> setBool(PreferencesFlag flag, {required bool value}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setBool(flag.toString(), value);
@@ -69,7 +69,7 @@ class PreferencesService {
     });
   }
 
-  Future<Object> getPreferencesFlag(PreferencesFlag flag) async {
+  Future<Object?> getPreferencesFlag(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get(flag.toString());
   }
@@ -96,33 +96,33 @@ class PreferencesService {
     return prefs.setString(flag.toString(), value.toIso8601String());
   }
 
-  Future<bool> getBool(PreferencesFlag flag) async {
+  Future<bool?> getBool(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(flag.toString());
   }
 
-  Future<int> getInt(PreferencesFlag flag) async {
+  Future<int?> getInt(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getInt(flag.toString());
   }
 
-  Future<String> getString(PreferencesFlag flag) async {
+  Future<String?> getString(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(flag.toString());
   }
 
-  Future<String> getDynamicString(PreferencesFlag flag, String key) async {
+  Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getString('${flag.toString()}_$key');
   }
 
-  Future<DateTime> getDateTime(PreferencesFlag flag) async {
+  Future<DateTime?> getDateTime(PreferencesFlag flag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      return DateTime.parse(prefs.getString(flag.toString()));
+      return DateTime.parse(prefs.getString(flag.toString())!);
     } catch (e) {
       return null;
     }

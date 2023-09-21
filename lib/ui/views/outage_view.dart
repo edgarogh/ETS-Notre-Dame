@@ -50,7 +50,7 @@ class OutageView extends StatelessWidget {
                       ),
                       SizedBox(height: model.getTextPlacement(context)),
                       Text(
-                        AppIntl.of(context).service_outage,
+                        AppIntl.of(context)!.service_outage,
                         textAlign: TextAlign.center,
                         style:
                             const TextStyle(fontSize: 18, color: Colors.white),
@@ -61,7 +61,7 @@ class OutageView extends StatelessWidget {
                           model.tapRefreshButton(context);
                         },
                         child: Text(
-                          AppIntl.of(context).service_outage_refresh,
+                          AppIntl.of(context)!.service_outage_refresh,
                           style: const TextStyle(fontSize: 17),
                         ),
                       ),
@@ -72,7 +72,7 @@ class OutageView extends StatelessWidget {
                             SizedBox(
                               height: model.getContactTextPlacement(context),
                               child: Text(
-                                AppIntl.of(context).service_outage_contact,
+                                AppIntl.of(context)!.service_outage_contact,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(color: Colors.white),
                               ),

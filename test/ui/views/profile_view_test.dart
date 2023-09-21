@@ -23,7 +23,7 @@ import '../../helpers.dart';
 import '../../mock/managers/user_repository_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
   UserRepository userRepository;
 
   final profileStudent = ProfileStudent(

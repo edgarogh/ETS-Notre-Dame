@@ -25,10 +25,10 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  RemoteConfigService remoteConfigService;
-  PreferencesService preferencesService;
-  SettingsManager manager;
+  AnalyticsService? analyticsService;
+  late RemoteConfigService remoteConfigService;
+  PreferencesService? preferencesService;
+  late SettingsManager manager;
 
   group("SettingsManager - ", () {
     setUp(() async {
@@ -90,20 +90,20 @@ void main() {
 
         expect(result, expected);
 
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleStartWeekday))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleOtherWeekday))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesService!.getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
-        verify(preferencesService.getBool(PreferencesFlag.scheduleListView))
+        verify(preferencesService!.getBool(PreferencesFlag.scheduleListView))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
@@ -151,20 +151,20 @@ void main() {
 
         expect(result, expected);
 
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleOtherWeekday))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleStartWeekday))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesService!.getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
-        verify(preferencesService.getBool(PreferencesFlag.scheduleListView))
+        verify(preferencesService!.getBool(PreferencesFlag.scheduleListView))
             .called(1);
-        verify(preferencesService
+        verify(preferencesService!
                 .getBool(PreferencesFlag.scheduleShowWeekEvents))
             .called(1);
 
@@ -178,33 +178,33 @@ void main() {
         const flag = PreferencesFlag.theme;
         manager.setThemeMode(ThemeMode.light);
 
-        verify(preferencesService.setString(
+        verify(preferencesService!.setString(
                 PreferencesFlag.theme, ThemeMode.light.toString()))
             .called(1);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark);
 
-        verify(preferencesService.setString(
+        verify(preferencesService!.setString(
                 PreferencesFlag.theme, ThemeMode.dark.toString()))
             .called(1);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
 
         manager.setThemeMode(ThemeMode.system);
 
-        verify(preferencesService.setString(
+        verify(preferencesService!.setString(
                 PreferencesFlag.theme, ThemeMode.system.toString()))
             .called(1);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
@@ -220,11 +220,11 @@ void main() {
             toReturn: ThemeMode.light.toString());
 
         manager.themeMode;
-        await untilCalled(preferencesService.getString(flag));
+        await untilCalled(preferencesService!.getString(flag));
 
         expect(manager.themeMode, ThemeMode.light);
 
-        verify(preferencesService.getString(flag)).called(2);
+        verify(preferencesService!.getString(flag)).called(2);
 
         verifyNoMoreInteractions(preferencesService);
       });
@@ -241,11 +241,11 @@ void main() {
         manager.setLocale('fr');
         manager.locale;
 
-        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
+        verify(preferencesService!.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
-        verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
@@ -258,28 +258,28 @@ void main() {
         const flag = PreferencesFlag.locale;
         manager.setLocale('fr');
 
-        verify(preferencesService.setString(PreferencesFlag.locale, 'fr'))
+        verify(preferencesService!.setString(PreferencesFlag.locale, 'fr'))
             .called(1);
 
-        untilCalled(analyticsService.logEvent(
+        untilCalled(analyticsService!.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
             any));
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
 
         manager.setLocale('en');
 
-        verify(preferencesService.setString(PreferencesFlag.locale, 'en'))
+        verify(preferencesService!.setString(PreferencesFlag.locale, 'en'))
             .called(1);
 
-        untilCalled(analyticsService.logEvent(
+        untilCalled(analyticsService!.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
             any));
 
-        verify(analyticsService.logEvent(
+        verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
                 any))
             .called(1);
@@ -295,7 +295,7 @@ void main() {
 
         expect(manager.locale, const Locale('en'));
 
-        verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+        verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
@@ -312,8 +312,8 @@ void main() {
 
       await manager.fetchLanguageAndThemeMode();
 
-      verify(preferencesService.getString(PreferencesFlag.theme)).called(1);
-      verify(preferencesService.getString(PreferencesFlag.locale)).called(1);
+      verify(preferencesService!.getString(PreferencesFlag.theme)).called(1);
+      verify(preferencesService!.getString(PreferencesFlag.locale)).called(1);
 
       verifyNoMoreInteractions(preferencesService);
       verifyNoMoreInteractions(analyticsService);
@@ -352,14 +352,14 @@ void main() {
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService.logEvent(
+      untilCalled(analyticsService!.logEvent(
           "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService.logEvent(
+      verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
-      verify(preferencesService.setString(flag, any));
+      verify(preferencesService!.setString(flag, any));
     });
 
     test("setInt", () async {
@@ -371,14 +371,14 @@ void main() {
           reason:
               "setInt should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService.logEvent(
+      untilCalled(analyticsService!.logEvent(
           "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService.logEvent(
+      verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
-      verify(preferencesService.setInt(flag, any));
+      verify(preferencesService!.setInt(flag, any));
     });
 
     test("getString", () async {
@@ -390,14 +390,14 @@ void main() {
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService.logEvent(
+      untilCalled(analyticsService!.logEvent(
           "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService.logEvent(
+      verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
-      verify(preferencesService.getString(flag));
+      verify(preferencesService!.getString(flag));
     });
 
     test("setBool", () async {
@@ -409,14 +409,14 @@ void main() {
           reason:
               "setString should return true if the PreferenceService return true");
 
-      untilCalled(analyticsService.logEvent(
+      untilCalled(analyticsService!.logEvent(
           "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
 
-      verify(analyticsService.logEvent(
+      verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
               any))
           .called(1);
-      verify(preferencesService.setBool(flag, value: anyNamed("value")));
+      verify(preferencesService!.setBool(flag, value: anyNamed("value")));
     });
 
     group("Dashboard - ", () {
@@ -451,13 +451,13 @@ void main() {
           expected,
         );
 
-        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+        verify(preferencesService!.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+        verify(preferencesService!.getInt(PreferencesFlag.scheduleCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+        verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
@@ -495,13 +495,13 @@ void main() {
           expected,
         );
 
-        verify(preferencesService.getInt(PreferencesFlag.aboutUsCard))
+        verify(preferencesService!.getInt(PreferencesFlag.aboutUsCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.scheduleCard))
+        verify(preferencesService!.getInt(PreferencesFlag.scheduleCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.progressBarCard))
+        verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);

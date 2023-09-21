@@ -16,7 +16,7 @@ import 'package:notredame/ui/views/settings_view.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('SettingsView - ', () {
     setUp(() async {

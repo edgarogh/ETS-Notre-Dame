@@ -12,11 +12,11 @@ class InternalInfoServiceMock extends Mock implements InternalInfoService {
 
   /// Stub the answer of [getPackageInfo]
   static void stubGetPackageInfo(InternalInfoServiceMock mock,
-      {String version}) {
+      {String? version}) {
     when(mock.getPackageInfo()).thenAnswer((_) async => PackageInfo(
         appName: "ÉTSMobile",
         packageName: "ca.etsmtl.applets.etsmobile",
-        version: version,
+        version: version!,
         buildNumber: "1"));
   }
 }

@@ -22,9 +22,9 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService navigation;
-  InAppReviewServiceMock inAppReviewServiceMock;
+  late AppIntl intl;
+  late NavigationService navigation;
+  InAppReviewServiceMock? inAppReviewServiceMock;
   SettingsManagerMock settingsManagerMock;
 
   group('MoreView - ', () {
@@ -78,7 +78,7 @@ void main() {
         });
 
         testWidgets('rate us is not available', (WidgetTester tester) async {
-          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
+          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock!,
               toReturn: false);
 
           await tester.pumpWidget(
@@ -92,12 +92,12 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
 
-          verify(await inAppReviewServiceMock.isAvailable()).called(1);
+          verify(await inAppReviewServiceMock!.isAvailable()).called(1);
           verifyNoMoreInteractions(inAppReviewServiceMock);
         });
 
         testWidgets('rate us is available', (WidgetTester tester) async {
-          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
+          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock!);
 
           await tester.pumpWidget(
               localizedWidget(child: FeatureDiscovery(child: MoreView())));
@@ -110,8 +110,8 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
 
-          verify(await inAppReviewServiceMock.isAvailable()).called(1);
-          verify(await inAppReviewServiceMock.openStoreListing()).called(1);
+          verify(await inAppReviewServiceMock!.isAvailable()).called(1);
+          verify(await inAppReviewServiceMock!.openStoreListing()).called(1);
           verifyNoMoreInteractions(inAppReviewServiceMock);
         });
 

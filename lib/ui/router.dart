@@ -49,7 +49,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: RouteSettings(name: routeSettings.name),
           builder: (_) => LoginView());
     case RouterPaths.dashboard:
-      final code = (routeSettings.arguments as UpdateCode) ?? UpdateCode.none;
+      final code = (routeSettings.arguments as UpdateCode?) ?? UpdateCode.none;
       return PageRouteBuilder(
           settings: RouteSettings(
               name: routeSettings.name, arguments: routeSettings.arguments),
@@ -80,7 +80,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           },
           settings: RouteSettings(name: routeSettings.name),
           pageBuilder: (_, __, ___) =>
-              GradesDetailsView(course: routeSettings.arguments as Course));
+              GradesDetailsView(course: routeSettings.arguments as Course?));
     case RouterPaths.ets:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
@@ -88,7 +88,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.webView:
       return PageRouteBuilder(
           pageBuilder: (_, __, ___) =>
-              LinkWebView(routeSettings.arguments as QuickLink));
+              LinkWebView(routeSettings.arguments as QuickLink?));
     case RouterPaths.security:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),

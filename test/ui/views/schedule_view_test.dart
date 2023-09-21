@@ -30,14 +30,14 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
+  late SettingsManager settingsManager;
+  late CourseRepository courseRepository;
   RemoteConfigService remoteConfigService;
 
   // Some activities
-  CourseActivity activityYesterday;
-  CourseActivity activityToday;
-  CourseActivity activityTomorrow;
+  CourseActivity? activityYesterday;
+  CourseActivity? activityToday;
+  CourseActivity? activityTomorrow;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settings = {

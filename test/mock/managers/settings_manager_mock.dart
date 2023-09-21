@@ -36,7 +36,7 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   /// Stub the [getDynamicString] function of [mock], when called with [flag] return [toReturn].
   static void stubGetDynamicString(
       SettingsManagerMock mock, PreferencesFlag flag, String key,
-      {String toReturn = 'test'}) {
+      {String? toReturn = 'test'}) {
     when(mock.getDynamicString(flag, key)).thenAnswer((_) async => toReturn);
   }
 
@@ -71,7 +71,7 @@ class SettingsManagerMock extends Mock implements SettingsManager {
   }
 
   /// Stub the [dateTimeNow] function of [mock], when called return [toReturn].
-  static void stubDateTimeNow(SettingsManagerMock mock, {DateTime toReturn}) {
-    when(mock.dateTimeNow).thenReturn(toReturn);
+  static void stubDateTimeNow(SettingsManagerMock mock, {DateTime? toReturn}) {
+    when(mock.dateTimeNow).thenReturn(toReturn!);
   }
 }

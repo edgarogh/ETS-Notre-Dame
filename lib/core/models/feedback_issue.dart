@@ -1,13 +1,13 @@
 import 'package:github/github.dart';
 
 class FeedbackIssue {
-  int id;
-  String htmlUrl;
-  String simpleDescription;
-  String state;
-  bool isOpen;
-  int number;
-  String createdAt;
+  int? id;
+  String? htmlUrl;
+  String? simpleDescription;
+  String? state;
+  bool? isOpen;
+  int? number;
+  String? createdAt;
   // Constructor
   FeedbackIssue(Issue issue) {
     id = issue.id;

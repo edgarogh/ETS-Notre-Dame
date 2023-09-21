@@ -6,12 +6,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/ui/utils/app_theme.dart';
 
 class GradeNotAvailable extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final bool isEvaluationPeriod;
 
   const GradeNotAvailable(
-      {Key key, this.onPressed, this.isEvaluationPeriod = false})
+      {Key? key, this.onPressed, this.isEvaluationPeriod = false})
       : super(key: key);
 
   @override
@@ -28,9 +28,9 @@ class GradeNotAvailable extends StatelessWidget {
         const SizedBox(height: 25),
         Text(
           isEvaluationPeriod
-              ? AppIntl.of(context)
+              ? AppIntl.of(context)!
                   .grades_error_course_evaluations_not_completed
-              : AppIntl.of(context).grades_msg_no_grade,
+              : AppIntl.of(context)!.grades_msg_no_grade,
           textAlign: TextAlign.center,
           softWrap: true,
           style: isEvaluationPeriod
@@ -43,7 +43,7 @@ class GradeNotAvailable extends StatelessWidget {
                 backgroundColor: AppTheme.etsLightRed,
                 foregroundColor: Colors.white),
             onPressed: onPressed,
-            child: Text(AppIntl.of(context).retry))
+            child: Text(AppIntl.of(context)!.retry))
       ],
     );
   }

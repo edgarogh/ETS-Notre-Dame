@@ -16,7 +16,7 @@ class AboutView extends StatefulWidget {
 }
 
 class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
   bool _completed = false;
   bool _easterEggTrigger = false;
 
@@ -54,7 +54,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
       appBar: AppBar(
         foregroundColor: Colors.white,
         title: Text(
-          AppIntl.of(context).more_about_applets_title,
+          AppIntl.of(context)!.more_about_applets_title,
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -112,7 +112,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  AppIntl.of(context).more_applets_about_details,
+                  AppIntl.of(context)!.more_applets_about_details,
                   style: const TextStyle(color: Colors.white),
                 ),
               ),

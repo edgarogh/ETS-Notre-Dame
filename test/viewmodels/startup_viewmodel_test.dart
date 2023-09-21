@@ -28,15 +28,15 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/siren_flutter_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
-  SettingsManagerMock settingsManagerMock;
-  PreferencesServiceMock preferencesServiceMock;
-  NetworkingServiceMock networkingService;
-  InternalInfoServiceMock internalInfoServiceMock;
-  SirenFlutterServiceMock sirenFlutterServiceMock;
+  NavigationService? navigationService;
+  late UserRepositoryMock userRepositoryMock;
+  late SettingsManagerMock settingsManagerMock;
+  late PreferencesServiceMock preferencesServiceMock;
+  late NetworkingServiceMock networkingService;
+  late InternalInfoServiceMock internalInfoServiceMock;
+  late SirenFlutterServiceMock sirenFlutterServiceMock;
 
-  StartUpViewModel viewModel;
+  late StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
@@ -79,7 +79,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(navigationService.pushNamedAndRemoveUntil(
+        verify(navigationService!.pushNamedAndRemoveUntil(
             RouterPaths.dashboard, RouterPaths.dashboard, UpdateCode.none));
       });
 
@@ -104,8 +104,8 @@ void main() {
 
         verifyInOrder([
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationService.pop(),
-          navigationService.pushNamed(RouterPaths.login)
+          navigationService!.pop(),
+          navigationService!.pushNamed(RouterPaths.login)
         ]);
 
         verifyNoMoreInteractions(navigationService);
@@ -128,7 +128,7 @@ void main() {
 
         verifyInOrder([
           settingsManagerMock.getBool(PreferencesFlag.languageChoice),
-          navigationService.pushNamed(RouterPaths.chooseLanguage),
+          navigationService!.pushNamed(RouterPaths.chooseLanguage),
           settingsManagerMock.setBool(PreferencesFlag.languageChoice, true)
         ]);
 

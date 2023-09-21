@@ -7,17 +7,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 mixin Utils {
   /// Used to open a url
-  static Future<void> launchURL(String url, AppIntl intl) async {
+  static Future<void> launchURL(String url, AppIntl? intl) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      Fluttertoast.showToast(msg: intl.error);
+      Fluttertoast.showToast(msg: intl!.error);
       throw 'Could not launch $url';
     }
   }
 
-  static double getGradeInPercentage(double grade, double maxGrade) {
+  static double getGradeInPercentage(double? grade, double maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
       return 0.0;
     }
@@ -25,8 +25,8 @@ mixin Utils {
     return double.parse(((grade / maxGrade) * 100).toStringAsFixed(1));
   }
 
-  static Color getColorByBrightness(
-      BuildContext context, Color lightColor, Color darkColor) {
+  static Color? getColorByBrightness(
+      BuildContext context, Color lightColor, Color? darkColor) {
     return Theme.of(context).brightness == Brightness.light
         ? lightColor
         : darkColor;
@@ -34,7 +34,7 @@ mixin Utils {
 
   /// Get first day of the week depending on startingDay which corresponds to weekday
   static DateTime getFirstDayOfCurrentWeek(
-      DateTime currentDate, StartingDayOfWeek startingDay) {
+      DateTime currentDate, StartingDayOfWeek? startingDay) {
     var firstDayOfWeek = DateTime.now();
     switch (startingDay) {
       case StartingDayOfWeek.monday:

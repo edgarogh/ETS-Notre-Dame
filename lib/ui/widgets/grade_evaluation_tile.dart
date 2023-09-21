@@ -24,12 +24,12 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/core/utils/utils.dart';
 
 class GradeEvaluationTile extends StatefulWidget {
-  final bool completed;
+  final bool? completed;
   final CourseEvaluation evaluation;
-  final bool isFirstEvaluation;
+  final bool? isFirstEvaluation;
 
   const GradeEvaluationTile(this.evaluation,
-      {Key key, this.completed, this.isFirstEvaluation})
+      {Key? key, this.completed, this.isFirstEvaluation})
       : super(key: key);
 
   @override
@@ -39,8 +39,8 @@ class GradeEvaluationTile extends StatefulWidget {
 class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     with TickerProviderStateMixin<GradeEvaluationTile> {
   bool showEvaluationDetails = false;
-  AnimationController controller;
-  Animation<double> rotateAnimation;
+  late AnimationController controller;
+  late Animation<double> rotateAnimation;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                       ),
                     );
 
-                    if (widget.isFirstEvaluation) {
+                    if (widget.isFirstEvaluation!) {
                       return _buildDiscoveryFeatureDescriptionWidget(
                           context,
                           circularProgress,
@@ -163,7 +163,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                     child: Text(
-                      AppIntl.of(context)
+                      AppIntl.of(context)!
                           .grades_weight(widget.evaluation.weight),
                       style: TextStyle(
                         fontSize: 14,
@@ -178,7 +178,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                 padding: const EdgeInsets.only(top: 25.0, right: 10.0),
                 child: AnimatedBuilder(
                   animation: rotateAnimation,
-                  builder: (BuildContext context, Widget child) {
+                  builder: (BuildContext context, Widget? child) {
                     return Transform.rotate(
                       angle: rotateAnimation.value,
                       child: const Icon(
@@ -210,8 +210,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         child: Column(
           children: [
             _buildSummary(
-              AppIntl.of(context).grades_grade,
-              AppIntl.of(context).grades_grade_with_percentage(
+              AppIntl.of(context)!.grades_grade,
+              AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
                 Utils.getGradeInPercentage(evaluation.mark,
@@ -219,8 +219,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
-              AppIntl.of(context).grades_average,
-              AppIntl.of(context).grades_grade_with_percentage(
+              AppIntl.of(context)!.grades_average,
+              AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
                 Utils.getGradeInPercentage(evaluation.passMark,
@@ -228,8 +228,8 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
-              AppIntl.of(context).grades_median,
-              AppIntl.of(context).grades_grade_with_percentage(
+              AppIntl.of(context)!.grades_median,
+              AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.median ?? 0.0,
                 evaluation.correctedEvaluationOutOf ?? 0.0,
                 Utils.getGradeInPercentage(evaluation.median,
@@ -237,12 +237,12 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               ),
             ),
             _buildSummary(
-                AppIntl.of(context).grades_standard_deviation,
+                AppIntl.of(context)!.grades_standard_deviation,
                 validateResult(
                     context, evaluation.standardDeviation.toString())),
-            _buildSummary(AppIntl.of(context).grades_percentile_rank,
+            _buildSummary(AppIntl.of(context)!.grades_percentile_rank,
                 validateResult(context, evaluation.percentileRank.toString())),
-            _buildSummary(AppIntl.of(context).grades_target_date,
+            _buildSummary(AppIntl.of(context)!.grades_target_date,
                 getDate(evaluation.targetDate, context)),
           ],
         ),
@@ -250,13 +250,13 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     );
   }
 
-  String getDate(DateTime targetDate, BuildContext context) {
+  String getDate(DateTime? targetDate, BuildContext context) {
     if (targetDate != null) {
-      return DateFormat('d MMMM yyyy', AppIntl.of(context).localeName)
+      return DateFormat('d MMMM yyyy', AppIntl.of(context)!.localeName)
           .format(targetDate);
     }
 
-    return AppIntl.of(context).grades_not_available;
+    return AppIntl.of(context)!.grades_not_available;
   }
 
   Padding _buildSummary(String title, String grade) {
@@ -279,7 +279,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
       return result;
     }
 
-    return AppIntl.of(context).grades_not_available;
+    return AppIntl.of(context)!.grades_not_available;
   }
 
   DescribedFeatureOverlay _buildDiscoveryFeatureDescriptionWidget(

@@ -24,8 +24,8 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 import '../../helpers.dart';
 
 void main() {
-  CourseRepository courseRepository;
-  AppIntl intl;
+  late CourseRepository courseRepository;
+  late AppIntl intl;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',

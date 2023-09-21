@@ -27,12 +27,12 @@ import '../mock/services/internal_info_service_mock.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NavigationService navigationService;
-  AnalyticsService analyticsService;
-  InternalInfoService internalInfoService;
-  LaunchUrlService launchUrlService;
+  NavigationService? navigationService;
+  AnalyticsService? analyticsService;
+  late InternalInfoService internalInfoService;
+  LaunchUrlService? launchUrlService;
 
-  WebLinkCardViewModel viewModel;
+  late WebLinkCardViewModel viewModel;
 
   final quickLink = QuickLink(
       image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
@@ -66,8 +66,8 @@ void main() {
         await viewModel.onLinkClicked(securityQuickLink, Brightness.light);
 
         verify(
-            analyticsService.logEvent("QuickLink", "QuickLink clicked: test"));
-        verify(navigationService.pushNamed(RouterPaths.security));
+            analyticsService!.logEvent("QuickLink", "QuickLink clicked: test"));
+        verify(navigationService!.pushNamed(RouterPaths.security));
         verifyNoMoreInteractions(navigationService);
       });
 
@@ -78,7 +78,7 @@ void main() {
         await viewModel.onLinkClicked(quickLink, Brightness.light);
 
         verify(
-            launchUrlService.launchInBrowser(quickLink.link, Brightness.light));
+            launchUrlService!.launchInBrowser(quickLink.link, Brightness.light));
         verifyNoMoreInteractions(navigationService);
       });
     });

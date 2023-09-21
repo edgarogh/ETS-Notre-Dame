@@ -9,9 +9,9 @@ import 'package:flutter/services.dart';
 /// widget is created (through ReorderableListView's proxyDecorator) and haptic
 /// feedback is generated.
 class HapticsContainer extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
 
-  const HapticsContainer({Key key, this.child}) : super(key: key);
+  const HapticsContainer({Key? key, this.child}) : super(key: key);
 
   @override
   _HapticsContainerState createState() => _HapticsContainerState();
@@ -26,6 +26,6 @@ class _HapticsContainerState extends State<HapticsContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 }

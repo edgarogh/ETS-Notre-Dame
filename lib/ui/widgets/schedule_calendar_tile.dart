@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
-  final String title;
-  final String description;
-  final TextStyle titleStyle;
-  final int totalEvents;
-  final EdgeInsets padding;
-  final Color backgroundColor;
-  final BorderRadius borderRadius;
-  final DateTime start;
-  final DateTime end;
-  final BuildContext buildContext;
+  final String? title;
+  final String? description;
+  final TextStyle? titleStyle;
+  final int? totalEvents;
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
+  final BorderRadius? borderRadius;
+  final DateTime? start;
+  final DateTime? end;
+  final BuildContext? buildContext;
 
   const ScheduleCalendarTile(
-      {Key key,
+      {Key? key,
       this.title,
       this.description,
       this.titleStyle,
@@ -34,15 +34,15 @@ class ScheduleCalendarTile extends StatefulWidget {
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
   void _showTileInfo() {
-    final courseInfos = widget.description.split(";");
+    final courseInfos = widget.description!.split(";");
     final courseName = courseInfos[0].split("-")[0];
     final courseLocation = courseInfos[1];
     final courseType = courseInfos[2];
     final teacherName = courseInfos[3];
     final startTime =
-        "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
+        "${widget.start!.hour}:${widget.start!.minute.toString().padLeft(2, '0')}";
     final endTime =
-        "${widget.end.hour}:${widget.end.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
+        "${widget.end!.hour}:${widget.end!.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
 
     showDialog(
       context: context,
@@ -70,14 +70,14 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 ),
               ),
               Text(
-                "${AppIntl.of(widget.buildContext).schedule_calendar_by} $teacherName",
+                "${AppIntl.of(widget.buildContext!)!.schedule_calendar_by} $teacherName",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                "${AppIntl.of(widget.buildContext).schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext).schedule_calendar_to_time} $endTime",
+                "${AppIntl.of(widget.buildContext!)!.schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext!)!.schedule_calendar_to_time} $endTime",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AutoSizeText(
-              widget.title,
+              widget.title!,
               style: widget.titleStyle,
               maxLines: 3,
             )

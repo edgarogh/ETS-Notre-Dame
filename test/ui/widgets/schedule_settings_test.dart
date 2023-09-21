@@ -27,10 +27,10 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
+  late SettingsManager settingsManager;
   RemoteConfigServiceMock remoteConfigService;
-  CourseRepositoryMock courseRepositoryMock;
-  AppIntl intl;
+  late CourseRepositoryMock courseRepositoryMock;
+  late AppIntl intl;
 
   // Some settings
   final Map<PreferencesFlag, dynamic> settings = {
@@ -420,7 +420,7 @@ void main() {
         // Currently the await tester.tap on a switch in a tile isn't working. Workaround:
         (find.byType(Switch, skipOffstage: false).evaluate().single.widget
                 as Switch)
-            .onChanged(false);
+            .onChanged!(false);
 
         await tester.pumpAndSettle();
 

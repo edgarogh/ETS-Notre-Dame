@@ -15,7 +15,7 @@ import 'package:ets_api_clients/models.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,

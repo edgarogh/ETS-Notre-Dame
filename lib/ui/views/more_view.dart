@@ -31,7 +31,7 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
   bool isDiscoveryOverlayActive = false;
 
@@ -54,20 +54,20 @@ class _MoreViewState extends State<MoreView> {
 
   /// License text box
   List<Widget> aboutBoxChildren(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2;
+    final textStyle = Theme.of(context).textTheme.bodyText2!;
     return <Widget>[
       const SizedBox(height: 24),
       RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-                style: textStyle, text: AppIntl.of(context).flutter_license),
+                style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
                 style: textStyle.copyWith(color: Colors.blue),
-                text: AppIntl.of(context).flutter_website,
+                text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => Utils.launchURL(
-                      AppIntl.of(context).flutter_website,
+                      AppIntl.of(context)!.flutter_website,
                       AppIntl.of(context))),
             TextSpan(style: textStyle, text: '.'),
           ],
@@ -83,13 +83,13 @@ class _MoreViewState extends State<MoreView> {
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
-              title: Text(AppIntl.of(context).title_more),
+              title: Text(AppIntl.of(context)!.title_more),
               automaticallyImplyLeading: false,
             ),
             body: ListView(
               children: [
                 ListTile(
-                    title: Text(AppIntl.of(context).more_about_applets_title),
+                    title: Text(AppIntl.of(context)!.more_about_applets_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         Hero(
@@ -103,44 +103,44 @@ class _MoreViewState extends State<MoreView> {
                         DiscoveryIds.detailsMoreThankYou,
                         model),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "About App|ETS clicked");
-                      model.navigationService.pushNamed(RouterPaths.about);
+                      _analyticsService!.logEvent(tag, "About App|ETS clicked");
+                      model.navigationService!.pushNamed(RouterPaths.about);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_report_bug),
+                    title: Text(AppIntl.of(context)!.more_report_bug),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.bug_report),
                         DiscoveryIds.detailsMoreBugReport,
                         model),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "Report a bug clicked");
-                      model.navigationService.pushNamed(RouterPaths.feedback);
+                      _analyticsService!.logEvent(tag, "Report a bug clicked");
+                      model.navigationService!.pushNamed(RouterPaths.feedback);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).in_app_review_title),
+                    title: Text(AppIntl.of(context)!.in_app_review_title),
                     leading: const Icon(Icons.rate_review),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "Rate us clicked");
+                      _analyticsService!.logEvent(tag, "Rate us clicked");
                       MoreViewModel.launchInAppReview();
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_contributors),
+                    title: Text(AppIntl.of(context)!.more_contributors),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.people_outline),
                         DiscoveryIds.detailsMoreContributors,
                         model),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "Contributors clicked");
-                      model.navigationService
+                      _analyticsService!.logEvent(tag, "Contributors clicked");
+                      model.navigationService!
                           .pushNamed(RouterPaths.contributors);
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).more_open_source_licenses),
+                    title: Text(AppIntl.of(context)!.more_open_source_licenses),
                     leading: const Icon(Icons.code),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "Rate us clicked");
+                      _analyticsService!.logEvent(tag, "Rate us clicked");
                       Navigator.of(context).push(PageRouteBuilder(
                         pageBuilder: (context, _, __) => AboutDialog(
                           applicationIcon: Padding(
@@ -151,7 +151,7 @@ class _MoreViewState extends State<MoreView> {
                                     'assets/images/favicon_applets.png')),
                           ),
                           applicationName:
-                              AppIntl.of(context).more_open_source_licenses,
+                              AppIntl.of(context)!.more_open_source_licenses,
                           applicationVersion: model.appVersion,
                           applicationLegalese:
                               '\u{a9} ${DateTime.now().year} App|ETS',
@@ -161,39 +161,39 @@ class _MoreViewState extends State<MoreView> {
                       ));
                     }),
                 ListTile(
-                    title: Text(AppIntl.of(context).settings_title),
+                    title: Text(AppIntl.of(context)!.settings_title),
                     leading: _buildDiscoveryFeatureDescriptionWidget(
                         context,
                         getProperIconAccordingToTheme(Icons.settings),
                         DiscoveryIds.detailsMoreSettings,
                         model),
                     onTap: () {
-                      _analyticsService.logEvent(tag, "Settings clicked");
-                      model.navigationService.pushNamed(RouterPaths.settings);
+                      _analyticsService!.logEvent(tag, "Settings clicked");
+                      model.navigationService!.pushNamed(RouterPaths.settings);
                     }),
                 ListTile(
-                  title: Text(AppIntl.of(context).more_log_out),
+                  title: Text(AppIntl.of(context)!.more_log_out),
                   leading: const Icon(Icons.logout),
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, _, __) => AlertDialog(
                         title: Text(
-                          AppIntl.of(context).more_log_out,
+                          AppIntl.of(context)!.more_log_out,
                           style: const TextStyle(color: Colors.red),
                         ),
-                        content: Text(AppIntl.of(context)
+                        content: Text(AppIntl.of(context)!
                             .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                _analyticsService.logEvent(
+                                _analyticsService!.logEvent(
                                     tag, "Log out clicked");
                                 model.logout();
                               },
-                              child: Text(AppIntl.of(context).yes)),
+                              child: Text(AppIntl.of(context)!.yes)),
                           TextButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: Text(AppIntl.of(context).no))
+                              child: Text(AppIntl.of(context)!.no))
                         ],
                       ),
                       opaque: false,

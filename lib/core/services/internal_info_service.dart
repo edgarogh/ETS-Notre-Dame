@@ -15,7 +15,7 @@ class InternalInfoService {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final NetworkingService networkingService = locator<NetworkingService>();
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    String deviceName;
+    String? deviceName;
 
     if (Platform.isAndroid) {
       final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;

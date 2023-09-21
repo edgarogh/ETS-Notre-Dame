@@ -24,9 +24,9 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-CourseRepository courseRepository;
-SettingsManager settingsManager;
-ScheduleViewModel viewModel;
+CourseRepository? courseRepository;
+SettingsManager? settingsManager;
+late ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -283,8 +283,8 @@ void main() {
         expect(await viewModel.futureToRun(), []);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          courseRepository!.getCoursesActivities(fromCacheOnly: true),
+          courseRepository!.getCoursesActivities()
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -314,11 +314,11 @@ void main() {
             reason: "Even if SignetsAPI fails we should receives a list.");
 
         // Await until the call to get the activities from signets is sent
-        await untilCalled(courseRepository.getCoursesActivities());
+        await untilCalled(courseRepository!.getCoursesActivities());
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities()
+          courseRepository!.getCoursesActivities(fromCacheOnly: true),
+          courseRepository!.getCoursesActivities()
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -339,7 +339,7 @@ void main() {
 
         expect(viewModel.coursesActivities, expected);
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepository!.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -435,7 +435,7 @@ void main() {
 
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 2)), expected);
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepository!.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -449,7 +449,7 @@ void main() {
         expect(viewModel.coursesActivitiesFor(DateTime(2020, 1, 3)), isEmpty,
             reason: "There is no events for the 3rd Jan on activities");
 
-        verify(courseRepository.coursesActivities).called(2);
+        verify(courseRepository!.coursesActivities).called(2);
 
         verifyNoMoreInteractions(courseRepository);
         verifyNoMoreInteractions(settingsManager);
@@ -596,9 +596,9 @@ void main() {
         expect(viewModel.coursesActivities, expected);
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(),
-          courseRepository.coursesActivities,
-          courseRepository.coursesActivities
+          courseRepository!.getCoursesActivities(),
+          courseRepository!.coursesActivities,
+          courseRepository!.coursesActivities
         ]);
 
         verifyNoMoreInteractions(courseRepository);
@@ -616,7 +616,7 @@ void main() {
 
         await viewModel.loadSettings();
         expect(viewModel.calendarFormat, CalendarFormat.month);
-        verify(settingsManager.getScheduleSettings()).called(1);
+        verify(settingsManager!.getScheduleSettings()).called(1);
         verifyNoMoreInteractions(settingsManager);
       });
       test('assignScheduleActivities - format the schedule activities in a map',
@@ -692,19 +692,19 @@ void main() {
         expect(await viewModel.futureToRun(), activities,
             reason: "Even if SignetsAPI fails we should receives a list.");
 
-        List<ScheduleActivity> listScheduleActivities;
-        await courseRepository.getScheduleActivities().then((value) {
+        List<ScheduleActivity>? listScheduleActivities;
+        await courseRepository!.getScheduleActivities().then((value) {
           listScheduleActivities = value;
         });
         await viewModel.assignScheduleActivities(listScheduleActivities);
 
-        await untilCalled(courseRepository.getCoursesActivities());
-        await untilCalled(courseRepository.getScheduleActivities());
+        await untilCalled(courseRepository!.getCoursesActivities());
+        await untilCalled(courseRepository!.getScheduleActivities());
 
         verifyInOrder([
-          courseRepository.getCoursesActivities(fromCacheOnly: true),
-          courseRepository.getCoursesActivities(),
-          courseRepository.getScheduleActivities(
+          courseRepository!.getCoursesActivities(fromCacheOnly: true),
+          courseRepository!.getCoursesActivities(),
+          courseRepository!.getScheduleActivities(
               fromCacheOnly: anyNamed("fromCacheOnly"))
         ]);
 
@@ -717,7 +717,7 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager.getDynamicString(any, any)).called(2);
+        verify(settingsManager!.getDynamicString(any, any)).called(2);
       });
 
       test(

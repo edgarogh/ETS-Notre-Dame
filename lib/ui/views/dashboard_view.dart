@@ -37,8 +37,8 @@ import 'package:notredame/core/services/navigation_service.dart';
 import 'package:notredame/core/services/analytics_service.dart';
 
 class DashboardView extends StatefulWidget {
-  final UpdateCode updateCode;
-  const DashboardView({Key key, this.updateCode}) : super(key: key);
+  final UpdateCode? updateCode;
+  const DashboardView({Key? key, this.updateCode}) : super(key: key);
 
   @override
   _DashboardViewState createState() => _DashboardViewState();
@@ -46,9 +46,9 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
-  Text progressBarText;
-  final NavigationService _navigationService = locator<NavigationService>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  Text? progressBarText;
+  final NavigationService? _navigationService = locator<NavigationService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
 
   @override
@@ -69,7 +69,7 @@ class _DashboardViewState extends State<DashboardView>
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
-                  title: Text(AppIntl.of(context).title_dashboard),
+                  title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
                   automaticallyImplyLeading: false,
                   actions: [
@@ -100,7 +100,7 @@ class _DashboardViewState extends State<DashboardView>
   List<Widget> _buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
 
-    for (final PreferencesFlag element in model.cardsToDisplay) {
+    for (final PreferencesFlag element in model.cardsToDisplay!) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
           cards.add(_buildAboutUsCard(model, element));
@@ -136,7 +136,7 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).card_applets_title,
+                child: Text(AppIntl.of(context)!.card_applets_title,
                     style: Theme.of(context).primaryTextTheme.headline6),
               )),
           Column(
@@ -144,7 +144,7 @@ class _DashboardViewState extends State<DashboardView>
             children: [
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context).card_applets_text,
+                child: Text(AppIntl.of(context)!.card_applets_text,
                     style: Theme.of(context).primaryTextTheme.bodyText2),
               ),
               Container(
@@ -154,7 +154,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(spacing: 15.0, children: [
                     IconButton(
                       onPressed: () {
-                        _analyticsService.logEvent(tag, "Facebook clicked");
+                        _analyticsService!.logEvent(tag, "Facebook clicked");
                         Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -164,7 +164,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService.logEvent(tag, "Github clicked");
+                        _analyticsService!.logEvent(tag, "Github clicked");
                         Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -174,7 +174,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService.logEvent(tag, "Email clicked");
+                        _analyticsService!.logEvent(tag, "Email clicked");
                         Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -184,7 +184,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService.logEvent(tag, "Discord clicked");
+                        _analyticsService!.logEvent(tag, "Discord clicked");
                         Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -213,7 +213,7 @@ class _DashboardViewState extends State<DashboardView>
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context).progress_bar_title,
+                child: Text(AppIntl.of(context)!.progress_bar_title,
                     style: Theme.of(context).textTheme.headline6),
               )),
           if (model.progress >= 0.0)
@@ -249,7 +249,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Center(
                     child: progressBarText ??
                         Text(
-                          AppIntl.of(context).progress_bar_message(
+                          AppIntl.of(context)!.progress_bar_message(
                               model.sessionDays[0], model.sessionDays[1]),
                           style: const TextStyle(color: Colors.white),
                         ),
@@ -261,7 +261,7 @@ class _DashboardViewState extends State<DashboardView>
             Container(
               padding: const EdgeInsets.all(16),
               child: Center(
-                child: Text(AppIntl.of(context).session_without),
+                child: Text(AppIntl.of(context)!.session_without),
               ),
             ),
         ]),
@@ -275,19 +275,19 @@ class _DashboardViewState extends State<DashboardView>
     if (model.currentProgressBarText ==
         ProgressBarText.daysElapsedWithTotalDays) {
       progressBarText = Text(
-        AppIntl.of(context)
+        AppIntl.of(context)!
             .progress_bar_message(model.sessionDays[0], model.sessionDays[1]),
         style: const TextStyle(color: Colors.white),
       );
     } else if (model.currentProgressBarText == ProgressBarText.percentage) {
       progressBarText = Text(
-        AppIntl.of(context).progress_bar_message_percentage(
+        AppIntl.of(context)!.progress_bar_message_percentage(
             ((model.sessionDays[0] / model.sessionDays[1]) * 100).round()),
         style: const TextStyle(color: Colors.white),
       );
     } else {
       progressBarText = Text(
-        AppIntl.of(context).progress_bar_message_remaining_days(
+        AppIntl.of(context)!.progress_bar_message_remaining_days(
             model.sessionDays[1] - model.sessionDays[0]),
         style: const TextStyle(color: Colors.white),
       );
@@ -295,9 +295,9 @@ class _DashboardViewState extends State<DashboardView>
   }
 
   Widget _buildScheduleCard(DashboardViewModel model, PreferencesFlag flag) {
-    var title = AppIntl.of(context).title_schedule;
+    var title = AppIntl.of(context)!.title_schedule;
     if (model.todayDateEvents.isEmpty && model.tomorrowDateEvents.isNotEmpty) {
-      title = title + AppIntl.of(context).card_schedule_tomorrow;
+      title = title + AppIntl.of(context)!.card_schedule_tomorrow;
     }
     return DismissibleCard(
       isBusy: model.busy(model.todayDateEvents) ||
@@ -314,7 +314,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: GestureDetector(
-                  onTap: () => _navigationService
+                  onTap: () => _navigationService!
                       .pushNamedAndRemoveUntil(RouterPaths.schedule),
                   child:
                       Text(title, style: Theme.of(context).textTheme.headline6),
@@ -325,7 +325,7 @@ class _DashboardViewState extends State<DashboardView>
               SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context).schedule_no_event)))
+                      child: Text(AppIntl.of(context)!.schedule_no_event)))
             else
               _buildEventList(model.tomorrowDateEvents)
           else
@@ -365,9 +365,9 @@ class _DashboardViewState extends State<DashboardView>
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                   child: GestureDetector(
-                    onTap: () => _navigationService
+                    onTap: () => _navigationService!
                         .pushNamedAndRemoveUntil(RouterPaths.student),
-                    child: Text(AppIntl.of(context).grades_title,
+                    child: Text(AppIntl.of(context)!.grades_title,
                         style: Theme.of(context).textTheme.headline6),
                   ),
                 ),
@@ -376,7 +376,7 @@ class _DashboardViewState extends State<DashboardView>
                 SizedBox(
                   height: 100,
                   child: Center(
-                      child: Text(AppIntl.of(context)
+                      child: Text(AppIntl.of(context)!
                           .grades_msg_no_grades
                           .split("\n")
                           .first)),
@@ -404,8 +404,8 @@ class _DashboardViewState extends State<DashboardView>
       newIndex -= 1;
     }
 
-    final PreferencesFlag elementMoved = model.cards.keys
-        .firstWhere((element) => model.cards[element] == oldIndex);
+    final PreferencesFlag elementMoved = model.cards!.keys
+        .firstWhere((element) => model.cards![element] == oldIndex);
 
     model.setOrder(elementMoved, newIndex);
   }

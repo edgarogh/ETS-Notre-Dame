@@ -18,13 +18,13 @@ import 'package:notredame/locator.dart';
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
 class BaseScaffold extends StatefulWidget {
-  final AppBar appBar;
+  final AppBar? appBar;
 
-  final Widget body;
+  final Widget? body;
 
-  final FloatingActionButton fab;
+  final FloatingActionButton? fab;
 
-  final FloatingActionButtonLocation fabPosition;
+  final FloatingActionButtonLocation? fabPosition;
 
   final bool _showBottomBar;
 
@@ -53,9 +53,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
-  final NetworkingService _networkingService = locator<NetworkingService>();
+  final NetworkingService? _networkingService = locator<NetworkingService>();
 
-  StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<ConnectivityResult> _subscription;
 
   @override
   void initState() {
@@ -65,14 +65,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Future _setOfflineValue() async {
-    final isOffline = !await _networkingService.hasConnectivity();
+    final isOffline = !await _networkingService!.hasConnectivity();
     setState(() {
       _isOffline = isOffline;
     });
   }
 
   void _listenToChangeInConnectivity() {
-    _subscription = _networkingService.onConnectivityChanged.listen((event) {
+    _subscription = _networkingService!.onConnectivityChanged.listen((event) {
       setState(() {
         _isOffline = event == ConnectivityResult.none;
       });
@@ -87,7 +87,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             top: false,
             child: Stack(
               children: [
-                widget.body,
+                widget.body!,
                 if (widget._isLoading)
                   buildLoading(
                       isInteractionLimitedWhileLoading:
@@ -115,7 +115,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           height: MediaQuery.of(context).size.height / 30,
         ),
         Text(
-          AppIntl.of(context).no_connectivity,
+          AppIntl.of(context)!.no_connectivity,
           textAlign: TextAlign.center,
         ),
       ],

@@ -56,8 +56,8 @@ class DynamicPreferencesFlag {
   PreferencesFlag groupAssociationFlag;
 
   DynamicPreferencesFlag(
-      {@required this.groupAssociationFlag,
-      @required this.uniqueKey,
+      {required this.groupAssociationFlag,
+      required this.uniqueKey,
       this.separator = "_"});
 
   String get data => groupAssociationFlag.toString() + separator + uniqueKey;

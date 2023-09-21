@@ -9,14 +9,14 @@ import 'package:notredame/core/services/app_widget_service.dart';
 
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)
 class HomeWidgetMock extends Mock {
-  MethodChannel _channel;
-  TestDefaultBinaryMessenger _messenger;
+  late MethodChannel _channel;
+  late TestDefaultBinaryMessenger _messenger;
 
   HomeWidgetMock() {
     _channel = const MethodChannel('home_widget');
 
     _messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger;
   }
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.setAppGroupId]
@@ -56,7 +56,7 @@ class HomeWidgetMock extends Mock {
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.saveWidgetData]
   /// to enable [AppWidgetService] send...Data testing
-  void stubUpdateWidgetMock(String name, String androidName, String iOSName) {
+  void stubUpdateWidgetMock(String? name, String? androidName, String? iOSName) {
     _messenger.setMockMethodCallHandler(_channel,
         (MethodCall methodCall) async {
       if (methodCall.method == 'updateWidget' &&

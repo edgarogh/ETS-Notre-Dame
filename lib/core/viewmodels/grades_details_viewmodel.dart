@@ -23,25 +23,25 @@ import 'package:ets_api_clients/models.dart';
 // OTHER
 import 'package:notredame/locator.dart';
 
-class GradesDetailsViewModel extends FutureViewModel<Course> {
+class GradesDetailsViewModel extends FutureViewModel<Course?> {
   /// Used to get the courses of the student
-  final CourseRepository _courseRepository = locator<CourseRepository>();
+  final CourseRepository? _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
-  final AppIntl _appIntl;
+  final AppIntl? _appIntl;
 
   /// Used to get the current course selected of the student
-  Course course;
+  Course? course;
 
-  GradesDetailsViewModel({this.course, @required AppIntl intl})
+  GradesDetailsViewModel({this.course, required AppIntl? intl})
       : _appIntl = intl;
 
   @override
-  Future<Course> futureToRun() async {
+  Future<Course?> futureToRun() async {
     setBusyForObject(course, true);
 
     // ignore: return_type_invalid_for_catch_error
-    await _courseRepository
+    await _courseRepository!
         .getCourseSummary(course)
         // ignore: return_type_invalid_for_catch_error
         .catchError(onError)
@@ -62,14 +62,14 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   // ignore: type_annotate_public_apis
   void onError(error) {
     if (error is ApiException && error.errorCode != SignetsError.gradesEmpty) {
-      Fluttertoast.showToast(msg: _appIntl.error);
+      Fluttertoast.showToast(msg: _appIntl!.error);
     }
   }
 
   Future<bool> refresh() async {
     try {
       setBusyForObject(course, true);
-      await _courseRepository.getCourseSummary(course)?.then((value) {
+      await _courseRepository!.getCourseSummary(course)?.then((value) {
         if (value != null) {
           course = value;
         }

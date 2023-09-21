@@ -6,7 +6,7 @@ import 'package:flutter_siren/flutter_siren.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 class SirenFlutterService {
-  Siren _siren;
+  late Siren _siren;
 
   SirenFlutterService() {
     _siren = Siren();
@@ -31,10 +31,10 @@ class SirenFlutterService {
 
   // Relay prompt update info to Siren package
   Future<void> promptUpdate(BuildContext context,
-      {String title,
-      String message,
-      String buttonUpgradeText,
-      String buttonCancelText,
+      {required String title,
+      required String message,
+      required String buttonUpgradeText,
+      required String buttonCancelText,
       bool forceUpgrade = false}) async {
     return _siren.promptUpdate(context,
         title: title,

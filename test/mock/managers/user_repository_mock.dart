@@ -47,13 +47,13 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the getter [ProfileStudent] of [mock] when called will return [toReturn].
   static void stubProfileStudent(UserRepositoryMock mock,
-      {ProfileStudent toReturn}) {
+      {ProfileStudent? toReturn}) {
     when(mock.info).thenReturn(toReturn);
   }
 
   /// Stub the function [getInfo] of [mock] when called will return [toReturn].
   static void stubGetInfo(UserRepositoryMock mock,
-      {ProfileStudent toReturn, bool fromCacheOnly}) {
+      {ProfileStudent? toReturn, bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) async => toReturn);
@@ -62,7 +62,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   /// Stub the function [getInfo] of [mock] when called will throw [toThrow].
   static void stubGetInfoException(UserRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getInfo(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
@@ -77,7 +77,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
 
   /// Stub the function [getPrograms] of [mock] when called will return [toReturn].
   static void stubGetPrograms(UserRepositoryMock mock,
-      {List<Program> toReturn = const [], bool fromCacheOnly}) {
+      {List<Program> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) async => toReturn);
@@ -86,7 +86,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   /// Stub the function [getPrograms] of [mock] when called will throw [toThrow].
   static void stubGetProgramsException(UserRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
-      bool fromCacheOnly}) {
+      bool? fromCacheOnly}) {
     when(mock.getPrograms(
             fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))

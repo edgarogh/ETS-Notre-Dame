@@ -4,13 +4,13 @@ class GradesWidgetData {
   static const String keyPrefix = "grade_";
 
   List<String> courseAcronyms;
-  List<String> grades;
+  List<String?> grades;
   String title;
 
   GradesWidgetData({
-    @required this.title,
-    @required this.courseAcronyms,
-    @required this.grades,
+    required this.title,
+    required this.courseAcronyms,
+    required this.grades,
   });
 }
 
@@ -24,9 +24,9 @@ class ProgressWidgetData {
   String suffix;
 
   ProgressWidgetData(
-      {@required this.title,
-      @required this.progress,
-      @required this.elapsedDays,
-      @required this.totalDays,
-      @required this.suffix});
+      {required this.title,
+      required this.progress,
+      required this.elapsedDays,
+      required this.totalDays,
+      required this.suffix});
 }

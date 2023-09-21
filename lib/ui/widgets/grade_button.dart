@@ -23,14 +23,14 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:notredame/ui/utils/discovery_components.dart';
 
 class GradeButton extends StatelessWidget {
-  final Course course;
-  final bool showDiscovery;
+  final Course? course;
+  final bool? showDiscovery;
 
   /// Used to redirect on the dashboard.
-  final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   /// Settings manager
-  final SettingsManager _settingsManager = locator<SettingsManager>();
+  final SettingsManager? _settingsManager = locator<SettingsManager>();
 
   GradeButton(this.course, {this.showDiscovery});
 
@@ -38,15 +38,15 @@ class GradeButton extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         child: InkWell(
           onTap: () async {
-            if (ModalRoute.of(context).settings.name == RouterPaths.dashboard ||
-                await _settingsManager
+            if (ModalRoute.of(context)!.settings.name == RouterPaths.dashboard ||
+                await _settingsManager!
                         .getBool(PreferencesFlag.discoveryStudentGrade) ==
                     true) {
-              _navigationService.pushNamed(RouterPaths.gradeDetails,
+              _navigationService!.pushNamed(RouterPaths.gradeDetails,
                   arguments: course);
             }
           },
-          child: showDiscovery
+          child: showDiscovery!
               ? _buildDiscoveryFeatureDescriptionWidget(
                   context, _buildGradeButton(context))
               : _buildGradeButton(context),
@@ -55,17 +55,17 @@ class GradeButton extends StatelessWidget {
 
   /// Build the grade string based on the available information. By default
   /// will return [grades_not_available].
-  String gradeString(AppIntl intl) {
-    if (course.grade != null) {
-      return course.grade;
-    } else if (course.summary != null &&
-        course.summary.markOutOf > 0 &&
-        !(course.inReviewPeriod && !course.reviewCompleted)) {
-      return intl.grades_grade_in_percentage(
-          course.summary.currentMarkInPercent.round());
+  String? gradeString(AppIntl? intl) {
+    if (course!.grade != null) {
+      return course!.grade;
+    } else if (course!.summary != null &&
+        course!.summary!.markOutOf > 0 &&
+        !(course!.inReviewPeriod && !course!.reviewCompleted!)) {
+      return intl!.grades_grade_in_percentage(
+          course!.summary!.currentMarkInPercent.round());
     }
 
-    return intl.grades_not_available;
+    return intl!.grades_not_available;
   }
 
   SizedBox _buildGradeButton(BuildContext context) {
@@ -78,7 +78,7 @@ class GradeButton extends StatelessWidget {
             children: [
               Expanded(
                 child: Hero(
-                  tag: 'course_acronym_${course.acronym}_${course.session}',
+                  tag: 'course_acronym_${course!.acronym}_${course!.session}',
                   child: Material(
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
@@ -92,10 +92,10 @@ class GradeButton extends StatelessWidget {
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
-                                course.acronym,
+                                course!.acronym,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .copyWith(color: Colors.white),
                               ),
                             ),
@@ -108,7 +108,7 @@ class GradeButton extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-                child: Text(gradeString(AppIntl.of(context)),
+                child: Text(gradeString(AppIntl.of(context))!,
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.light

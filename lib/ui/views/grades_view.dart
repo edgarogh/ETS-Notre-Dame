@@ -30,7 +30,7 @@ class GradesView extends StatefulWidget {
 }
 
 class _GradesViewState extends State<GradesView> {
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _GradesViewState extends State<GradesView> {
       GradesViewModel.startDiscovery(context);
     });
 
-    _analyticsService.logEvent("GradesView", "Opened");
+    _analyticsService!.logEvent("GradesView", "Opened");
   }
 
   @override
@@ -57,7 +57,7 @@ class _GradesViewState extends State<GradesView> {
                 ListView(),
                 if (model.coursesBySession.isEmpty)
                   Center(
-                      child: Text(AppIntl.of(context).grades_msg_no_grades,
+                      child: Text(AppIntl.of(context)!.grades_msg_no_grades,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headline6))
                 else
@@ -79,7 +79,7 @@ class _GradesViewState extends State<GradesView> {
                                         _sessionName(model.sessionOrder[index],
                                             AppIntl.of(context)),
                                         model.coursesBySession[
-                                            model.sessionOrder[index]],
+                                            model.sessionOrder[index]]!,
                                         model),
                                   ),
                                 ),
@@ -99,7 +99,7 @@ class _GradesViewState extends State<GradesView> {
   /// Build a session which is the name of the session and one [GradeButton] for
   /// each [Course] in [courses]
   Widget _buildSessionCourses(int index, String sessionName,
-          List<Course> courses, GradesViewModel model) =>
+          List<Course?> courses, GradesViewModel model) =>
       Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
         child: Column(
@@ -123,16 +123,16 @@ class _GradesViewState extends State<GradesView> {
       );
 
   /// Build the complete name of the session for the user local.
-  String _sessionName(String shortName, AppIntl intl) {
+  String _sessionName(String shortName, AppIntl? intl) {
     switch (shortName[0]) {
       case 'H':
-        return "${intl.session_winter} ${shortName.substring(1)}";
+        return "${intl!.session_winter} ${shortName.substring(1)}";
       case 'A':
-        return "${intl.session_fall} ${shortName.substring(1)}";
+        return "${intl!.session_fall} ${shortName.substring(1)}";
       case 'É':
-        return "${intl.session_summer} ${shortName.substring(1)}";
+        return "${intl!.session_summer} ${shortName.substring(1)}";
       default:
-        return intl.session_without;
+        return intl!.session_without;
     }
   }
 }

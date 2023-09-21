@@ -37,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
-  final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
+  final LaunchUrlService? _launchUrlService = locator<LaunchUrlService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -63,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
                       key: formKey,
                       onChanged: () {
                         setState(() {
-                          formKey.currentState.validate();
+                          formKey.currentState!.validate();
                         });
                       },
                       child: AutofillGroup(
@@ -103,13 +103,13 @@ class _LoginViewState extends State<LoginView> {
                                           width: borderRadiusOnFocus)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: errorTextColor,
+                                          color: errorTextColor!,
                                           width: borderRadiusOnFocus)),
                                   errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: errorTextColor,
+                                          color: errorTextColor!,
                                           width: borderRadiusOnFocus)),
-                                  labelText: AppIntl.of(context)
+                                  labelText: AppIntl.of(context)!
                                       .login_prompt_universal_code,
                                   labelStyle:
                                       const TextStyle(color: Colors.white54),
@@ -117,7 +117,7 @@ class _LoginViewState extends State<LoginView> {
                                   suffixIcon: Tooltip(
                                       key: tooltipkey,
                                       triggerMode: TooltipTriggerMode.manual,
-                                      message: AppIntl.of(context)
+                                      message: AppIntl.of(context)!
                                           .universal_code_example,
                                       preferBelow: true,
                                       child: IconButton(
@@ -150,13 +150,13 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 4),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).forgot_password,
+                                      AppIntl.of(context)!.forgot_password,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
                                     ),
                                     onTap: () {
-                                      _launchUrlService.launchInBrowser(
+                                      _launchUrlService!.launchInBrowser(
                                           Urls.signetsForgottenPassword,
                                           Theme.of(context).brightness);
                                     },
@@ -180,7 +180,7 @@ class _LoginViewState extends State<LoginView> {
                                               Fluttertoast.showToast(
                                                   msg: error);
                                             }
-                                            formKey.currentState.reset();
+                                            formKey.currentState!.reset();
                                           });
                                         },
                                   style: ButtonStyle(
@@ -193,7 +193,7 @@ class _LoginViewState extends State<LoginView> {
                                             vertical: 16)),
                                   ),
                                   child: Text(
-                                    AppIntl.of(context).login_action_sign_in,
+                                    AppIntl.of(context)!.login_action_sign_in,
                                     style: TextStyle(
                                         color: model.canSubmit
                                             ? submitTextColor
@@ -207,7 +207,7 @@ class _LoginViewState extends State<LoginView> {
                                   padding: const EdgeInsets.only(top: 24),
                                   child: InkWell(
                                     child: Text(
-                                      AppIntl.of(context).need_help_contact_us,
+                                      AppIntl.of(context)!.need_help_contact_us,
                                       style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: Colors.white),
@@ -229,7 +229,7 @@ class _LoginViewState extends State<LoginView> {
                       spacing: -20,
                       children: <Widget>[
                         Text(
-                          AppIntl.of(context).login_applets_logo,
+                          AppIntl.of(context)!.login_applets_logo,
                           style: const TextStyle(color: Colors.white),
                         ),
                         Image.asset(
@@ -252,22 +252,22 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  Color get errorTextColor =>
+  Color? get errorTextColor =>
       Utils.getColorByBrightness(context, Colors.amberAccent, Colors.redAccent);
 
-  Color get colorButton =>
+  Color? get colorButton =>
       Utils.getColorByBrightness(context, Colors.white, AppTheme.etsLightRed);
 
-  Color get submitTextColor =>
+  Color? get submitTextColor =>
       Utils.getColorByBrightness(context, AppTheme.etsLightRed, Colors.white);
 
   Future<void> sendEmail(LoginViewModel model) async {
     final clubEmail =
-        model.mailtoStr(AppInfo.email, AppIntl.of(context).email_subject);
-    final urlLaunchable = await _launchUrlService.canLaunch(clubEmail);
+        model.mailtoStr(AppInfo.email, AppIntl.of(context)!.email_subject);
+    final urlLaunchable = await _launchUrlService!.canLaunch(clubEmail);
 
     if (urlLaunchable) {
-      await _launchUrlService.launch(clubEmail);
+      await _launchUrlService!.launch(clubEmail);
     } else {
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
     }

@@ -9,14 +9,14 @@ import 'package:notredame/ui/utils/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GradeCircularProgress extends StatefulWidget {
-  final bool completed;
-  final String finalGrade;
-  final double studentGrade;
-  final double averageGrade;
+  final bool? completed;
+  final String? finalGrade;
+  final double? studentGrade;
+  final double? averageGrade;
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {Key key,
+      {Key? key,
       this.completed,
       this.finalGrade,
       this.studentGrade,
@@ -29,8 +29,8 @@ class GradeCircularProgress extends StatefulWidget {
 
 class _GradeCircularProgressState extends State<GradeCircularProgress>
     with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Color> animation;
+  late AnimationController _controller;
+  late Animation<Color?> animation;
 
   @override
   void initState() {
@@ -66,19 +66,19 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       radius: (100 * widget.ratio) / 2,
       lineWidth: 8.0 * widget.ratio,
       percent:
-          widget.completed ? getGradeInDecimals(widget.studentGrade ?? 0.0) : 0,
+          widget.completed! ? getGradeInDecimals(widget.studentGrade ?? 0.0) : 0,
       circularStrokeCap: CircularStrokeCap.round,
       center: CircularPercentIndicator(
         animation: true,
         animationDuration: 700,
         radius: (80 * widget.ratio) / 2,
         lineWidth: 8.0 * widget.ratio,
-        percent: widget.completed
+        percent: widget.completed!
             ? getGradeInDecimals(widget.averageGrade ?? 0.0)
             : 0,
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
-          getGrade(context),
+          getGrade(context)!,
           style: TextStyle(fontSize: 22 * widget.ratio),
         ),
         progressColor: Colors.red,
@@ -90,20 +90,20 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
   double getGradeInDecimals(double grade) =>
       (grade / 100) > 1.0 ? 1.0 : (grade / 100);
 
-  String getGrade(BuildContext context) {
+  String? getGrade(BuildContext context) {
     if (widget.finalGrade != null) {
       return widget.finalGrade;
     }
 
     if (widget.studentGrade != null) {
-      return AppIntl.of(context)
-          .grades_grade_in_percentage(widget.studentGrade.round());
+      return AppIntl.of(context)!
+          .grades_grade_in_percentage(widget.studentGrade!.round());
     }
 
-    return AppIntl.of(context).grades_not_available;
+    return AppIntl.of(context)!.grades_not_available;
   }
 
-  Color gradePercentageColor(double gradePercentage) {
+  Color? gradePercentageColor(double gradePercentage) {
     const double passingGrade = 50.0;
     const double minGoodGrade = 80.0;
     const double maxGrade = 100.0;

@@ -24,9 +24,9 @@ import 'package:notredame/ui/widgets/password_text_field.dart';
 import '../../helpers.dart';
 
 void main() {
-  AppIntl intl;
-  LaunchUrlServiceMock launchUrlService;
-  AnalyticsServiceMock analyticsService;
+  late AppIntl intl;
+  LaunchUrlServiceMock? launchUrlService;
+  AnalyticsServiceMock? analyticsService;
 
   group('LoginView - ', () {
     setUp(() async {
@@ -73,8 +73,8 @@ void main() {
 
       testWidgets('should open emails', (WidgetTester tester) async {
         const url = 'mailto:applets@ens.etsmtl.ca?subject=ÉTSMobile Problem';
-        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url);
-        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url);
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService!, url);
+        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService!, url);
 
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
@@ -85,17 +85,17 @@ void main() {
         // Rebuild the widget after the state has changed.
         await tester.pump();
 
-        verify(launchUrlService.canLaunch(url)).called(1);
-        verify(launchUrlService.launch(url)).called(1);
+        verify(launchUrlService!.canLaunch(url)).called(1);
+        verify(launchUrlService!.launch(url)).called(1);
         verifyNoMoreInteractions(launchUrlService);
       });
 
       testWidgets('cannot launch email on this platform',
           (WidgetTester tester) async {
         const url = 'mailto:applets@ens.etsmtl.ca?subject=ÉTSMobile Problem';
-        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService, url,
+        LaunchUrlServiceMock.stubCanLaunchUrl(launchUrlService!, url,
             toReturn: false);
-        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService, url,
+        LaunchUrlServiceMock.stubLaunchUrl(launchUrlService!, url,
             toReturn: false);
 
         await tester.pumpWidget(localizedWidget(child: LoginView()));
@@ -107,11 +107,11 @@ void main() {
         // Rebuild the widget after the state has changed.
         await tester.pumpAndSettle();
 
-        verify(launchUrlService.canLaunch(url)).called(1);
-        verifyNever(launchUrlService.launch(url));
+        verify(launchUrlService!.canLaunch(url)).called(1);
+        verifyNever(launchUrlService!.launch(url));
         verifyNoMoreInteractions(launchUrlService);
 
-        verify(analyticsService.logError(any, any)).called(1);
+        verify(analyticsService!.logError(any, any)).called(1);
         verifyNoMoreInteractions(analyticsService);
       });
     });

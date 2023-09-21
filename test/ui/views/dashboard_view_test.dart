@@ -29,10 +29,10 @@ import '../../mock/managers/settings_manager_mock.dart';
 import '../../mock/services/in_app_review_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
-  AppIntl intl;
-  InAppReviewServiceMock inAppReviewServiceMock;
+  late SettingsManager settingsManager;
+  late CourseRepository courseRepository;
+  late AppIntl intl;
+  late InAppReviewServiceMock inAppReviewServiceMock;
 
   // Activities for today
   final gen101 = CourseActivity(
@@ -481,7 +481,7 @@ void main() {
           of: find.byType(Dismissible).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl.card_applets_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -496,7 +496,7 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.card_applets_title);
+        expect(text.data, intl.card_applets_title);
       });
 
       testWidgets('ScheduleCard is dismissible and can be restored',
@@ -741,7 +741,7 @@ void main() {
           of: find.widgetWithText(Dismissible, intl.progress_bar_title).last,
           matching: find.byType(Text),
         ));
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl.progress_bar_title);
 
         // Tap the restoreCards button
         await tester.tap(find.byIcon(Icons.restore));
@@ -756,7 +756,7 @@ void main() {
         expect(find.byType(Dismissible), findsNWidgets(numberOfCards));
 
         // Check that the first card is now AboutUs
-        expect((text as Text).data, intl.progress_bar_title);
+        expect(text.data, intl.progress_bar_title);
       });
     });
 

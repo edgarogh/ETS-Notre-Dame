@@ -21,28 +21,28 @@ import 'package:notredame/locator.dart';
 class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";
 
-  final Logger _logger = locator<Logger>();
+  final Logger? _logger = locator<Logger>();
 
   /// Use to get the value associated to each settings key
-  final PreferencesService _preferencesService = locator<PreferencesService>();
+  final PreferencesService? _preferencesService = locator<PreferencesService>();
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
 
-  final RemoteConfigService _remoteConfigService =
+  final RemoteConfigService? _remoteConfigService =
       locator<RemoteConfigService>();
 
   /// current ThemeMode
-  ThemeMode _themeMode;
+  ThemeMode? _themeMode;
 
   /// current Locale
-  Locale _locale;
+  Locale? _locale;
 
   /// Get current time
   DateTime get dateTimeNow => DateTime.now();
 
   /// Get ThemeMode
-  ThemeMode get themeMode {
-    _preferencesService.getString(PreferencesFlag.theme).then((value) => {
+  ThemeMode? get themeMode {
+    _preferencesService!.getString(PreferencesFlag.theme).then((value) => {
           if (value != null)
             {
               _themeMode =
@@ -62,11 +62,11 @@ class SettingsManager with ChangeNotifier {
 
   /// Get Locale and Theme to init app with
   Future<void> fetchLanguageAndThemeMode() async {
-    final theme = await _preferencesService.getString(PreferencesFlag.theme);
+    final theme = await _preferencesService!.getString(PreferencesFlag.theme);
     if (theme != null) {
       _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
     }
-    final lang = await _preferencesService.getString(PreferencesFlag.locale);
+    final lang = await _preferencesService!.getString(PreferencesFlag.locale);
     if (lang != null) {
       _locale =
           AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
@@ -74,8 +74,8 @@ class SettingsManager with ChangeNotifier {
   }
 
   /// Get Locale
-  Locale get locale {
-    _preferencesService.getString(PreferencesFlag.locale).then((value) {
+  Locale? get locale {
+    _preferencesService!.getString(PreferencesFlag.locale).then((value) {
       if (value != null) {
         _locale =
             AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
@@ -98,41 +98,41 @@ class SettingsManager with ChangeNotifier {
     final Map<PreferencesFlag, int> dashboard = {};
 
     final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+        await _preferencesService!.getInt(PreferencesFlag.aboutUsCard) ??
             getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
     final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+        await _preferencesService!.getInt(PreferencesFlag.scheduleCard) ??
             getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
     final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+        await _preferencesService!.getInt(PreferencesFlag.progressBarCard) ??
             getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
     dashboard.putIfAbsent(
         PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
     final gradesCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.gradesCard) ??
+        await _preferencesService!.getInt(PreferencesFlag.gradesCard) ??
             getDefaultCardIndex(PreferencesFlag.gradesCard);
 
     dashboard.putIfAbsent(PreferencesFlag.gradesCard, () => gradesCardIndex);
 
-    _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
+    _logger!.i("$tag - getDashboard - Dashboard loaded: $dashboard");
 
     return dashboard;
   }
 
   /// Set ThemeMode
-  void setThemeMode(ThemeMode value) {
-    _preferencesService.setString(PreferencesFlag.theme, value.toString());
+  void setThemeMode(ThemeMode? value) {
+    _preferencesService!.setString(PreferencesFlag.theme, value.toString());
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.theme)}",
         EnumToString.convertToString(value));
     _themeMode = value;
@@ -142,12 +142,12 @@ class SettingsManager with ChangeNotifier {
   /// Set Locale
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
-    _preferencesService.setString(PreferencesFlag.locale, _locale.languageCode);
+    _preferencesService!.setString(PreferencesFlag.locale, _locale!.languageCode);
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(PreferencesFlag.locale)}",
-        _locale.languageCode);
-    _locale = Locale(_locale.languageCode);
+        _locale!.languageCode);
+    _locale = Locale(_locale!.languageCode);
     notifyListeners();
   }
 
@@ -155,49 +155,49 @@ class SettingsManager with ChangeNotifier {
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
 
-    final calendarFormat = await _preferencesService
+    final calendarFormat = await _preferencesService!
         .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null
             ? CalendarFormat.week
-            : EnumToString.fromString(CalendarFormat.values, value));
+            : EnumToString.fromString(CalendarFormat.values, value)!);
     settings.putIfAbsent(
         PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
-    final startingWeekDay = await _preferencesService
+    final startingWeekDay = await _preferencesService!
         .getString(PreferencesFlag.scheduleStartWeekday)
         .then((value) => value == null
             ? StartingDayOfWeek.monday
-            : EnumToString.fromString(StartingDayOfWeek.values, value));
+            : EnumToString.fromString(StartingDayOfWeek.values, value)!);
     settings.putIfAbsent(
         PreferencesFlag.scheduleStartWeekday, () => startingWeekDay);
 
-    final otherWeekDay = await _preferencesService
+    final otherWeekDay = await _preferencesService!
         .getString(PreferencesFlag.scheduleOtherWeekday)
         .then((value) => value == null
             ? WeekDays.monday
-            : EnumToString.fromString(WeekDays.values, value));
+            : EnumToString.fromString(WeekDays.values, value)!);
     settings.putIfAbsent(
         PreferencesFlag.scheduleOtherWeekday, () => otherWeekDay);
 
-    final showTodayBtn = await _preferencesService
+    final showTodayBtn = await _preferencesService!
             .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
         true;
     settings.putIfAbsent(
         PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
 
     final scheduleListView =
-        await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
+        await _preferencesService!.getBool(PreferencesFlag.scheduleListView) ??
             calendarViewSetting;
     settings.putIfAbsent(
         PreferencesFlag.scheduleListView, () => scheduleListView);
 
-    final showWeekEventsBtn = await _preferencesService
+    final showWeekEventsBtn = await _preferencesService!
             .getBool(PreferencesFlag.scheduleShowWeekEvents) ??
         true;
     settings.putIfAbsent(
         PreferencesFlag.scheduleShowWeekEvents, () => showWeekEventsBtn);
 
-    _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
+    _logger!.i("$tag - getScheduleSettings - Settings loaded: $settings");
 
     return settings;
   }
@@ -205,71 +205,71 @@ class SettingsManager with ChangeNotifier {
   /// Add/update the value of [flag]
   Future<bool> setString(PreferencesFlag flag, String value) async {
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value);
 
     if (value == null) {
-      return _preferencesService.removePreferencesFlag(flag);
+      return _preferencesService!.removePreferencesFlag(flag);
     }
-    return _preferencesService.setString(flag, value);
+    return _preferencesService!.setString(flag, value);
   }
 
   /// Add/update the value of [flag]
   Future<bool> setDynamicString(
-      PreferencesFlag flag, String key, String value) async {
+      PreferencesFlag flag, String key, String? value) async {
     if (value == null) {
-      return _preferencesService.removeDynamicPreferencesFlag(flag, key);
+      return _preferencesService!.removeDynamicPreferencesFlag(flag, key);
     }
 
     // Log the event
-    _analyticsService.logEvent("${tag}_${flag.toString()}", value);
+    _analyticsService!.logEvent("${tag}_${flag.toString()}", value);
 
-    return _preferencesService.setDynamicString(flag, key, value);
+    return _preferencesService!.setDynamicString(flag, key, value);
   }
 
   /// Add/update the value of [flag]
   Future<bool> setInt(PreferencesFlag flag, int value) async {
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
-    return _preferencesService.setInt(flag, value);
+    return _preferencesService!.setInt(flag, value);
   }
 
   /// Get the value of [flag]
-  Future<String> getString(PreferencesFlag flag) async {
+  Future<String?> getString(PreferencesFlag flag) async {
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getString');
-    return _preferencesService.getString(flag);
+    return _preferencesService!.getString(flag);
   }
 
   /// Get the value of [flag]
-  Future<String> getDynamicString(PreferencesFlag flag, String key) async {
+  Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
     // Log the event
-    _analyticsService.logEvent("${tag}_${flag.toString()}", 'getString');
-    return _preferencesService.getDynamicString(flag, key);
+    _analyticsService!.logEvent("${tag}_${flag.toString()}", 'getString');
+    return _preferencesService!.getDynamicString(flag, key);
   }
 
   /// Add/update the value of [flag]
   // ignore: avoid_positional_boolean_parameters
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", value.toString());
-    return _preferencesService.setBool(flag, value: value);
+    return _preferencesService!.setBool(flag, value: value);
   }
 
   /// Get the value of [flag]
-  Future<bool> getBool(PreferencesFlag flag) async {
+  Future<bool?> getBool(PreferencesFlag flag) async {
     // Log the event
-    _analyticsService.logEvent(
+    _analyticsService!.logEvent(
         "${tag}_${EnumToString.convertToString(flag)}", 'getBool');
-    return _preferencesService.getBool(flag);
+    return _preferencesService!.getBool(flag);
   }
 
   /// Get the default index of each card
   int getDefaultCardIndex(PreferencesFlag flag) =>
       flag.index - PreferencesFlag.aboutUsCard.index;
 
-  bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
+  bool get calendarViewSetting => _remoteConfigService!.scheduleListViewDefault;
 }

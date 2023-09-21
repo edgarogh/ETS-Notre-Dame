@@ -18,14 +18,14 @@ import 'package:notredame/locator.dart';
 class AppWidgetService {
   static const String tag = "AppWidgetService";
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
 
-  Future<bool> init() async {
+  Future<bool?> init() async {
     return HomeWidget.setAppGroupId('group.ca.etsmtl.applets.ETSMobile');
   }
 
   /// Update session progress widget with provided data
-  Future<bool> sendProgressData(ProgressWidgetData progressWidgetData) async {
+  Future<bool?> sendProgressData(ProgressWidgetData progressWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<double>(
           '${ProgressWidgetData.keyPrefix}progress',
@@ -41,24 +41,24 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${ProgressWidgetData.keyPrefix}title', progressWidgetData.title);
     } on PlatformException {
-      _analyticsService.logError(
+      _analyticsService!.logError(
           tag, 'Error sending data to session progress widget.');
       rethrow;
     }
   }
 
   /// Update grades widget with provided data
-  Future<bool> sendGradesData(GradesWidgetData gradeWidgetData) async {
+  Future<bool?> sendGradesData(GradesWidgetData gradeWidgetData) async {
     try {
       await HomeWidget.saveWidgetData<List<String>>(
           '${GradesWidgetData.keyPrefix}courseAcronyms',
           gradeWidgetData.courseAcronyms);
-      await HomeWidget.saveWidgetData<List<String>>(
+      await HomeWidget.saveWidgetData<List<String?>>(
           '${GradesWidgetData.keyPrefix}grades', gradeWidgetData.grades);
       return await HomeWidget.saveWidgetData<String>(
           '${GradesWidgetData.keyPrefix}title', gradeWidgetData.title);
     } on PlatformException {
-      _analyticsService.logError(tag, 'Error sending data to grades widget.');
+      _analyticsService!.logError(tag, 'Error sending data to grades widget.');
       rethrow;
     }
   }
@@ -66,12 +66,12 @@ class AppWidgetService {
   /// Tell the system to update the given widget type
   Future<void> updateWidget(WidgetType type) async {
     try {
-      return HomeWidget.updateWidget(
+      HomeWidget.updateWidget(
           name: type.androidName,
           androidName: type.androidName,
           iOSName: type.iOSname);
     } on PlatformException {
-      _analyticsService.logError(tag, 'Error updating widget ${type.iOSname}.');
+      _analyticsService!.logError(tag, 'Error updating widget ${type.iOSname}.');
     }
   }
 }

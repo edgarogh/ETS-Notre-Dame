@@ -33,40 +33,40 @@ class UserRepository {
   @visibleForTesting
   static const String programsCacheKey = "programsCache";
 
-  final Logger _logger = locator<Logger>();
+  final Logger? _logger = locator<Logger>();
 
   /// Will be used to report event and error.
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
 
   /// Used to verify if the user has connectivity
-  final NetworkingService _networkingService = locator<NetworkingService>();
+  final NetworkingService? _networkingService = locator<NetworkingService>();
 
   /// Secure storage manager to access and update the cache.
-  final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
+  final FlutterSecureStorage? _secureStorage = locator<FlutterSecureStorage>();
 
   /// Cache manager to access and update the cache.
-  final CacheManager _cacheManager = locator<CacheManager>();
+  final CacheManager? _cacheManager = locator<CacheManager>();
 
   /// Used to access the Signets API
-  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+  final SignetsAPIClient? _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Used to access the MonÉTS API
-  final MonETSAPIClient _monEtsApiClient = locator<MonETSAPIClient>();
+  final MonETSAPIClient? _monEtsApiClient = locator<MonETSAPIClient>();
 
   /// Mon ETS user for the student
-  MonETSUser _monETSUser;
+  MonETSUser? _monETSUser;
 
-  MonETSUser get monETSUser => _monETSUser;
+  MonETSUser? get monETSUser => _monETSUser;
 
   /// Information for the student profile
-  ProfileStudent _info;
+  ProfileStudent? _info;
 
-  ProfileStudent get info => _info;
+  ProfileStudent? get info => _info;
 
   /// List of the programs for the student
-  List<Program> _programs;
+  List<Program>? _programs;
 
-  List<Program> get programs => _programs;
+  List<Program>? get programs => _programs;
 
   /// Authenticate the user using the [username] (for a student should be the
   /// universal code like AAXXXXX).
@@ -74,57 +74,57 @@ class UserRepository {
   /// will be saved in the secure storage of the device to authorize a silent
   /// authentication next time.
   Future<bool> authenticate(
-      {@required String username,
-      @required String password,
+      {required String username,
+      required String password,
       bool isSilent = false}) async {
     try {
-      _monETSUser = await _monEtsApiClient.authenticate(
+      _monETSUser = await _monEtsApiClient!.authenticate(
           username: username, password: password);
     } on Exception catch (e, stacktrace) {
       // Try login in from signets if monETS failed
       if (e is HttpException) {
         try {
           // ignore: deprecated_member_use
-          if (await _signetsApiClient.authenticate(
+          if (await _signetsApiClient!.authenticate(
               username: username, password: password)) {
             _monETSUser = MonETSUser(
                 domain: MonETSUser.mainDomain,
                 typeUsagerId: MonETSUser.studentRoleId,
                 username: username);
           } else {
-            _analyticsService.logError(
+            _analyticsService!.logError(
                 tag, "Authenticate - ${e.toString()}", e, stacktrace);
             return false;
           }
         } on Exception catch (e, stacktrace) {
-          _analyticsService.logError(
+          _analyticsService!.logError(
               tag, "Authenticate - ${e.toString()}", e, stacktrace);
           return false;
         }
       } else {
-        _analyticsService.logError(
+        _analyticsService!.logError(
             tag, "Authenticate - ${e.toString()}", e, stacktrace);
         return false;
       }
     }
 
-    await _analyticsService.setUserProperties(
-        userId: username, domain: _monETSUser.domain);
+    await _analyticsService!.setUserProperties(
+        userId: username, domain: _monETSUser!.domain);
 
     // Save the credentials in the secure storage
     if (!isSilent) {
       try {
-        await _secureStorage.write(
+        await _secureStorage!.write(
             key: usernameSecureKey,
             value: username,
             iOptions: _getIOSOptions());
-        await _secureStorage.write(
+        await _secureStorage!.write(
             key: passwordSecureKey,
             value: password,
             iOptions: _getIOSOptions());
       } on PlatformException catch (e, stacktrace) {
-        await _secureStorage.deleteAll();
-        _analyticsService.logError(
+        await _secureStorage!.deleteAll();
+        _analyticsService!.logError(
             tag,
             "Authenticate - PlatformException - ${e.toString()}",
             e,
@@ -144,17 +144,17 @@ class UserRepository {
   /// return false
   Future<bool> silentAuthenticate() async {
     try {
-      final username = await _secureStorage.read(
+      final username = await _secureStorage!.read(
           key: usernameSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final password = await _secureStorage.read(
-            key: passwordSecureKey, iOptions: _getIOSOptions());
+        final password = await (_secureStorage!.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions()) as FutureOr<String>);
         return await authenticate(
             username: username, password: password, isSilent: true);
       }
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(
+      await _secureStorage!.deleteAll();
+      _analyticsService!.logError(
           tag,
           "SilentAuthenticate - PlatformException(Handled) - ${e.toString()}",
           e,
@@ -169,13 +169,13 @@ class UserRepository {
 
     // Delete the credentials from the secure storage
     try {
-      await _secureStorage.delete(
+      await _secureStorage!.delete(
           key: usernameSecureKey, iOptions: _getIOSOptions());
-      await _secureStorage.delete(
+      await _secureStorage!.delete(
           key: passwordSecureKey, iOptions: _getIOSOptions());
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll(iOptions: _getIOSOptions());
-      _analyticsService.logError(tag,
+      await _secureStorage!.deleteAll(iOptions: _getIOSOptions());
+      _analyticsService!.logError(tag,
           "Authenticate - PlatformException - ${e.toString()}", e, stacktrace);
       return false;
     }
@@ -184,9 +184,9 @@ class UserRepository {
 
   /// Retrieve and get the password for the current authenticated user.
   /// WARNING This isn't a good practice but currently the password has to be sent in clear.
-  Future<String> getPassword() async {
+  Future<String?> getPassword() async {
     if (_monETSUser == null) {
-      _analyticsService.logEvent(
+      _analyticsService!.logEvent(
           tag, "Trying to acquire password but not authenticated");
       final result = await silentAuthenticate();
 
@@ -195,12 +195,12 @@ class UserRepository {
       }
     }
     try {
-      final password = await _secureStorage.read(
+      final password = await _secureStorage!.read(
           key: passwordSecureKey, iOptions: _getIOSOptions());
       return password;
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(tag,
+      await _secureStorage!.deleteAll();
+      _analyticsService!.logError(tag,
           "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
@@ -209,9 +209,9 @@ class UserRepository {
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<List<Program>> getPrograms({bool fromCacheOnly = false}) async {
+  Future<List<Program>?> getPrograms({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService.hasConnectivity())) {
+    if (!(await _networkingService!.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -222,17 +222,17 @@ class UserRepository {
         _programs = [];
 
         final List programsCached =
-            jsonDecode(await _cacheManager.get(programsCacheKey))
+            jsonDecode(await _cacheManager!.get(programsCacheKey))
                 as List<dynamic>;
 
         // Build list of programs loaded from the cache.
         _programs = programsCached
             .map((e) => Program.fromJson(e as Map<String, dynamic>))
             .toList();
-        _logger.d(
-            "$tag - getPrograms: ${_programs.length} programs loaded from cache.");
+        _logger!.d(
+            "$tag - getPrograms: ${_programs!.length} programs loaded from cache.");
       } on CacheException catch (_) {
-        _logger.e(
+        _logger!.e(
             "$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
     }
@@ -243,21 +243,21 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      final String password = await (getPassword() as FutureOr<String>);
 
-      _programs = await _signetsApiClient.getPrograms(
-          username: _monETSUser.universalCode, password: password);
+      _programs = await _signetsApiClient!.getPrograms(
+          username: _monETSUser!.universalCode, password: password);
 
-      _logger.d("$tag - getPrograms: ${_programs.length} programs fetched.");
+      _logger!.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
       // Update cache
-      _cacheManager.update(programsCacheKey, jsonEncode(_programs));
+      _cacheManager!.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
-      _logger.e(
+      _logger!.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs;
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
+      _analyticsService!.logError(
           tag, "Exception raised during getPrograms: $e", e, stacktrace);
       rethrow;
     }
@@ -268,9 +268,9 @@ class UserRepository {
   /// Get the profile information.
   /// The information from the [CacheManager] is loaded than updated with the results
   /// from the [SignetsApi].
-  Future<ProfileStudent> getInfo({bool fromCacheOnly = false}) async {
+  Future<ProfileStudent?> getInfo({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService.hasConnectivity())) {
+    if (!(await _networkingService!.hasConnectivity())) {
       // ignore: parameter_assignments
       fromCacheOnly = true;
     }
@@ -278,14 +278,14 @@ class UserRepository {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
+        final infoCached = jsonDecode(await _cacheManager!.get(infoCacheKey))
             as Map<String, dynamic>;
 
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
-        _logger.d("$tag - getInfo: $_info info loaded from cache.");
+        _logger!.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (_) {
-        _logger.e(
+        _logger!.e(
             "$tag - getInfo: exception raised while trying to load the info from cache.");
       }
     }
@@ -296,25 +296,25 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      final String password = await (getPassword() as FutureOr<String>);
 
-      final fetchedInfo = await _signetsApiClient.getStudentInfo(
-          username: _monETSUser.universalCode, password: password);
+      final fetchedInfo = await _signetsApiClient!.getStudentInfo(
+          username: _monETSUser!.universalCode, password: password);
 
-      _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
+      _logger!.d("$tag - getInfo: $fetchedInfo info fetched.");
 
       if (_info != fetchedInfo) {
         _info = fetchedInfo ?? _info;
 
         // Update cache
-        _cacheManager.update(infoCacheKey, jsonEncode(_info));
+        _cacheManager!.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
-      _logger.e(
+      _logger!.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
+      _analyticsService!.logError(
           tag, "Exception raised during getInfo: $e", e, stacktrace);
       rethrow;
     }
@@ -325,16 +325,16 @@ class UserRepository {
   /// Check whether the user was previously authenticated.
   Future<bool> wasPreviouslyLoggedIn() async {
     try {
-      final String username = await _secureStorage.read(
+      final String? username = await _secureStorage!.read(
           key: passwordSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final String password = await _secureStorage.read(
-            key: passwordSecureKey, iOptions: _getIOSOptions());
+        final String password = await (_secureStorage!.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions()) as FutureOr<String>);
         return password.isNotEmpty;
       }
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(tag,
+      await _secureStorage!.deleteAll();
+      _analyticsService!.logError(tag,
           "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
     }
     return false;
