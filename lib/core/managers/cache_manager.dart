@@ -24,7 +24,7 @@ class CacheManager {
         repo: lib.CacheObjectProvider(databaseName: key)),
   );
 
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Get from the cache the value associated with [key].
   /// Throw a [CacheException] if the [key] doesn't exist.

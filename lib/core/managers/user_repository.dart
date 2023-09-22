@@ -1,5 +1,6 @@
 // FLUTTER / DART / THIRD-PARTIES
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,25 +34,25 @@ class UserRepository {
   @visibleForTesting
   static const String programsCacheKey = "programsCache";
 
-  final Logger? _logger = locator<Logger>();
+  late final Logger _logger = locator<Logger>();
 
   /// Will be used to report event and error.
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Used to verify if the user has connectivity
-  final NetworkingService? _networkingService = locator<NetworkingService>();
+  late final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Secure storage manager to access and update the cache.
-  final FlutterSecureStorage? _secureStorage = locator<FlutterSecureStorage>();
+  late final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
 
   /// Cache manager to access and update the cache.
-  final CacheManager? _cacheManager = locator<CacheManager>();
+  late final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Used to access the Signets API
-  final SignetsAPIClient? _signetsApiClient = locator<SignetsAPIClient>();
+  late final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Used to access the MonÉTS API
-  final MonETSAPIClient? _monEtsApiClient = locator<MonETSAPIClient>();
+  late final MonETSAPIClient _monEtsApiClient = locator<MonETSAPIClient>();
 
   /// Mon ETS user for the student
   MonETSUser? _monETSUser;
@@ -147,8 +148,11 @@ class UserRepository {
       final username = await _secureStorage!.read(
           key: usernameSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final password = await (_secureStorage!.read(
-            key: passwordSecureKey, iOptions: _getIOSOptions()) as FutureOr<String>);
+        final password = await _secureStorage!.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions());
+            if(password == null) {
+              return false;
+            }
         return await authenticate(
             username: username, password: password, isSilent: true);
       }
@@ -325,12 +329,12 @@ class UserRepository {
   /// Check whether the user was previously authenticated.
   Future<bool> wasPreviouslyLoggedIn() async {
     try {
-      final String? username = await _secureStorage!.read(
+      final String? username = await _secureStorage.read(
           key: passwordSecureKey, iOptions: _getIOSOptions());
       if (username != null) {
-        final String password = await (_secureStorage!.read(
-            key: passwordSecureKey, iOptions: _getIOSOptions()) as FutureOr<String>);
-        return password.isNotEmpty;
+        final String? password = await _secureStorage.read(
+            key: passwordSecureKey, iOptions: _getIOSOptions());
+        return password != null && password.isNotEmpty;
       }
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage!.deleteAll();

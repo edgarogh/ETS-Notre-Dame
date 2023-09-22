@@ -1,6 +1,3 @@
-// FLUTTER / DART / THIRD-PARTIES
-import 'package:flutter/material.dart';
-
 // MODELS
 import 'package:notredame/core/models/discovery.dart';
 

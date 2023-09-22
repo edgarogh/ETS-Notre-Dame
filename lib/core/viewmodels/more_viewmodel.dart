@@ -62,7 +62,9 @@ class MoreViewModel extends FutureViewModel {
 
     await PackageInfo.fromPlatform()
         .then((value) => _appVersion = value.version)
-        .onError((dynamic error, stackTrace) => null);
+        .onError((dynamic error, stackTrace) => 
+          _appVersion = '0.0.0'
+        );
 
     setBusy(false);
     return true;

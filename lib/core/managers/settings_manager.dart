@@ -21,14 +21,14 @@ import 'package:notredame/locator.dart';
 class SettingsManager with ChangeNotifier {
   static const String tag = "SettingsManager";
 
-  final Logger? _logger = locator<Logger>();
+  late final Logger _logger = locator<Logger>();
 
   /// Use to get the value associated to each settings key
-  final PreferencesService? _preferencesService = locator<PreferencesService>();
+  late final PreferencesService _preferencesService = locator<PreferencesService>();
 
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final RemoteConfigService? _remoteConfigService =
+  late final RemoteConfigService _remoteConfigService =
       locator<RemoteConfigService>();
 
   /// current ThemeMode

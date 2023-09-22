@@ -33,7 +33,7 @@ class RemoteConfigService {
   }
 
   Future<void> fetch() async {
-    final AnalyticsService? analyticsService = locator<AnalyticsService>();
+    late final AnalyticsService analyticsService = locator<AnalyticsService>();
     try {
       await _remoteConfig.fetch();
       await _remoteConfig.fetchAndActivate();

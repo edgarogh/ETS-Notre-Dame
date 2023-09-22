@@ -1,4 +1,5 @@
 // FLUTTER / DART / THIRD-PARTIES
+import 'package:enum_to_string/camel_case_to_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -111,7 +112,7 @@ void main() {
         verifyNever(launchUrlService!.launch(url));
         verifyNoMoreInteractions(launchUrlService);
 
-        verify(analyticsService!.logError(any, any)).called(1);
+        verify(analyticsService!.logError(argThat(contains("test")), argThat(contains("test")))).called(1);
         verifyNoMoreInteractions(analyticsService);
       });
     });

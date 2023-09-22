@@ -38,22 +38,22 @@ class CourseRepository {
   @visibleForTesting
   static const String coursesCacheKey = "coursesCache";
 
-  final Logger? _logger = locator<Logger>();
+  late final Logger _logger = locator<Logger>();
 
   /// Will be used to report event and error.
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// To access the user currently logged
-  final UserRepository? _userRepository = locator<UserRepository>();
+  late final UserRepository _userRepository = locator<UserRepository>();
 
   /// Cache manager to access and update the cache.
-  final CacheManager? _cacheManager = locator<CacheManager>();
+  late final CacheManager _cacheManager = locator<CacheManager>();
 
   /// Used to verify if the user has connectivity
-  final NetworkingService? _networkingService = locator<NetworkingService>();
+  late final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Used to access the Signets API
-  final SignetsAPIClient? _signetsApiClient = locator<SignetsAPIClient>();
+  late final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Student list of courses
   List<Course?>? _courses;
@@ -85,7 +85,7 @@ class CourseRepository {
             ?.where((session) =>
                 session.endDate.isAfter(now) ||
                 session.endDate.isAtSameMomentAs(now))
-            ?.toList() ??
+            .toList() ??
         [];
   }
 

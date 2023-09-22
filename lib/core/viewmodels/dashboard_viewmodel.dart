@@ -238,7 +238,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
       await _appWidgetService!.sendGradesData(GradesWidgetData(
           title:
-              "${_appIntl!.grades_title} - ${_courseRepository!.activeSessions.first.shortName ?? _appIntl!.session_without}",
+              "${_appIntl!.grades_title} - ${_courseRepository?.activeSessions.first.shortName ?? _appIntl!.session_without}",
           courseAcronyms: acronyms,
           grades: grades));
       await _appWidgetService!.updateWidget(WidgetType.grades);
@@ -447,7 +447,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Get the list of courses for the Grades card.
   // ignore: missing_return
-  Future<List<Course?>> futureToRunGrades() async {
+  Future<void> futureToRunGrades() async {
     if (!busy(courses)) {
       setBusyForObject(courses, true);
       if (_courseRepository!.sessions == null ||
@@ -459,11 +459,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       // Determine current sessions
       if (_courseRepository!.activeSessions.isEmpty) {
         setBusyForObject(courses, false);
-        return [];
       }
       final currentSession = _courseRepository!.activeSessions.first;
 
-      return _courseRepository!.getCourses(fromCacheOnly: true).then(
+      _courseRepository!.getCourses(fromCacheOnly: true).then(
           (coursesCached) {
         courses.clear();
         for (final Course? course in coursesCached!) {
