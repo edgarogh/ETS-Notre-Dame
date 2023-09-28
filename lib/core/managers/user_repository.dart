@@ -190,7 +190,7 @@ class UserRepository {
   /// WARNING This isn't a good practice but currently the password has to be sent in clear.
   Future<String?> getPassword() async {
     if (_monETSUser == null) {
-      _analyticsService!.logEvent(
+      _analyticsService.logEvent(
           tag, "Trying to acquire password but not authenticated");
       final result = await silentAuthenticate();
 
@@ -199,12 +199,12 @@ class UserRepository {
       }
     }
     try {
-      final password = await _secureStorage!.read(
+      final password = await _secureStorage.read(
           key: passwordSecureKey, iOptions: _getIOSOptions());
       return password;
     } on PlatformException catch (e, stacktrace) {
-      await _secureStorage!.deleteAll();
-      _analyticsService!.logError(tag,
+      await _secureStorage.deleteAll();
+      _analyticsService.logError(tag,
           "getPassword - PlatformException - ${e.toString()}", e, stacktrace);
       throw const ApiException(prefix: tag, message: "Not authenticated");
     }
@@ -247,21 +247,24 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String password = await (getPassword() as FutureOr<String>);
+      final String? password = await getPassword();
 
-      _programs = await _signetsApiClient!.getPrograms(
+      if(password != null) {
+        _programs = await _signetsApiClient.getPrograms(
           username: _monETSUser!.universalCode, password: password);
 
-      _logger!.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
+        _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
+      }
+      
 
       // Update cache
-      _cacheManager!.update(programsCacheKey, jsonEncode(_programs));
+      _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
-      _logger!.e(
+      _logger.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs;
     } on Exception catch (e, stacktrace) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "Exception raised during getPrograms: $e", e, stacktrace);
       rethrow;
     }
@@ -300,25 +303,28 @@ class UserRepository {
 
     try {
       // getPassword will try to authenticate the user if not authenticated.
-      final String password = await (getPassword() as FutureOr<String>);
+      final String? password = await getPassword();
 
-      final fetchedInfo = await _signetsApiClient!.getStudentInfo(
-          username: _monETSUser!.universalCode, password: password);
+      if(password != null) {
+        final fetchedInfo = await _signetsApiClient.getStudentInfo(
+            username: _monETSUser!.universalCode, password: password);
 
-      _logger!.d("$tag - getInfo: $fetchedInfo info fetched.");
+        _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
-      if (_info != fetchedInfo) {
-        _info = fetchedInfo ?? _info;
+        if (_info != fetchedInfo) {
+          _info = fetchedInfo;
 
-        // Update cache
-        _cacheManager!.update(infoCacheKey, jsonEncode(_info));
+          // Update cache
+          _cacheManager.update(infoCacheKey, jsonEncode(_info));
+        }
       }
+
     } on CacheException catch (_) {
-      _logger!.e(
+      _logger.e(
           "$tag - getInfo: exception raised while trying to update the cache.");
       return _info;
     } on Exception catch (e, stacktrace) {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, "Exception raised during getInfo: $e", e, stacktrace);
       rethrow;
     }

@@ -25,7 +25,7 @@ import 'package:notredame/locator.dart';
 
 class GradesDetailsViewModel extends FutureViewModel<Course?> {
   /// Used to get the courses of the student
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  late final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
   final AppIntl? _appIntl;
@@ -38,18 +38,19 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
 
   @override
   Future<Course?> futureToRun() async {
+    if(course == null) {
+      return null;
+    }
     setBusyForObject(course, true);
 
     // ignore: return_type_invalid_for_catch_error
-    await _courseRepository!
-        .getCourseSummary(course)
+    await _courseRepository
+        .getCourseSummary(course!)
         // ignore: return_type_invalid_for_catch_error
         .catchError(onError)
-        ?.then((value) {
-      if (value != null) {
-        course = value;
-      }
-    })?.whenComplete(() {
+        .then((value) {
+      course = value;
+    }).whenComplete(() {
       setBusyForObject(course, false);
     });
 
@@ -67,12 +68,13 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
   }
 
   Future<bool> refresh() async {
+    if(course == null) {
+      return false;
+    }
     try {
       setBusyForObject(course, true);
-      await _courseRepository!.getCourseSummary(course)?.then((value) {
-        if (value != null) {
-          course = value;
-        }
+      await _courseRepository.getCourseSummary(course!).then((value) {
+        course = value;
       });
       notifyListeners();
       setBusyForObject(course, false);

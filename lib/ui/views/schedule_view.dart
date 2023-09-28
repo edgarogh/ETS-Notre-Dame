@@ -348,7 +348,7 @@ class _ScheduleViewState extends State<ScheduleView>
           return TableCalendar(
             startingDayOfWeek:
                 model.settings[PreferencesFlag.scheduleStartWeekday]
-                    as StartingDayOfWeek,
+                    as StartingDayOfWeek? ?? StartingDayOfWeek.sunday,
             locale: model.locale!.toLanguageTag(),
             selectedDayPredicate: (day) {
               return isSameDay(model.selectedDate, day);
