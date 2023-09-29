@@ -121,14 +121,13 @@ class CourseRepository {
       rethrow;
     }
 
-    // Remove all the activities that are in the actives sessions.
     DateTime activeSessionStartDate = DateTime.now();
     for (final element in activeSessions) {
       if (element.startDate.isBefore(activeSessionStartDate)) {
         activeSessionStartDate = element.startDate;
       }
     }
-    _coursesActivities!.removeWhere(
+    _coursesActivities?.removeWhere(
         (element) => element.startDateTime.isAfter(activeSessionStartDate));
 
     // Update the list of activities to avoid duplicate activities

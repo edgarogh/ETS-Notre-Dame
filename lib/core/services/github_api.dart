@@ -61,8 +61,8 @@ class GithubApi {
                 branch: 'main'))
         .catchError((error) {
       // ignore: avoid_dynamic_calls
-      _logger!.e("uploadFileToGithub error: ${error.message}");
-      _analyticsService!.logError(
+      _logger.e("uploadFileToGithub error: ${error.message}");
+      _analyticsService.logError(
           tag,
           // ignore: avoid_dynamic_calls
           "uploadFileToGithub: ${error.message}",
@@ -88,7 +88,7 @@ class GithubApi {
                     "```$feedbackText```\n\n"
                     "**Screenshot** \n"
                     "![screenshot](https://github.com/$_repositoryReportSlug/blob/main/$fileName?raw=true)\n\n"
-                    "${await _internalInfoService!.getDeviceInfoForErrorReporting()}"
+                    "${await _internalInfoService.getDeviceInfoForErrorReporting()}"
                     "- **Email:** ${email ?? 'Not provided'} \n",
                 labels: [
                   feedbackType,
@@ -96,8 +96,8 @@ class GithubApi {
                 ]))
         .catchError((error) {
       // ignore: avoid_dynamic_calls
-      _logger!.e("createGithubIssue error: ${error.message}");
-      _analyticsService!.logError(
+      _logger.e("createGithubIssue error: ${error.message}");
+      _analyticsService.logError(
           tag,
           // ignore: avoid_dynamic_calls
           "createGithubIssue: ${error.message}",
@@ -113,8 +113,8 @@ class GithubApi {
           .get(RepositorySlug.full(_repositorySlug), numbers[i])
           .catchError((error) {
         // ignore: avoid_dynamic_calls
-        _logger!.e("fetchIssuesByNumbers error: ${error.message}");
-        _analyticsService!.logError(
+        _logger.e("fetchIssuesByNumbers error: ${error.message}");
+        _analyticsService.logError(
             tag,
             // ignore: avoid_dynamic_calls
             "fetchIssuesByNumbers: ${error.message}",

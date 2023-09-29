@@ -47,8 +47,8 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView>
     with TickerProviderStateMixin {
   Text? progressBarText;
-  final NavigationService? _navigationService = locator<NavigationService>();
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final NavigationService _navigationService = locator<NavigationService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "DashboardView";
 
   @override
@@ -64,7 +64,7 @@ class _DashboardViewState extends State<DashboardView>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
@@ -154,7 +154,7 @@ class _DashboardViewState extends State<DashboardView>
                   child: Wrap(spacing: 15.0, children: [
                     IconButton(
                       onPressed: () {
-                        _analyticsService!.logEvent(tag, "Facebook clicked");
+                        _analyticsService.logEvent(tag, "Facebook clicked");
                         Utils.launchURL(Urls.clubFacebook, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -164,7 +164,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService!.logEvent(tag, "Github clicked");
+                        _analyticsService.logEvent(tag, "Github clicked");
                         Utils.launchURL(Urls.clubGithub, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -174,7 +174,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService!.logEvent(tag, "Email clicked");
+                        _analyticsService.logEvent(tag, "Email clicked");
                         Utils.launchURL(Urls.clubEmail, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -184,7 +184,7 @@ class _DashboardViewState extends State<DashboardView>
                     ),
                     IconButton(
                       onPressed: () {
-                        _analyticsService!.logEvent(tag, "Discord clicked");
+                        _analyticsService.logEvent(tag, "Discord clicked");
                         Utils.launchURL(Urls.clubDiscord, AppIntl.of(context));
                       },
                       icon: const FaIcon(
@@ -314,7 +314,7 @@ class _DashboardViewState extends State<DashboardView>
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: GestureDetector(
-                  onTap: () => _navigationService!
+                  onTap: () => _navigationService
                       .pushNamedAndRemoveUntil(RouterPaths.schedule),
                   child:
                       Text(title, style: Theme.of(context).textTheme.headline6),
@@ -365,7 +365,7 @@ class _DashboardViewState extends State<DashboardView>
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                   child: GestureDetector(
-                    onTap: () => _navigationService!
+                    onTap: () => _navigationService
                         .pushNamedAndRemoveUntil(RouterPaths.student),
                     child: Text(AppIntl.of(context)!.grades_title,
                         style: Theme.of(context).textTheme.headline6),

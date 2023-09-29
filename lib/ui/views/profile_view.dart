@@ -29,19 +29,19 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
   void initState() {
     super.initState();
 
-    _analyticsService!.logEvent("ProfileView", "Opened");
+    _analyticsService.logEvent("ProfileView", "Opened");
   }
 
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<ProfileViewModel>.reactive(
-        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => ProfileViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),

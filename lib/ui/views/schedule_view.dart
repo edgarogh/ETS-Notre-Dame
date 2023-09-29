@@ -49,7 +49,7 @@ class _ScheduleViewState extends State<ScheduleView>
     with TickerProviderStateMixin {
   final GlobalKey<calendar_view.WeekViewState> weekViewKey =
       GlobalKey<calendar_view.WeekViewState>();
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
   static const Color _selectedColor = AppTheme.etsLightRed;
@@ -83,7 +83,7 @@ class _ScheduleViewState extends State<ScheduleView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(
-            intl: AppIntl.of(context), initialSelectedDate: widget.initialDay),
+            intl: AppIntl.of(context)!, initialSelectedDate: widget.initialDay),
         onModelReady: (model) {
           if (model.settings.isEmpty) {
             model.loadSettings();
@@ -356,7 +356,7 @@ class _ScheduleViewState extends State<ScheduleView>
             weekendDays: const [],
             headerStyle: const HeaderStyle(
                 titleCentered: true, formatButtonVisible: false),
-            eventLoader: model.coursesActivitiesFor as List<CourseActivity> Function(DateTime)?,
+            eventLoader: model.coursesActivitiesFor,
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 model.selectedDate = selectedDay;
@@ -429,7 +429,7 @@ class _ScheduleViewState extends State<ScheduleView>
                       weekViewKey.currentState?.animateToWeek(DateTime.now());
                     }
                     model.selectToday();
-                    _analyticsService!.logEvent(tag, "Select today clicked");
+                    _analyticsService.logEvent(tag, "Select today clicked");
                   })),
         _buildDiscoveryFeatureDescriptionWidget(context, Icons.settings, model),
       ];
@@ -452,7 +452,7 @@ class _ScheduleViewState extends State<ScheduleView>
         child: IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
-              _analyticsService!.logEvent(tag, "Settings clicked");
+              _analyticsService.logEvent(tag, "Settings clicked");
               await showModalBottomSheet(
                   isDismissible: true,
                   enableDrag: true,

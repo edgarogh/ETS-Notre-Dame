@@ -30,13 +30,13 @@ import 'package:notredame/core/constants/preferences_flags.dart';
 
 class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  late final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Manage de settings
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
+  late final SettingsManager _settingsManager = locator<SettingsManager>();
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  final AppIntl _appIntl;
 
   /// Settings of the user for the schedule
   final Map<PreferencesFlag, dynamic> settings = {};
@@ -75,9 +75,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
       AppTheme.schedulePaletteLight.toList();
 
   /// Get current locale
-  Locale? get locale => _settingsManager!.locale;
+  Locale? get locale => _settingsManager.locale;
 
-  ScheduleViewModel({required AppIntl? intl, DateTime? initialSelectedDate})
+  ScheduleViewModel({required AppIntl intl, DateTime? initialSelectedDate})
       : _appIntl = intl,
         selectedDate = initialSelectedDate ?? DateTime.now(),
         focusedDate = ValueNotifier(initialSelectedDate ?? DateTime.now());
@@ -112,7 +112,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
     return _coursesActivities[DateTime(date.year, date.month, date.day)]
             ?.map((eventData) => calendarEventData(eventData))
-            ?.toList() ??
+            .toList() ??
         [];
   }
 
@@ -166,9 +166,9 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   @override
   Future<List<CourseActivity>> futureToRun() =>
-      _courseRepository!.getCoursesActivities(fromCacheOnly: true).then((value) {
+      _courseRepository.getCoursesActivities(fromCacheOnly: true).then((value) {
         setBusyForObject(isLoadingEvents, true);
-        _courseRepository!
+        _courseRepository
             .getCoursesActivities()
             // ignore: return_type_invalid_for_catch_error
             .catchError(onError)
@@ -176,7 +176,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
           if (value1 != null) {
             // Reload the list of activities
             coursesActivities;
-            await _courseRepository!
+            await _courseRepository
                 .getCourses(fromCacheOnly: true)
                 .then((value2) {
               courses = value2;
@@ -185,7 +185,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
               calendarEvents = selectedWeekCalendarEvents();
             }
           }
-          _courseRepository!
+          _courseRepository
               .getScheduleActivities()
               // ignore: return_type_invalid_for_catch_error
               .catchError(onError)
@@ -226,13 +226,13 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   Future loadSettings() async {
     setBusy(true);
     settings.clear();
-    settings.addAll(await _settingsManager!.getScheduleSettings());
+    settings.addAll(await _settingsManager.getScheduleSettings());
     calendarFormat =
         settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat?;
 
@@ -243,7 +243,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager!.getDynamicString(
+      final String? activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]!
           .firstWhereOrNull((element) => element.activityCode == activityCodeToUse);
@@ -264,8 +264,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     _coursesActivities = {};
 
     // Build the map
-    if (_courseRepository!.coursesActivities != null) {
-      for (final CourseActivity course in _courseRepository!.coursesActivities!) {
+    if (_courseRepository.coursesActivities != null) {
+      for (final CourseActivity course in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.subtract(Duration(
             hours: course.startDateTime.hour,
             minutes: course.startDateTime.minute));
@@ -334,14 +334,14 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   Future setCalendarFormat(CalendarFormat format) async {
     calendarFormat = format;
     settings[PreferencesFlag.scheduleCalendarFormat] = calendarFormat;
-    _settingsManager!.setString(PreferencesFlag.scheduleCalendarFormat,
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(calendarFormat));
   }
 
   Future<void> refresh() async {
     try {
       setBusyForObject(isLoadingEvents, true);
-      await _courseRepository!.getCoursesActivities();
+      await _courseRepository.getCoursesActivities();
       setBusyForObject(isLoadingEvents, false);
       notifyListeners();
     } on Exception catch (error) {
@@ -357,7 +357,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   /// visual feedback).
   bool selectToday() {
     if (compareDates(selectedDate, DateTime.now())) {
-      Fluttertoast.showToast(msg: _appIntl!.schedule_already_today_toast);
+      Fluttertoast.showToast(msg: _appIntl.schedule_already_today_toast);
       return false;
     } else {
       selectedDate = DateTime.now();
@@ -394,7 +394,7 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
 
   /// Mark the discovery of this view completed
   Future<bool> discoveryCompleted() async {
-    await _settingsManager!.setBool(PreferencesFlag.discoverySchedule, true);
+    await _settingsManager.setBool(PreferencesFlag.discoverySchedule, true);
 
     return true;
   }

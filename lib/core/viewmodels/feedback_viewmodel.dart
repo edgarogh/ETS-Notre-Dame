@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:feedback/feedback.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:github/github.dart';
 import 'package:stacked/stacked.dart';
@@ -25,12 +24,12 @@ import 'package:notredame/locator.dart';
 
 class FeedbackViewModel extends FutureViewModel {
   /// Used to access Github functionalities
-  final GithubApi? _githubApi = locator<GithubApi>();
+  late final GithubApi _githubApi = locator<GithubApi>();
 
   /// Use to get the value associated to each settings key
-  final PreferencesService? _preferencesService = locator<PreferencesService>();
+  late final PreferencesService _preferencesService = locator<PreferencesService>();
 
-  final AppIntl? _appIntl;
+  final AppIntl _appIntl;
 
   final int _screenshotImageWidth = 307;
 
@@ -39,21 +38,21 @@ class FeedbackViewModel extends FutureViewModel {
   // get the list of issues
   List<FeedbackIssue> get myIssues => _myIssues;
 
-  FeedbackViewModel({required AppIntl? intl}) : _appIntl = intl;
+  FeedbackViewModel({required AppIntl intl}) : _appIntl = intl;
 
   /// Create a Github issue with [UserFeedback] and the screenshot associated.
   Future<void> sendFeedback(
       UserFeedback feedback, FeedbackType reportType) async {
     //Generate info to pass to github
-    final File file = await _githubApi!.localFile;
+    final File file = await _githubApi.localFile;
     await file.writeAsBytes(encodeScreenshotForGithub(feedback.screenshot));
 
     final String fileName = file.path.split('/').last;
 
     // Upload the file and create the issue
-    _githubApi!.uploadFileToGithub(filePath: fileName, file: file);
+    _githubApi.uploadFileToGithub(filePath: fileName, file: file);
 
-    final Issue issue = await _githubApi!.createGithubIssue(
+    final Issue issue = await _githubApi.createGithubIssue(
         feedbackText: feedback.text,
         fileName: fileName,
         feedbackType: reportType.name,
@@ -61,22 +60,20 @@ class FeedbackViewModel extends FutureViewModel {
             ? feedback.extra!['email'].toString()
             : null);
 
-    if (issue != null) {
-      setBusy(true);
-      _myIssues.add(FeedbackIssue(issue));
-      // Sort by state open first and by number descending
-      _myIssues.sort(
-          (a, b) => b.state!.compareTo(a.state!) * 100000 + b.number! - a.number!);
-      setBusy(false);
-      // Save the issue number in the preferences
-      _preferencesService!.setString(
-          PreferencesFlag.ghIssues, _myIssues.map((e) => e.number).join(','));
-    }
+    setBusy(true);
+    _myIssues.add(FeedbackIssue(issue));
+    // Sort by state open first and by number descending
+    _myIssues.sort(
+        (a, b) => b.state!.compareTo(a.state!) * 100000 + b.number! - a.number!);
+    setBusy(false);
+    // Save the issue number in the preferences
+    _preferencesService.setString(
+        PreferencesFlag.ghIssues, _myIssues.map((e) => e.number).join(','));
 
     file.deleteSync();
 
     Fluttertoast.showToast(
-      msg: _appIntl!.thank_you_for_the_feedback,
+      msg: _appIntl.thank_you_for_the_feedback,
       gravity: ToastGravity.CENTER,
     );
   }
@@ -91,7 +88,7 @@ class FeedbackViewModel extends FutureViewModel {
   Future<int> futureToRun() async {
     // Get the issues number from the preferences
     final String? issuesString =
-        await _preferencesService!.getString(PreferencesFlag.ghIssues);
+        await _preferencesService.getString(PreferencesFlag.ghIssues);
 
     // If there is no issues, return 0
     if (issuesString == null || issuesString.isEmpty) {
@@ -102,7 +99,7 @@ class FeedbackViewModel extends FutureViewModel {
     final List<String> issuesNumberList = issuesString.split(',');
 
     // To integers instead of String and fetch it
-    _myIssues = await _githubApi!.fetchIssuesByNumbers(
+    _myIssues = await _githubApi.fetchIssuesByNumbers(
         issuesNumberList.map((e) => int.parse(e)).toList(), _appIntl);
     // Sort by state open first and by number descending
     _myIssues.sort(

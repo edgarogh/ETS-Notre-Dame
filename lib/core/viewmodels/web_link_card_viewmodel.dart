@@ -17,21 +17,21 @@ import 'package:notredame/locator.dart';
 
 class WebLinkCardViewModel extends BaseViewModel {
   /// used to redirect on the security.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  late final NavigationService _navigationService = locator<NavigationService>();
 
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final LaunchUrlService? _launchUrlService = locator<LaunchUrlService>();
+  late final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// used to open a website or the security view
   Future<void> onLinkClicked(QuickLink link, Brightness brightness) async {
-    _analyticsService!.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
+    _analyticsService.logEvent("QuickLink", "QuickLink clicked: ${link.name}");
 
     if (link.link == 'security') {
-      _navigationService!.pushNamed(RouterPaths.security);
+      _navigationService.pushNamed(RouterPaths.security);
     } else {
       try {
-        await _launchUrlService!.launchInBrowser(link.link, brightness);
+        await _launchUrlService.launchInBrowser(link.link, brightness);
       } catch (error) {
         // An exception is thrown if browser app is not installed on Android device.
         await launchWebView(link);
@@ -40,6 +40,6 @@ class WebLinkCardViewModel extends BaseViewModel {
   }
 
   Future<void> launchWebView(QuickLink link) async {
-    _navigationService!.pushNamed(RouterPaths.webView, arguments: link);
+    _navigationService.pushNamed(RouterPaths.webView, arguments: link);
   }
 }

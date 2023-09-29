@@ -35,16 +35,16 @@ import 'package:notredame/locator.dart';
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
 
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
-  final AppWidgetService? _appWidgetService = locator<AppWidgetService>();
+  late final SettingsManager _settingsManager = locator<SettingsManager>();
+  late final CourseRepository _courseRepository = locator<CourseRepository>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  late final AppWidgetService _appWidgetService = locator<AppWidgetService>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  final AppIntl _appIntl;
 
   /// Update code that must be used to prompt user for update if necessary.
   UpdateCode? updateCode;
@@ -92,7 +92,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
-    if (_courseRepository!.activeSessions.isEmpty) {
+    if (_courseRepository.activeSessions.isEmpty) {
       return -1.0;
     } else {
       return sessionDays[0] / sessionDays[1];
@@ -140,21 +140,21 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _currentProgressBarText = ProgressBarText.values[0];
     }
 
-    _settingsManager!.setString(
+    _settingsManager.setString(
         PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
   /// and the total number of days in the session
   List<int> getSessionDays() {
-    if (_courseRepository!.activeSessions.isEmpty) {
+    if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      int dayCompleted = _settingsManager!.dateTimeNow
-          .difference(_courseRepository!.activeSessions.first.startDate)
+      int dayCompleted = _settingsManager.dateTimeNow
+          .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
-      final dayInTheSession = _courseRepository!.activeSessions.first.endDate
-          .difference(_courseRepository!.activeSessions.first.startDate)
+      final dayInTheSession = _courseRepository.activeSessions.first.endDate
+          .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
 
       if (dayCompleted > dayInTheSession) {
@@ -170,11 +170,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// List of courses for the current session
   final List<Course?> courses = [];
 
-  DashboardViewModel({required AppIntl? intl}) : _appIntl = intl;
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
-    final dashboard = await _settingsManager!.getDashboard();
+    final dashboard = await _settingsManager.getDashboard();
 
     _cards = dashboard;
 
@@ -195,6 +195,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     ]).then((_) {
       updateGradesWidget();
       updateProgressWidget();
+      
     });
   }
 
@@ -205,15 +206,15 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final elapsedDays = sessionDays[0];
       final totalDays = sessionDays[1];
 
-      await _appWidgetService!.sendProgressData(ProgressWidgetData(
-          title: _appIntl!.progress_bar_title,
+      await _appWidgetService.sendProgressData(ProgressWidgetData(
+          title: _appIntl.progress_bar_title,
           progress: progress,
           elapsedDays: elapsedDays,
           totalDays: totalDays,
-          suffix: _appIntl!.progress_bar_suffix));
-      await _appWidgetService!.updateWidget(WidgetType.progress);
+          suffix: _appIntl.progress_bar_suffix));
+      await _appWidgetService.updateWidget(WidgetType.progress);
     } on Exception catch (e) {
-      _analyticsService!.logError(tag, e.toString());
+      _analyticsService.logError(tag, e.toString());
     }
   }
 
@@ -230,27 +231,32 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         } else if (course.summary != null &&
             course.summary!.markOutOf > 0 &&
             !(course.inReviewPeriod && !course.reviewCompleted!)) {
-          return _appIntl!.grades_grade_in_percentage(
+          return _appIntl.grades_grade_in_percentage(
               course.summary!.currentMarkInPercent.round());
         }
-        return _appIntl!.grades_not_available;
+        return _appIntl.grades_not_available;
       }).toList();
 
-      await _appWidgetService!.sendGradesData(GradesWidgetData(
+      final List<Session> activeSessions = _courseRepository.activeSessions;
+      final String activeSessionName =  activeSessions.isEmpty
+        ? activeSessions.first.shortName
+        : _appIntl.session_without;
+
+      await _appWidgetService.sendGradesData(GradesWidgetData(
           title:
-              "${_appIntl!.grades_title} - ${_courseRepository?.activeSessions.first.shortName ?? _appIntl!.session_without}",
+              "${_appIntl.grades_title} - $activeSessionName",
           courseAcronyms: acronyms,
           grades: grades));
-      await _appWidgetService!.updateWidget(WidgetType.grades);
+      await _appWidgetService.updateWidget(WidgetType.grades);
     } on Exception catch (e) {
-      _analyticsService!.logError(tag, e.toString());
+      _analyticsService.logError(tag, e.toString());
     }
   }
 
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Change the order of [flag] card from [oldIndex] to [newIndex].
@@ -262,7 +268,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     notifyListeners();
 
-    _analyticsService!.logEvent(tag, "Reordoring ${flag.name}");
+    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
   }
 
   /// Hide [flag] card from dashboard by setting int value -1
@@ -275,17 +281,17 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     notifyListeners();
 
-    _analyticsService!.logEvent(tag, "Deleting ${flag.name}");
+    _analyticsService.logEvent(tag, "Deleting ${flag.name}");
   }
 
   /// Reset all card indexes to their default values
   void setAllCardsVisible() {
     _cards!.updateAll((key, value) {
-      _settingsManager!
+      _settingsManager
           .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
           .then((value) {
         if (!value) {
-          Fluttertoast.showToast(msg: _appIntl!.error);
+          Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
       return key.index - PreferencesFlag.aboutUsCard.index;
@@ -313,12 +319,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       });
     }
 
-    _analyticsService!.logEvent(tag, "Restoring cards");
+    _analyticsService.logEvent(tag, "Restoring cards");
   }
 
   Future<List<Session>?> futureToRunSessionProgressBar() async {
     String? progressBarText =
-        await _settingsManager!.getString(PreferencesFlag.progressBarText);
+        await _settingsManager.getString(PreferencesFlag.progressBarText);
 
     progressBarText ??= ProgressBarText.daysElapsedWithTotalDays.toString();
 
@@ -326,7 +332,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         .firstWhere((e) => e.toString() == progressBarText);
 
     setBusyForObject(progress, true);
-    return _courseRepository!
+    return _courseRepository
         .getSessions()
         // ignore: invalid_return_type_for_catch_error
         .catchError(onError)
@@ -338,7 +344,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
-    return _courseRepository!
+    return _courseRepository
         .getCoursesActivities(fromCacheOnly: true)
         .then((value) {
       setBusyForObject(_todayDateEvents, true);
@@ -346,8 +352,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _todayDateEvents.clear();
       _tomorrowDateEvents.clear();
 
-      final todayDate = _settingsManager!.dateTimeNow;
-      _courseRepository!
+      final todayDate = _settingsManager.dateTimeNow;
+      _courseRepository
           .getCoursesActivities()
           // ignore: return_type_invalid_for_catch_error
           .catchError(onError)
@@ -356,7 +362,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
           final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
           // Build the list
           for (final CourseActivity course
-              in _courseRepository!.coursesActivities!) {
+              in _courseRepository.coursesActivities!) {
             final DateTime dateOnly = course.startDateTime;
             if (isSameDay(todayDate, dateOnly) &&
                 todayDate.compareTo(course.endDateTime) < 0) {
@@ -389,7 +395,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     for (final courseAcronym in todayDateEvents) {
       final courseKey = courseAcronym.courseGroup.split('-')[0];
 
-      final String? activityCodeToUse = await _settingsManager!.getDynamicString(
+      final String? activityCodeToUse = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
 
       if (activityCodeToUse == ActivityCode.labGroupA) {
@@ -410,11 +416,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   void updatePreferences() {
     for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
       _cards![element.key] = _cardsToDisplay!.indexOf(element.key);
-      _settingsManager!
+      _settingsManager
           .setInt(element.key, _cardsToDisplay!.indexOf(element.key))
           .then((value) {
         if (!value) {
-          Fluttertoast.showToast(msg: _appIntl!.error);
+          Fluttertoast.showToast(msg: _appIntl.error);
         }
       });
     }
@@ -440,7 +446,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Mark as complete the discovery step
   Future<bool> discoveryCompleted() async {
-    await _settingsManager!.setBool(PreferencesFlag.discoveryDashboard, true);
+    await _settingsManager.setBool(PreferencesFlag.discoveryDashboard, true);
 
     return true;
   }
@@ -450,29 +456,29 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<void> futureToRunGrades() async {
     if (!busy(courses)) {
       setBusyForObject(courses, true);
-      if (_courseRepository!.sessions == null ||
-          _courseRepository!.sessions!.isEmpty) {
+      if (_courseRepository.sessions == null ||
+          _courseRepository.sessions!.isEmpty) {
         // ignore: return_type_invalid_for_catch_error
-        await _courseRepository!.getSessions().catchError(onError);
+        await _courseRepository.getSessions().catchError(onError);
       }
 
       // Determine current sessions
-      if (_courseRepository!.activeSessions.isEmpty) {
+      if (_courseRepository.activeSessions.isEmpty) {
         setBusyForObject(courses, false);
       }
-      final currentSession = _courseRepository!.activeSessions.first;
+      final currentSession = _courseRepository.activeSessions.first;
 
-      _courseRepository!.getCourses(fromCacheOnly: true).then(
+      _courseRepository.getCourses(fromCacheOnly: true).then(
           (coursesCached) {
         courses.clear();
         for (final Course? course in coursesCached!) {
-          if (course!.session == currentSession.shortName) {
+          if (course?.session == currentSession.shortName) {
             courses.add(course);
           }
         }
         notifyListeners();
         // ignore: return_type_invalid_for_catch_error
-        _courseRepository!.getCourses().catchError(onError).then((value) {
+        _courseRepository.getCourses().catchError(onError).then((value) {
           if (value != null) {
             // Update the courses list
             courses.clear();

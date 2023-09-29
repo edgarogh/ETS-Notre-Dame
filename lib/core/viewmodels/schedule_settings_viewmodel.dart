@@ -22,9 +22,9 @@ import 'package:notredame/locator.dart';
 class ScheduleSettingsViewModel
     extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
+  late final SettingsManager _settingsManager = locator<SettingsManager>();
   // Access the course repository
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  late final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Current calendar format
   CalendarFormat? _calendarFormat;
@@ -33,7 +33,7 @@ class ScheduleSettingsViewModel
 
   set calendarFormat(CalendarFormat? format) {
     setBusy(true);
-    _settingsManager!.setString(PreferencesFlag.scheduleCalendarFormat,
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat,
         EnumToString.convertToString(format));
     _calendarFormat = format;
     setBusy(false);
@@ -53,7 +53,7 @@ class ScheduleSettingsViewModel
 
   set startingDayOfWeek(StartingDayOfWeek? day) {
     setBusy(true);
-    _settingsManager!.setString(PreferencesFlag.scheduleStartWeekday,
+    _settingsManager.setString(PreferencesFlag.scheduleStartWeekday,
         EnumToString.convertToString(day));
     _startingDayOfWeek = day;
     setBusy(false);
@@ -73,7 +73,7 @@ class ScheduleSettingsViewModel
 
   set otherDayOfWeek(WeekDays? day) {
     setBusy(true);
-    _settingsManager!.setString(PreferencesFlag.scheduleOtherWeekday,
+    _settingsManager.setString(PreferencesFlag.scheduleOtherWeekday,
         EnumToString.convertToString(day));
     _otherDayOfWeek = day;
     setBusy(false);
@@ -91,7 +91,7 @@ class ScheduleSettingsViewModel
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager!.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
     _showTodayBtn = newValue;
     setBusy(false);
   }
@@ -102,7 +102,7 @@ class ScheduleSettingsViewModel
 
   set toggleCalendarView(bool newValue) {
     setBusy(true);
-    _settingsManager!.setBool(PreferencesFlag.scheduleListView, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
     _toggleCalendarView = newValue;
     setBusy(false);
   }
@@ -113,7 +113,7 @@ class ScheduleSettingsViewModel
 
   set showWeekEvents(bool newValue) {
     setBusy(true);
-    _settingsManager!.setBool(PreferencesFlag.scheduleShowWeekEvents, newValue);
+    _settingsManager.setBool(PreferencesFlag.scheduleShowWeekEvents, newValue);
     _showWeekEvents = newValue;
     setBusy(false);
   }
@@ -135,10 +135,10 @@ class ScheduleSettingsViewModel
       String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
     setBusy(true);
     if (scheduleActivityToSave == null) {
-      await _settingsManager!.setDynamicString(
+      await _settingsManager.setDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
     } else {
-      await _settingsManager!.setDynamicString(
+      await _settingsManager.setDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup,
           courseAcronym,
           scheduleActivityToSave.activityCode);
@@ -150,7 +150,7 @@ class ScheduleSettingsViewModel
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
     setBusy(true);
-    final settings = await _settingsManager!.getScheduleSettings();
+    final settings = await _settingsManager.getScheduleSettings();
 
     _calendarFormat =
         settings[PreferencesFlag.scheduleCalendarFormat] as CalendarFormat?;
@@ -161,7 +161,7 @@ class ScheduleSettingsViewModel
     _showWeekEvents = settings[PreferencesFlag.scheduleShowWeekEvents] as bool?;
 
     _scheduleActivitiesByCourse.clear();
-    final schedulesActivities = await (_courseRepository!.getScheduleActivities() as FutureOr<List<ScheduleActivity>>);
+    final schedulesActivities = await (_courseRepository.getScheduleActivities() as FutureOr<List<ScheduleActivity>>);
     for (final activity in schedulesActivities) {
       if (activity.activityCode == ActivityCode.labGroupA ||
           activity.activityCode == ActivityCode.labGroupB) {
@@ -182,7 +182,7 @@ class ScheduleSettingsViewModel
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode = await _settingsManager!.getDynamicString(
+      final scheduleActivityCode = await _settingsManager.getDynamicString(
           PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]!
           .firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);

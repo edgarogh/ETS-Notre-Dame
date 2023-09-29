@@ -41,7 +41,7 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${ProgressWidgetData.keyPrefix}title', progressWidgetData.title);
     } on PlatformException {
-      _analyticsService!.logError(
+      _analyticsService.logError(
           tag, 'Error sending data to session progress widget.');
       rethrow;
     }
@@ -58,7 +58,7 @@ class AppWidgetService {
       return await HomeWidget.saveWidgetData<String>(
           '${GradesWidgetData.keyPrefix}title', gradeWidgetData.title);
     } on PlatformException {
-      _analyticsService!.logError(tag, 'Error sending data to grades widget.');
+      _analyticsService.logError(tag, 'Error sending data to grades widget.');
       rethrow;
     }
   }
@@ -71,7 +71,7 @@ class AppWidgetService {
           androidName: type.androidName,
           iOSName: type.iOSname);
     } on PlatformException {
-      _analyticsService!.logError(tag, 'Error updating widget ${type.iOSname}.');
+      _analyticsService.logError(tag, 'Error updating widget ${type.iOSname}.');
     }
   }
 }

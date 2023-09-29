@@ -31,8 +31,8 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  final NavigationService? _navigationService = locator<NavigationService>();
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final NavigationService _navigationService = locator<NavigationService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   int _currentView = BottomBar.dashboardView;
 
@@ -80,24 +80,24 @@ class _BottomBarState extends State<BottomBar> {
 
     switch (index) {
       case BottomBar.dashboardView:
-        _navigationService!.pushNamedAndRemoveUntil(RouterPaths.dashboard);
-        _analyticsService!.logEvent("BottomBar", "DashboardView clicked");
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+        _analyticsService.logEvent("BottomBar", "DashboardView clicked");
         break;
       case BottomBar.scheduleView:
-        _navigationService!.pushNamedAndRemoveUntil(RouterPaths.schedule);
-        _analyticsService!.logEvent("BottomBar", "ScheduleView clicked");
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule);
+        _analyticsService.logEvent("BottomBar", "ScheduleView clicked");
         break;
       case BottomBar.studentView:
-        _navigationService!.pushNamedAndRemoveUntil(RouterPaths.student);
-        _analyticsService!.logEvent("BottomBar", "StudentView clicked");
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.student);
+        _analyticsService.logEvent("BottomBar", "StudentView clicked");
         break;
       case BottomBar.etsView:
-        _navigationService!.pushNamedAndRemoveUntil(RouterPaths.ets);
-        _analyticsService!.logEvent("BottomBar", "EtsView clicked");
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.ets);
+        _analyticsService.logEvent("BottomBar", "EtsView clicked");
         break;
       case BottomBar.moreView:
-        _navigationService!.pushNamedAndRemoveUntil(RouterPaths.more);
-        _analyticsService!.logEvent("BottomBar", "MoreView clicked");
+        _navigationService.pushNamedAndRemoveUntil(RouterPaths.more);
+        _analyticsService.logEvent("BottomBar", "MoreView clicked");
         break;
     }
     _currentView = index;

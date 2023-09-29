@@ -24,10 +24,10 @@ import 'package:notredame/locator.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course?>>> {
   /// Used to get the courses of the student
-  final CourseRepository? _courseRepository = locator<CourseRepository>();
+  late final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  final AppIntl _appIntl;
 
   /// Contains all the courses of the student sorted by session
   final Map<String, List<Course?>> coursesBySession = {};
@@ -36,18 +36,19 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course?>>> {
   /// session.
   final List<String> sessionOrder = [];
 
-  GradesViewModel({required AppIntl? intl}) : _appIntl = intl;
+  GradesViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Map<String, List<Course?>>> futureToRun() async =>
-      _courseRepository!.getCourses(fromCacheOnly: true).then((coursesCached) {
+      _courseRepository.getCourses(fromCacheOnly: true).then((coursesCached) {
         setBusy(true);
         _buildCoursesBySession(coursesCached!);
         // ignore: return_type_invalid_for_catch_error
-        _courseRepository!.getCourses().catchError(onError).then((value) {
-          if (value != null) {
+        _courseRepository.getCourses().catchError(onError).then((value) {
+          final List<Course?>? courses = _courseRepository.courses;
+          if (value != null && courses != null) {
             // Update the courses list
-            _buildCoursesBySession(_courseRepository!.courses!);
+            _buildCoursesBySession(courses);
           }
         }).whenComplete(() {
           setBusy(false);
@@ -59,15 +60,15 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course?>>> {
   @override
   // ignore: type_annotate_public_apis
   void onError(error) {
-    Fluttertoast.showToast(msg: _appIntl!.error);
+    Fluttertoast.showToast(msg: _appIntl.error);
   }
 
   /// Reload the courses from Signets and rebuild the view.
   Future refresh() async {
     // ignore: return_type_invalid_for_catch_error
     try {
-      await _courseRepository!.getCourses();
-      _buildCoursesBySession(_courseRepository!.courses!);
+      await _courseRepository.getCourses();
+      _buildCoursesBySession(_courseRepository.courses!);
       notifyListeners();
     } on Exception catch (error) {
       onError(error);

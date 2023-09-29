@@ -24,7 +24,7 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<FeedbackViewModel>.reactive(
-        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => FeedbackViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           final bool isLightMode =
               Theme.of(context).brightness == Brightness.light;

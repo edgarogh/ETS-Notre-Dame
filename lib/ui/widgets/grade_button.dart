@@ -27,10 +27,10 @@ class GradeButton extends StatelessWidget {
   final bool? showDiscovery;
 
   /// Used to redirect on the dashboard.
-  final NavigationService? _navigationService = locator<NavigationService>();
+  late final NavigationService _navigationService = locator<NavigationService>();
 
   /// Settings manager
-  final SettingsManager? _settingsManager = locator<SettingsManager>();
+  late final SettingsManager _settingsManager = locator<SettingsManager>();
 
   GradeButton(this.course, {this.showDiscovery});
 
@@ -39,10 +39,10 @@ class GradeButton extends StatelessWidget {
         child: InkWell(
           onTap: () async {
             if (ModalRoute.of(context)!.settings.name == RouterPaths.dashboard ||
-                await _settingsManager!
+                await _settingsManager
                         .getBool(PreferencesFlag.discoveryStudentGrade) ==
                     true) {
-              _navigationService!.pushNamed(RouterPaths.gradeDetails,
+              _navigationService.pushNamed(RouterPaths.gradeDetails,
                   arguments: course);
             }
           },

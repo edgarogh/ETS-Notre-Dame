@@ -57,7 +57,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget build(BuildContext context) =>
       ViewModelBuilder<GradesDetailsViewModel>.reactive(
         viewModelBuilder: () => GradesDetailsViewModel(
-            course: widget.course, intl: AppIntl.of(context)),
+            course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
           body: Material(
@@ -81,7 +81,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                     tag:
                         'course_acronym_${model.course!.acronym}_${model.course!.session}',
                     child: Text(
-                      model.course!.acronym ?? "",
+                      model.course?.acronym ?? "",
                       softWrap: false,
                       overflow: TextOverflow.visible,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -107,14 +107,14 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildClassInfo(model.course!.title ?? ""),
+                            _buildClassInfo(model.course?.title ?? ""),
                             if (model.course!.teacherName != null)
                               _buildClassInfo(AppIntl.of(context)!
                                   .grades_teacher(model.course!.teacherName!)),
                             _buildClassInfo(AppIntl.of(context)!
-                                .grades_group_number(model.course!.group ?? "")),
+                                .grades_group_number(model.course?.group ?? "")),
                             _buildClassInfo(AppIntl.of(context)!.credits_number(
-                                model.course!.numberOfCredits ?? "")),
+                                model.course?.numberOfCredits ?? "")),
                           ],
                         ),
                       ),
@@ -305,7 +305,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
     );
   }
 
-  String validateGrade(BuildContext context, String grade, String text) {
+  String validateGrade(BuildContext context, String? grade, String text) {
     if (grade == "null" || grade == null) {
       return AppIntl.of(context)!.grades_not_available;
     }
@@ -314,7 +314,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   }
 
   /// Build the card of the Medidian, Standart deviation or Percentile Rank
-  SizedBox _buildCourseGradeSummary(String title, String number) {
+  SizedBox _buildCourseGradeSummary(String? title, String number) {
     return SizedBox(
       height: 110,
       width: MediaQuery.of(context).size.width / 3.1,

@@ -30,7 +30,7 @@ class GradesView extends StatefulWidget {
 }
 
 class _GradesViewState extends State<GradesView> {
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
   void initState() {
@@ -40,13 +40,13 @@ class _GradesViewState extends State<GradesView> {
       GradesViewModel.startDiscovery(context);
     });
 
-    _analyticsService!.logEvent("GradesView", "Opened");
+    _analyticsService.logEvent("GradesView", "Opened");
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesViewModel>.reactive(
-        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => GradesViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return RefreshIndicator(
             onRefresh: () => model.refresh(),

@@ -53,7 +53,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   // Displays text under the app bar when offline.
   static bool _isOffline = false;
 
-  final NetworkingService? _networkingService = locator<NetworkingService>();
+  late final NetworkingService _networkingService = locator<NetworkingService>();
 
   late StreamSubscription<ConnectivityResult> _subscription;
 
@@ -65,14 +65,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   Future _setOfflineValue() async {
-    final isOffline = !await _networkingService!.hasConnectivity();
+    final isOffline = !await _networkingService.hasConnectivity();
     setState(() {
       _isOffline = isOffline;
     });
   }
 
   void _listenToChangeInConnectivity() {
-    _subscription = _networkingService!.onConnectivityChanged.listen((event) {
+    _subscription = _networkingService.onConnectivityChanged.listen((event) {
       setState(() {
         _isOffline = event == ConnectivityResult.none;
       });

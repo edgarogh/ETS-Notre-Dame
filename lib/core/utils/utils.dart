@@ -17,7 +17,7 @@ mixin Utils {
     }
   }
 
-  static double getGradeInPercentage(double? grade, double maxGrade) {
+  static double getGradeInPercentage(double? grade, double? maxGrade) {
     if (grade == null || maxGrade == null || grade == 0.0 || maxGrade == 0.0) {
       return 0.0;
     }

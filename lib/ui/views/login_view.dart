@@ -37,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
 
   final FocusScopeNode _focusNode = FocusScopeNode();
 
-  final LaunchUrlService? _launchUrlService = locator<LaunchUrlService>();
+  late final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   /// Unique key of the login form form
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) =>
       ViewModelBuilder<LoginViewModel>.reactive(
-        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
             backgroundColor: Utils.getColorByBrightness(
                 context, AppTheme.etsLightRed, AppTheme.primaryDark),
@@ -156,7 +156,7 @@ class _LoginViewState extends State<LoginView> {
                                           color: Colors.white),
                                     ),
                                     onTap: () {
-                                      _launchUrlService!.launchInBrowser(
+                                      _launchUrlService.launchInBrowser(
                                           Urls.signetsForgottenPassword,
                                           Theme.of(context).brightness);
                                     },
@@ -264,10 +264,10 @@ class _LoginViewState extends State<LoginView> {
   Future<void> sendEmail(LoginViewModel model) async {
     final clubEmail =
         model.mailtoStr(AppInfo.email, AppIntl.of(context)!.email_subject);
-    final urlLaunchable = await _launchUrlService!.canLaunch(clubEmail);
+    final urlLaunchable = await _launchUrlService.canLaunch(clubEmail);
 
     if (urlLaunchable) {
-      await _launchUrlService!.launch(clubEmail);
+      await _launchUrlService.launch(clubEmail);
     } else {
       locator<AnalyticsService>().logError("login_view", "Cannot send email.");
     }

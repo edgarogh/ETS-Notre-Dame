@@ -31,7 +31,7 @@ class MoreView extends StatefulWidget {
 }
 
 class _MoreViewState extends State<MoreView> {
-  final AnalyticsService? _analyticsService = locator<AnalyticsService>();
+  late final AnalyticsService _analyticsService = locator<AnalyticsService>();
   static const String tag = "MoreView";
   bool isDiscoveryOverlayActive = false;
 
@@ -79,7 +79,7 @@ class _MoreViewState extends State<MoreView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MoreViewModel>.reactive(
-        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)),
+        viewModelBuilder: () => MoreViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
             appBar: AppBar(
@@ -103,8 +103,8 @@ class _MoreViewState extends State<MoreView> {
                         DiscoveryIds.detailsMoreThankYou,
                         model),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "About App|ETS clicked");
-                      model.navigationService!.pushNamed(RouterPaths.about);
+                      _analyticsService.logEvent(tag, "About App|ETS clicked");
+                      model.navigationService.pushNamed(RouterPaths.about);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_report_bug),
@@ -114,14 +114,14 @@ class _MoreViewState extends State<MoreView> {
                         DiscoveryIds.detailsMoreBugReport,
                         model),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "Report a bug clicked");
-                      model.navigationService!.pushNamed(RouterPaths.feedback);
+                      _analyticsService.logEvent(tag, "Report a bug clicked");
+                      model.navigationService.pushNamed(RouterPaths.feedback);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.in_app_review_title),
                     leading: const Icon(Icons.rate_review),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "Rate us clicked");
+                      _analyticsService.logEvent(tag, "Rate us clicked");
                       MoreViewModel.launchInAppReview();
                     }),
                 ListTile(
@@ -132,15 +132,15 @@ class _MoreViewState extends State<MoreView> {
                         DiscoveryIds.detailsMoreContributors,
                         model),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "Contributors clicked");
-                      model.navigationService!
+                      _analyticsService.logEvent(tag, "Contributors clicked");
+                      model.navigationService
                           .pushNamed(RouterPaths.contributors);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_open_source_licenses),
                     leading: const Icon(Icons.code),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "Rate us clicked");
+                      _analyticsService.logEvent(tag, "Rate us clicked");
                       Navigator.of(context).push(PageRouteBuilder(
                         pageBuilder: (context, _, __) => AboutDialog(
                           applicationIcon: Padding(
@@ -168,8 +168,8 @@ class _MoreViewState extends State<MoreView> {
                         DiscoveryIds.detailsMoreSettings,
                         model),
                     onTap: () {
-                      _analyticsService!.logEvent(tag, "Settings clicked");
-                      model.navigationService!.pushNamed(RouterPaths.settings);
+                      _analyticsService.logEvent(tag, "Settings clicked");
+                      model.navigationService.pushNamed(RouterPaths.settings);
                     }),
                 ListTile(
                   title: Text(AppIntl.of(context)!.more_log_out),
@@ -186,7 +186,7 @@ class _MoreViewState extends State<MoreView> {
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                _analyticsService!.logEvent(
+                                _analyticsService.logEvent(
                                     tag, "Log out clicked");
                                 model.logout();
                               },

@@ -213,7 +213,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context)!.grades_grade,
               AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.mark ?? 0.0,
-                evaluation.correctedEvaluationOutOf ?? 0.0,
+                evaluation.correctedEvaluationOutOf,
                 Utils.getGradeInPercentage(evaluation.mark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
@@ -222,7 +222,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context)!.grades_average,
               AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.passMark ?? 0.0,
-                evaluation.correctedEvaluationOutOf ?? 0.0,
+                evaluation.correctedEvaluationOutOf,
                 Utils.getGradeInPercentage(evaluation.passMark,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
@@ -231,7 +231,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
               AppIntl.of(context)!.grades_median,
               AppIntl.of(context)!.grades_grade_with_percentage(
                 evaluation.median ?? 0.0,
-                evaluation.correctedEvaluationOutOf ?? 0.0,
+                evaluation.correctedEvaluationOutOf,
                 Utils.getGradeInPercentage(evaluation.median,
                     evaluation.correctedEvaluationOutOfFormatted),
               ),
@@ -259,7 +259,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     return AppIntl.of(context)!.grades_not_available;
   }
 
-  Padding _buildSummary(String title, String grade) {
+  Padding _buildSummary(String title, String? grade) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, right: 15.0),
       child: Row(

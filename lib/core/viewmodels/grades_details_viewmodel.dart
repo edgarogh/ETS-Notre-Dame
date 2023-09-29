@@ -28,12 +28,12 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
   late final CourseRepository _courseRepository = locator<CourseRepository>();
 
   /// Localization class of the application.
-  final AppIntl? _appIntl;
+  final AppIntl _appIntl;
 
   /// Used to get the current course selected of the student
   Course? course;
 
-  GradesDetailsViewModel({this.course, required AppIntl? intl})
+  GradesDetailsViewModel({this.course, required AppIntl intl})
       : _appIntl = intl;
 
   @override
@@ -63,7 +63,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course?> {
   // ignore: type_annotate_public_apis
   void onError(error) {
     if (error is ApiException && error.errorCode != SignetsError.gradesEmpty) {
-      Fluttertoast.showToast(msg: _appIntl!.error);
+      Fluttertoast.showToast(msg: _appIntl.error);
     }
   }
 
