@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
+import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
 // Project imports:
 import 'package:notredame/core/constants/preferences_flags.dart';
@@ -39,6 +40,18 @@ class LoginViewModel extends BaseViewModel {
 
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
+
+  Future openChatBot() async {
+    try {
+      dynamic conversationObject = {
+        'appId': '34af4feabd44c4eba79b62cae9a79a81a',
+        'botIds': ['agent-virtuel-ikjbm']
+      };
+
+      dynamic result =
+          await KommunicateFlutterPlugin.buildConversation(conversationObject);
+    } on Exception catch (e) {}
+  }
 
   /// Validate the format of the universal code
   String validateUniversalCode(String value) {

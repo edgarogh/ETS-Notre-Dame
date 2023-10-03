@@ -44,6 +44,14 @@ class _LoginViewState extends State<LoginView> {
       ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)),
         builder: (context, model, child) => Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                model.openChatBot();
+              },
+              backgroundColor: AppTheme.appletsPurple,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.chat),
+            ),
             backgroundColor: Utils.getColorByBrightness(
                 context, AppTheme.etsLightRed, AppTheme.primaryDark),
             resizeToAvoidBottomInset: false,

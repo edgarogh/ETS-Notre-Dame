@@ -39,6 +39,7 @@ dependencies:
   feedback: ^2.5.0
   flutter_staggered_animations: ^1.1.1
   flutter_siren: ^1.2.0
+  kommunicate_flutter: ^1.7.2
 
   # Customs
   ets_api_clients:

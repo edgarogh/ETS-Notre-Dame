@@ -681,6 +681,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.7.0"
+  kommunicate_flutter:
+    dependency: "direct main"
+    description:
+      name: kommunicate_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.2"
   lint:
     dependency: "direct dev"
     description:
@@ -932,7 +939,7 @@ packages:
       name: reorderable_grid_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.6"
+    version: "2.2.7"
   rive:
     dependency: "direct main"
     description:
@@ -953,7 +960,7 @@ packages:
       name: sanitize_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.0"
   shared_preferences:
     dependency: "direct main"
     description:

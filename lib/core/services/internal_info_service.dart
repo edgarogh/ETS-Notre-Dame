@@ -9,10 +9,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:notredame/core/services/networking_service.dart';
 import 'package:notredame/locator.dart';
 
-// UTILS
-
-// SERVICES
-
 class InternalInfoService {
   // Build the error message with the current device informations
   Future<String> getDeviceInfoForErrorReporting() async {
