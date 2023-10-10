@@ -45,17 +45,17 @@ void main() {
     Session(
         name: 'Hivers 2XXX',
         shortName: 'H1',
-        deadlineCancellationASEQ: null,
-        deadlineCancellationWithoutRefundNewStudent: null,
-        deadlineCancellationWithRefund: null,
-        deadlineCancellationWithRefundNewStudent: null,
-        deadlineRegistration: null,
-        startDate: null,
-        startDateCancellationWithoutRefundNewStudent: null,
-        startDateCancellationWithRefund: null,
-        startDateRegistration: null,
-        endDate: null,
-        endDateCourses: null),
+        deadlineCancellationASEQ: {} as DateTime,
+        deadlineCancellationWithoutRefundNewStudent: {} as DateTime,
+        deadlineCancellationWithRefund: {} as DateTime,
+        deadlineCancellationWithRefundNewStudent: {} as DateTime,
+        deadlineRegistration: {} as DateTime,
+        startDate: {} as DateTime,
+        startDateCancellationWithoutRefundNewStudent: {} as DateTime,
+        startDateCancellationWithRefund: {} as DateTime,
+        startDateRegistration: {} as DateTime,
+        endDate: {} as DateTime,
+        endDateCourses: {} as DateTime),
   ];
 
   final List<CourseActivity> coursesActivities = [
@@ -65,8 +65,8 @@ void main() {
         activityName: '',
         activityDescription: '',
         activityLocation: '',
-        startDateTime: null,
-        endDateTime: null),
+        startDateTime: {} as DateTime,
+        endDateTime: {} as DateTime),
   ];
 
   final List<Course> courses = [

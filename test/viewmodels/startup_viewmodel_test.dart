@@ -166,7 +166,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag({} as PreferencesFlag))
+            .called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),
@@ -201,8 +202,9 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verifyNever(preferencesServiceMock.getPreferencesFlag(any));
-        verifyNever(settingsManagerMock.setBool(any, any));
+        verifyNever(
+            preferencesServiceMock.getPreferencesFlag({} as PreferencesFlag));
+        verifyNever(settingsManagerMock.setBool({} as PreferencesFlag, false));
         verifyNever(
             settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1"));
       });
@@ -235,7 +237,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag({} as PreferencesFlag))
+            .called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),

@@ -21,7 +21,8 @@ class UserRepositoryMock extends Mock implements UserRepository {
   /// By default validate the authentication
   static void stubAuthenticate(UserRepositoryMock mock, String username,
       {bool toReturn = true}) {
-    when(mock.authenticate(username: username, password: anyNamed('password')))
+    when(mock.authenticate(
+            username: username, password: anyNamed('password') as String))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -55,7 +56,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   static void stubGetInfo(UserRepositoryMock mock,
       {ProfileStudent? toReturn, bool? fromCacheOnly}) {
     when(mock.getInfo(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -64,7 +65,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool? fromCacheOnly}) {
     when(mock.getInfo(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -79,7 +80,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
   static void stubGetPrograms(UserRepositoryMock mock,
       {List<Program> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getPrograms(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -88,7 +89,7 @@ class UserRepositoryMock extends Mock implements UserRepository {
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool? fromCacheOnly}) {
     when(mock.getPrograms(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }

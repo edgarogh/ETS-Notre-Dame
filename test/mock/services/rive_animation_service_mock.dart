@@ -22,14 +22,14 @@ class RiveAnimationServiceMock extends Mock implements RiveAnimationService {
   /// to return [artboardToReturn]
   static void stubLoadRiveFile(RiveAnimationServiceMock mock,
       String riveFileName, Artboard artboardToReturn) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName") as String))
         .thenAnswer((_) async => artboardToReturn);
   }
 
   /// Throw [exceptionToThrow] when [loadRiveFile] used.
   static void stubLoadRiveFileException(RiveAnimationServiceMock mock,
       {AnimationException exceptionToThrow = loadException}) {
-    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName")))
+    when(mock.loadRiveFile(riveFileName: anyNamed("riveFileName") as String))
         .thenThrow(exceptionToThrow);
   }
 

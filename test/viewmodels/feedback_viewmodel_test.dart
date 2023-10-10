@@ -53,7 +53,7 @@ void main() {
       appIntl = await setupAppIntl();
       setupLogger();
 
-      viewModel = FeedbackViewModel(intl: appIntl);
+      viewModel = FeedbackViewModel(intl: {} as AppIntl);
     });
 
     tearDown(() {

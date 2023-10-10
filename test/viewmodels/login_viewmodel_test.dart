@@ -38,7 +38,7 @@ void main() {
       setupPreferencesServiceMock();
       appIntl = await setupAppIntl();
 
-      viewModel = LoginViewModel(intl: appIntl);
+      viewModel = LoginViewModel(intl: {} as AppIntl);
     });
 
     tearDown(() {

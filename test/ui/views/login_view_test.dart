@@ -112,7 +112,9 @@ void main() {
         verifyNever(launchUrlService!.launch(url));
         verifyNoMoreInteractions(launchUrlService);
 
-        verify(analyticsService!.logError(argThat(contains("test")), argThat(contains("test")))).called(1);
+        verify(analyticsService!.logError(argThat(contains("test")) as String,
+                argThat(contains("test")) as String))
+            .called(1);
         verifyNoMoreInteractions(analyticsService);
       });
     });

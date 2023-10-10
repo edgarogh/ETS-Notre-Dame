@@ -85,7 +85,7 @@ void main() {
       test('returns the languages with an exception', () async {
         const AppIntl? intlNull = null;
         final ChooseLanguageViewModel viewModelWithInvalidIntl =
-            ChooseLanguageViewModel(intl: intlNull);
+            ChooseLanguageViewModel(intl: {} as AppIntl);
 
         expect(
             () => viewModelWithInvalidIntl.languages, throwsNoSuchMethodError,

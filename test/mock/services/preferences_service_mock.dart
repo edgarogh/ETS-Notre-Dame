@@ -11,19 +11,19 @@ class PreferencesServiceMock extends Mock implements PreferencesService {
   /// Stub the answer of [setString] when the [flag] is used.
   static void stubSetString(PreferencesServiceMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setString(flag, any)).thenAnswer((_) async => toReturn);
+    when(mock.setString(flag, "")).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [setInt] when the [flag] is used.
   static void stubSetInt(PreferencesServiceMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setInt(flag, any)).thenAnswer((_) async => toReturn);
+    when(mock.setInt(flag, -1)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [setBool] when the [flag] is used.
   static void stubSetBool(PreferencesServiceMock mock, PreferencesFlag flag,
       {bool toReturn = true}) {
-    when(mock.setBool(flag, value: anyNamed("value")))
+    when(mock.setBool(flag, value: anyNamed("value") as bool))
         .thenAnswer((_) async => toReturn);
   }
 

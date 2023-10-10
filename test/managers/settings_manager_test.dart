@@ -99,7 +99,8 @@ void main() {
         verify(preferencesService!
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesService!.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesService!
+                .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesService!.getBool(PreferencesFlag.scheduleListView))
             .called(1);
@@ -160,7 +161,8 @@ void main() {
         verify(preferencesService!
                 .getString(PreferencesFlag.scheduleCalendarFormat))
             .called(1);
-        verify(preferencesService!.getBool(PreferencesFlag.scheduleShowTodayBtn))
+        verify(preferencesService!
+                .getBool(PreferencesFlag.scheduleShowTodayBtn))
             .called(1);
         verify(preferencesService!.getBool(PreferencesFlag.scheduleListView))
             .called(1);
@@ -178,35 +180,35 @@ void main() {
         const flag = PreferencesFlag.theme;
         manager.setThemeMode(ThemeMode.light);
 
-        verify(preferencesService!.setString(
-                PreferencesFlag.theme, ThemeMode.light.toString()))
+        verify(preferencesService!
+                .setString(PreferencesFlag.theme, ThemeMode.light.toString()))
             .called(1);
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark);
 
-        verify(preferencesService!.setString(
-                PreferencesFlag.theme, ThemeMode.dark.toString()))
+        verify(preferencesService!
+                .setString(PreferencesFlag.theme, ThemeMode.dark.toString()))
             .called(1);
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         manager.setThemeMode(ThemeMode.system);
 
-        verify(preferencesService!.setString(
-                PreferencesFlag.theme, ThemeMode.system.toString()))
+        verify(preferencesService!
+                .setString(PreferencesFlag.theme, ThemeMode.system.toString()))
             .called(1);
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -247,7 +249,7 @@ void main() {
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -263,11 +265,11 @@ void main() {
 
         untilCalled(analyticsService!.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any));
+            ""));
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         manager.setLocale('en');
@@ -277,11 +279,11 @@ void main() {
 
         untilCalled(analyticsService!.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any));
+            ""));
 
         verify(analyticsService!.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ""))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -353,13 +355,13 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ""));
 
       verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ""))
           .called(1);
-      verify(preferencesService!.setString(flag, any));
+      verify(preferencesService!.setString(flag, ""));
     });
 
     test("setInt", () async {
@@ -372,13 +374,13 @@ void main() {
               "setInt should return true if the PreferenceService return true");
 
       untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ""));
 
       verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ""))
           .called(1);
-      verify(preferencesService!.setInt(flag, any));
+      verify(preferencesService!.setInt(flag, 0));
     });
 
     test("getString", () async {
@@ -391,11 +393,11 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ""));
 
       verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ""))
           .called(1);
       verify(preferencesService!.getString(flag));
     });
@@ -410,13 +412,14 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService!.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ""));
 
       verify(analyticsService!.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ""))
           .called(1);
-      verify(preferencesService!.setBool(flag, value: anyNamed("value")));
+      verify(
+          preferencesService!.setBool(flag, value: anyNamed("value") as bool));
     });
 
     group("Dashboard - ", () {
@@ -457,7 +460,8 @@ void main() {
             .called(1);
         verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesService!.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);
@@ -501,7 +505,8 @@ void main() {
             .called(1);
         verify(preferencesService!.getInt(PreferencesFlag.progressBarCard))
             .called(1);
-        verify(preferencesService!.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesService!.getInt(PreferencesFlag.gradesCard))
+            .called(1);
 
         verifyNoMoreInteractions(preferencesService);
         verifyNoMoreInteractions(analyticsService);

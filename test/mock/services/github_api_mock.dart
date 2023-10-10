@@ -18,7 +18,7 @@ class GithubApiMock extends Mock implements GithubApi {
 
   static void stubFetchIssuesByNumbers(
       GithubApiMock client, List<FeedbackIssue> issuesToReturn, AppIntl? intl) {
-    when(client.fetchIssuesByNumbers(any, any))
+    when(client.fetchIssuesByNumbers([], any))
         .thenAnswer((_) async => Future.value(issuesToReturn));
   }
 }

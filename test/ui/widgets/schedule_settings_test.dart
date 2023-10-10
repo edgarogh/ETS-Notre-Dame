@@ -424,8 +424,8 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await untilCalled(
-            settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
+        await untilCalled(settingsManager.setBool(
+            PreferencesFlag.scheduleShowTodayBtn, false));
 
         expect(
             tester.widget(find.descendant(

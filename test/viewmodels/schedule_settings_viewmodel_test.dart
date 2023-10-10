@@ -184,8 +184,8 @@ void main() {
                 .containsKey(courseAcronymWithLaboratory),
             true);
         expect(
-            viewModel
-                .scheduleActivitiesByCourse[courseAcronymWithLaboratory]!.length,
+            viewModel.scheduleActivitiesByCourse[courseAcronymWithLaboratory]!
+                .length,
             2);
         expect(
             viewModel.selectedScheduleActivity
@@ -195,7 +195,8 @@ void main() {
         verify(courseRepository!.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepository);
 
-        verify(settingsManager!.getDynamicString(any, any)).called(1);
+        verify(settingsManager!.getDynamicString({} as PreferencesFlag, ""))
+            .called(1);
       });
       test(
           "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
@@ -251,7 +252,8 @@ void main() {
         verify(courseRepository!.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepository);
 
-        verify(settingsManager!.getDynamicString(any, any)).called(2);
+        verify(settingsManager!.getDynamicString({} as PreferencesFlag, ""))
+            .called(2);
       });
     });
 
@@ -264,14 +266,14 @@ void main() {
         // Call the setter.
         viewModel.calendarFormat = CalendarFormat.twoWeeks;
 
-        await untilCalled(settingsManager!.setString(
-            PreferencesFlag.scheduleCalendarFormat, any));
+        await untilCalled(settingsManager!
+            .setString(PreferencesFlag.scheduleCalendarFormat, any));
 
         expect(viewModel.calendarFormat, CalendarFormat.twoWeeks);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setString(
-                PreferencesFlag.scheduleCalendarFormat, any))
+        verify(settingsManager!
+                .setString(PreferencesFlag.scheduleCalendarFormat, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -286,14 +288,14 @@ void main() {
         // Call the setter.
         viewModel.startingDayOfWeek = StartingDayOfWeek.friday;
 
-        await untilCalled(settingsManager!.setString(
-            PreferencesFlag.scheduleStartWeekday, any));
+        await untilCalled(settingsManager!
+            .setString(PreferencesFlag.scheduleStartWeekday, any));
 
         expect(viewModel.startingDayOfWeek, StartingDayOfWeek.friday);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setString(
-                PreferencesFlag.scheduleStartWeekday, any))
+        verify(settingsManager!
+                .setString(PreferencesFlag.scheduleStartWeekday, any))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });
@@ -310,14 +312,14 @@ void main() {
         // Call the setter.
         viewModel.showTodayBtn = expected;
 
-        await untilCalled(
-            settingsManager!.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
+        await untilCalled(settingsManager!
+            .setBool(PreferencesFlag.scheduleShowTodayBtn, false));
 
         expect(viewModel.showTodayBtn, expected);
         expect(viewModel.isBusy, false);
 
-        verify(settingsManager!.setBool(
-                PreferencesFlag.scheduleShowTodayBtn, any))
+        verify(settingsManager!
+                .setBool(PreferencesFlag.scheduleShowTodayBtn, false))
             .called(1);
         verifyNoMoreInteractions(settingsManager);
       });

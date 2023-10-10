@@ -705,7 +705,7 @@ void main() {
           courseRepository!.getCoursesActivities(fromCacheOnly: true),
           courseRepository!.getCoursesActivities(),
           courseRepository!.getScheduleActivities(
-              fromCacheOnly: anyNamed("fromCacheOnly"))
+              fromCacheOnly: anyNamed("fromCacheOnly") as bool)
         ]);
 
         // Await the end of the future to run
@@ -717,7 +717,8 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager!.getDynamicString(any, any)).called(2);
+        verify(settingsManager!.getDynamicString({} as PreferencesFlag, ""))
+            .called(2);
       });
 
       test(

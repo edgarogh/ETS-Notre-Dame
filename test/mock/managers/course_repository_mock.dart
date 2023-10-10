@@ -33,7 +33,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCoursesActivities(CourseRepositoryMock mock,
       {List<CourseActivity> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -42,7 +42,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool? fromCacheOnly}) {
     when(mock.getCoursesActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -65,7 +65,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCourses(CourseRepositoryMock mock,
       {List<Course> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) async => toReturn);
   }
 
@@ -80,7 +80,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
       {Exception toThrow = const ApiException(prefix: 'ApiException'),
       bool? fromCacheOnly}) {
     when(mock.getCourses(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50))
             .then((value) => throw toThrow));
   }
@@ -89,7 +89,8 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetCourseSummary(
       CourseRepositoryMock mock, Course courseCalled,
       {Course? toReturn}) {
-    when(mock.getCourseSummary(courseCalled)).thenAnswer((_) async => toReturn);
+    when(mock.getCourseSummary(courseCalled))
+        .thenAnswer((_) async => toReturn!);
   }
 
   /// Stub the function [getCourseSummary] of [mock] when called will throw [toThrow].
@@ -105,7 +106,7 @@ class CourseRepositoryMock extends Mock implements CourseRepository {
   static void stubGetScheduleActivities(CourseRepositoryMock mock,
       {List<ScheduleActivity> toReturn = const [], bool? fromCacheOnly}) {
     when(mock.getScheduleActivities(
-            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
+            fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly") as bool))
         .thenAnswer((_) async => toReturn);
   }
 

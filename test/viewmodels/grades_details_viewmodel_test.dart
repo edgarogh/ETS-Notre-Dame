@@ -37,7 +37,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: "",
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "35",
@@ -52,7 +52,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 2",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: "",
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "30",
@@ -143,7 +143,7 @@ void main() {
 
         expect(viewModel.course, courseWithoutSummary);
 
-        verify(courseRepository!.getCourseSummary(viewModel.course));
+        verify(courseRepository!.getCourseSummary(viewModel.course!));
 
         verifyNoMoreInteractions(courseRepository);
       });
