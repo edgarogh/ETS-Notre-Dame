@@ -45,9 +45,10 @@ class LoginViewModel extends BaseViewModel {
     try {
       dynamic conversationObject = {
         'appId': '34af4feabd44c4eba79b62cae9a79a81a',
-        'botIds': ['agent-virtuel-ikjbm']
+        'botIds': ['agent-virtuel-ikjbm'],
+        'conversationAssignee': 'agent-virtuel-ikjbm'
       };
-
+      await KommunicateFlutterPlugin.logout();
       dynamic result =
           await KommunicateFlutterPlugin.buildConversation(conversationObject);
     } on Exception catch (e) {}
