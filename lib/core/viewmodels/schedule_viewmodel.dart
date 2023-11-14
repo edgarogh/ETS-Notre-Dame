@@ -4,6 +4,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/ui/views/startup_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
@@ -102,10 +103,23 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   void handleViewChanged(DateTime date, EventController controller) {
-    controller.removeWhere((event) => true);
+    removeEventsNotInRange(date, controller);
     selectedDate = date;
     final eventsToAdd = selectedWeekCalendarEvents();
     controller.addAll(eventsToAdd);
+    print(controller.events.length);
+  }
+
+  void removeEventsNotInRange(
+      DateTime date, EventController<Object> controller) {
+    final twoWeeksDifference = date.isAfter(selectedDate)
+        ? date.subtract(const Duration(days: 14)) // One week forward
+        : date.add(const Duration(days: 14)); // One week backward
+    final firstDay = Utils.getFirstDayOfCurrentWeek(twoWeeksDifference,
+        settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
+    final lastDay = firstDay.add(const Duration(days: 6));
+    controller.removeWhere((element) =>
+        element.date.isBefore(lastDay) && element.date.isAfter(firstDay));
   }
 
   List<CalendarEventData> selectedDateCalendarEvents(DateTime date) {
@@ -145,7 +159,8 @@ class ScheduleViewModel extends FutureViewModel<List<CourseActivity>> {
     final List<CalendarEventData> events = [];
     final firstDayOfWeek = Utils.getFirstDayOfCurrentWeek(selectedDate,
         settings[PreferencesFlag.scheduleStartWeekday] as StartingDayOfWeek);
-    for (int i = 0; i < 7; i++) {
+
+    for (int i = -7; i < 21; i++) {
       final date = firstDayOfWeek.add(Duration(days: i));
       final eventsForDay = selectedDateCalendarEvents(date);
       if (eventsForDay.isNotEmpty) {
