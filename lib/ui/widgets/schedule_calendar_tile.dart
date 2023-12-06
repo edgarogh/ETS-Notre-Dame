@@ -44,8 +44,15 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final teacherName = courseInfos[3];
     final startTime =
         "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
-    final endTime =
-        "${widget.end.hour}:${widget.end.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
+    var endTime = "";
+    if (widget.end.minute == 59) {
+      // If the minutes are 59, add an hour and set minutes to 00
+      endTime = "${widget.end.add(const Duration(hours: 1)).hour}:00";
+    } else {
+      // Otherwise, just add a minute to the current end time
+      endTime =
+          "${widget.end.hour}:${widget.end.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
+    }
 
     showDialog(
       context: context,
