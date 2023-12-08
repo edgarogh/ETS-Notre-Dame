@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
   final String title;
@@ -44,15 +45,8 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final teacherName = courseInfos[3];
     final startTime =
         "${widget.start.hour}:${widget.start.minute.toString().padLeft(2, '0')}";
-    var endTime = "";
-    if (widget.end.minute == 59) {
-      // If the minutes are 59, add an hour and set minutes to 00
-      endTime = "${widget.end.add(const Duration(hours: 1)).hour}:00";
-    } else {
-      // Otherwise, just add a minute to the current end time
-      endTime =
-          "${widget.end.hour}:${widget.end.add(const Duration(minutes: 1)).minute.toString().padLeft(2, '0')}";
-    }
+    final String endTime =
+        DateFormat.Hm().format(widget.end.add(const Duration(minutes: 1)));
 
     showDialog(
       context: context,
