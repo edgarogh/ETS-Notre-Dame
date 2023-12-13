@@ -1,8 +1,11 @@
 // Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/core/services/analytics_service.dart';
+import 'package:notredame/core/services/remote_config_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
@@ -20,6 +23,9 @@ class LoginViewModel extends BaseViewModel {
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
+
+  /// Analytics service used to log events
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Regex matcher to validate the Universal code pattern
   final RegExp _universalCodeMatcher = RegExp(r'[a-zA-Z]{2}\d{5}');
@@ -41,17 +47,38 @@ class LoginViewModel extends BaseViewModel {
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
+  final RemoteConfigService _remoteConfigService =
+      locator<RemoteConfigService>();
+
   Future openChatBot() async {
     try {
-      dynamic conversationObject = {
-        'appId': '34af4feabd44c4eba79b62cae9a79a81a',
-        'botIds': ['agent-virtuel-ikjbm'],
-        'conversationAssignee': 'agent-virtuel-ikjbm'
+      final botId = _remoteConfigService.chatbotBotId;
+
+      final conversationObject = {
+        'appId': _remoteConfigService.chatbotAppId,
+        'botIds': [botId],
+        'conversationAssignee': botId,
+        'skipRouting': true,
+        'metadata': {'customWelcomeEvent': 'welcome-sti', '': ''}
       };
+      final chatContext = {'customWelcomeEvent': 'welcome-sti'};
+      await KommunicateFlutterPlugin.updateChatContext(chatContext);
+
       await KommunicateFlutterPlugin.logout();
-      dynamic result =
-          await KommunicateFlutterPlugin.buildConversation(conversationObject);
-    } on Exception catch (e) {}
+      await KommunicateFlutterPlugin.buildConversation(conversationObject)
+          .then((clientConversationId) {
+        if (kDebugMode) {
+          print("Conversation builder success : $clientConversationId");
+        }
+      }).catchError((error) {
+        if (kDebugMode) {
+          print("Conversation builder error : $error");
+        }
+      });
+    } on Exception catch (e) {
+      _analyticsService.logError(
+          "Error while opening the chatbot", e.toString());
+    }
   }
 
   /// Validate the format of the universal code

@@ -13,6 +13,8 @@ import 'package:notredame/locator.dart';
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
   static const _serviceIsDown = "service_is_down";
+  static const _chatbotAppId = "chatbot_app_id";
+  static const _chatbotBotId = "chatbot_bot_id";
 
   // dashboard message remote config keys
   static const _dashboardMsgToggle = "dashboard_message_toggle";
@@ -91,6 +93,16 @@ class RemoteConfigService {
   String get dashboardMsgType {
     fetch();
     return _remoteConfig.getString(_dashboardMsgType);
+  }
+
+  String get chatbotAppId {
+    fetch();
+    return _remoteConfig.getString(_chatbotAppId);
+  }
+
+  String get chatbotBotId {
+    fetch();
+    return _remoteConfig.getString(_chatbotBotId);
   }
 
   Future<void> fetch() async {
