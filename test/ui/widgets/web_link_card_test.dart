@@ -18,8 +18,8 @@ final _quickLink = QuickLink(
     id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
 
 void main() {
-  AnalyticsService analyticsService;
-  LaunchUrlService launchUrlService;
+  late AnalyticsService analyticsService;
+  late LaunchUrlService launchUrlService;
 
   group('WebLinkCard - ', () {
     setUp(() {

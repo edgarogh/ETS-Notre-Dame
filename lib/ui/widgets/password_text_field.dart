@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordFormField extends StatefulWidget {
-  final FormFieldValidator<String> validator;
-  final VoidCallback onEditionComplete;
+  final FormFieldValidator<String>? validator;
+  final VoidCallback? onEditionComplete;
 
-  const PasswordFormField({Key? key, required this.validator, required this.onEditionComplete})
+  const PasswordFormField({Key? key, this.validator, this.onEditionComplete})
       : super(key: key);
 
   @override

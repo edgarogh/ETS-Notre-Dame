@@ -14,7 +14,7 @@ import 'package:notredame/ui/widgets/bottom_bar.dart';
 import '../../helpers.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
-NavigationService navigationService;
+late NavigationService navigationService;
 
 void main() {
   group('BottomBar - ', () {

@@ -14,9 +14,9 @@ import '../../helpers.dart';
 import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late AppIntl intl;
+  late NavigationService navigationService;
+  late SettingsManager settingsManager;
 
   final Course courseWithGrade = Course(
       acronym: 'GEN101',
@@ -78,7 +78,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
-        expect(find.text(courseWithGrade.grade), findsOneWidget);
+        expect(find.text(courseWithGrade.grade!), findsOneWidget);
       });
 
       testWidgets("Grade not available and summary is loaded.",
@@ -95,7 +95,7 @@ void main() {
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
         expect(
             find.text(intl.grades_grade_in_percentage(
-                courseWithSummary.summary.currentMarkInPercent.round())),
+                courseWithSummary.summary!.currentMarkInPercent.round())),
             findsOneWidget,
             reason:
                 'There is no grade available and the course summary exists so the '
