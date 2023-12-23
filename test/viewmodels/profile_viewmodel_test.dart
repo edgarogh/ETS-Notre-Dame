@@ -11,9 +11,9 @@ import 'package:notredame/core/viewmodels/profile_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/user_repository_mock.dart';
 
-UserRepository userRepository;
-SettingsManager settingsManager;
-ProfileViewModel viewModel;
+late UserRepository userRepository;
+late SettingsManager settingsManager;
+late ProfileViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -181,7 +181,7 @@ void main() {
 
         // Calculate the expected progression based on the defined ProgramCredits
         final double expectedProgression =
-            (45 / programCredits.programsCredits['7694'] * 100).roundToDouble();
+            (45 / programCredits.programsCredits['7694']! * 100).roundToDouble();
 
         // Verify that the calculated progression matches the expected value
         expect(progression, expectedProgression);

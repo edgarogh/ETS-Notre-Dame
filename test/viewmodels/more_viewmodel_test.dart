@@ -25,32 +25,32 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  CacheManagerMock cacheManagerMock;
-  SettingsManagerMock settingsManagerMock;
-  CourseRepositoryMock courseRepositoryMock;
-  PreferencesService preferenceService;
-  RemoteConfigService remoteConfigService;
-  UserRepositoryMock userRepositoryMock;
-  NavigationService navigationService;
+  late CacheManagerMock cacheManagerMock;
+  late SettingsManagerMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late PreferencesService preferenceService;
+  late RemoteConfigService remoteConfigService;
+  late UserRepositoryMock userRepositoryMock;
+  late NavigationService navigationService;
 
-  AppIntl appIntl;
-  MoreViewModel viewModel;
+  late AppIntl appIntl;
+  late MoreViewModel viewModel;
 
   final List<Session> sessions = [
     Session(
         name: 'Hivers 2XXX',
         shortName: 'H1',
-        deadlineCancellationASEQ: null,
-        deadlineCancellationWithoutRefundNewStudent: null,
-        deadlineCancellationWithRefund: null,
-        deadlineCancellationWithRefundNewStudent: null,
-        deadlineRegistration: null,
-        startDate: null,
-        startDateCancellationWithoutRefundNewStudent: null,
-        startDateCancellationWithRefund: null,
-        startDateRegistration: null,
-        endDate: null,
-        endDateCourses: null),
+        deadlineCancellationASEQ: DateTime.now(),
+        deadlineCancellationWithoutRefundNewStudent: DateTime.now(),
+        deadlineCancellationWithRefund: DateTime.now(),
+        deadlineCancellationWithRefundNewStudent: DateTime.now(),
+        deadlineRegistration: DateTime.now(),
+        startDate: DateTime.now(),
+        startDateCancellationWithoutRefundNewStudent: DateTime.now(),
+        startDateCancellationWithRefund: DateTime.now(),
+        startDateRegistration: DateTime.now(),
+        endDate: DateTime.now(),
+        endDateCourses: DateTime.now()),
   ];
 
   final List<CourseActivity> coursesActivities = [
@@ -60,8 +60,8 @@ void main() {
         activityName: '',
         activityDescription: '',
         activityLocation: '',
-        startDateTime: null,
-        endDateTime: null),
+        startDateTime: DateTime.now(),
+        endDateTime: DateTime.now().add(const Duration(hours: 1))),
   ];
 
   final List<Course> courses = [
@@ -92,11 +92,11 @@ void main() {
     verifyNoMoreInteractions(settingsManagerMock);
 
     // Make sure that the registered cache
-    expect(courseRepositoryMock.sessions.length, 0,
+    expect(courseRepositoryMock.sessions!.length, 0,
         reason: 'has emptied out the sessions list');
-    expect(courseRepositoryMock.coursesActivities.length, 0,
+    expect(courseRepositoryMock.coursesActivities!.length, 0,
         reason: 'has emptied out the courseActivities list');
-    expect(courseRepositoryMock.courses.length, 0,
+    expect(courseRepositoryMock.courses!.length, 0,
         reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page

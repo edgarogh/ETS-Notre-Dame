@@ -22,15 +22,15 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/siren_flutter_service_mock.dart';
 
 void main() {
-  NavigationService navigationService;
-  UserRepositoryMock userRepositoryMock;
-  SettingsManagerMock settingsManagerMock;
-  PreferencesServiceMock preferencesServiceMock;
-  NetworkingServiceMock networkingService;
-  InternalInfoServiceMock internalInfoServiceMock;
-  SirenFlutterServiceMock sirenFlutterServiceMock;
+  late NavigationService navigationService;
+  late UserRepositoryMock userRepositoryMock;
+  late SettingsManagerMock settingsManagerMock;
+  late PreferencesServiceMock preferencesServiceMock;
+  late NetworkingServiceMock networkingService;
+  late InternalInfoServiceMock internalInfoServiceMock;
+  late SirenFlutterServiceMock sirenFlutterServiceMock;
 
-  StartUpViewModel viewModel;
+  late StartUpViewModel viewModel;
 
   group('StartupViewModel - ', () {
     setUp(() async {
@@ -160,7 +160,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag(PreferencesFlag.aboutUsCard)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),
@@ -195,8 +195,8 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verifyNever(preferencesServiceMock.getPreferencesFlag(any));
-        verifyNever(settingsManagerMock.setBool(any, any));
+        verifyNever(preferencesServiceMock.getPreferencesFlag(PreferencesFlag.aboutUsCard));
+        verifyNever(settingsManagerMock.setBool(PreferencesFlag.aboutUsCard, true));
         verifyNever(
             settingsManagerMock.setString(PreferencesFlag.appVersion, "4.0.1"));
       });
@@ -229,7 +229,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag(PreferencesFlag.aboutUsCard)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),

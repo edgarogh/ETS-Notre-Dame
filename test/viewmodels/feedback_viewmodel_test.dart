@@ -27,12 +27,12 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  GithubApiMock githubApiMock;
+  late GithubApiMock githubApiMock;
 
-  PreferencesServiceMock preferencesServiceMock;
+  late PreferencesServiceMock preferencesServiceMock;
 
-  AppIntl appIntl;
-  FeedbackViewModel viewModel;
+  late AppIntl appIntl;
+  late FeedbackViewModel viewModel;
   const feedBackText = 'Notre-Dame bug report';
   final file = File('bugReportTest.png');
   final filePath = file.path.split('/').last;
@@ -60,7 +60,7 @@ void main() {
     });
 
     group('sendFeedback - ', () {
-      Uint8List screenshotData;
+      late Uint8List screenshotData;
 
       setUp(() async {
         final ByteData bytes = await rootBundle
@@ -73,7 +73,7 @@ void main() {
         setupFlutterToastMock();
 
         await file.writeAsBytes(image.encodePng(
-            image.copyResize(image.decodeImage(screenshotData), width: 307)));
+            image.copyResize(image.decodeImage(screenshotData)!, width: 307)));
 
         await viewModel.sendFeedback(
             UserFeedback(

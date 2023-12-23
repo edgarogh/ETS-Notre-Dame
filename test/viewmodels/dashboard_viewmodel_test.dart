@@ -20,14 +20,14 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  PreferencesService preferenceService;
-  SettingsManager settingsManager;
-  DashboardViewModel viewModel;
-  CourseRepository courseRepository;
-  RemoteConfigService remoteConfigService;
-  PreferencesServiceMock preferencesServiceMock;
-  InAppReviewServiceMock inAppReviewServiceMock;
-  AnalyticsService analyticsService;
+  late PreferencesService preferenceService;
+  late SettingsManager settingsManager;
+  late DashboardViewModel viewModel;
+  late CourseRepository courseRepository;
+  late RemoteConfigService remoteConfigService;
+  late PreferencesServiceMock preferencesServiceMock;
+  late InAppReviewServiceMock inAppReviewServiceMock;
+  late AnalyticsService analyticsService;
 
   final gen101 = CourseActivity(
       courseGroup: "GEN101",
@@ -540,13 +540,13 @@ void main() {
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
@@ -575,13 +575,13 @@ void main() {
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
@@ -610,19 +610,19 @@ void main() {
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN101",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN102",
-            toReturn: null);
+            toReturn: '');
 
         SettingsManagerMock.stubGetDynamicString(
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
-            toReturn: null);
+            toReturn: '');
 
         expect(await viewModel.removeLaboratoryGroup(activitiesWithLabs),
             activitiesWithLabs);

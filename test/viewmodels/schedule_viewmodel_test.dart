@@ -14,9 +14,9 @@ import '../helpers.dart';
 import '../mock/managers/course_repository_mock.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-CourseRepository courseRepository;
-SettingsManager settingsManager;
-ScheduleViewModel viewModel;
+late CourseRepository courseRepository;
+late SettingsManager settingsManager;
+late ScheduleViewModel viewModel;
 
 void main() {
   // Needed to support FlutterToast.
@@ -377,7 +377,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             classOneWithLaboratoryABscheduleActivities.first.courseAcronym,
-            toReturn: null);
+            toReturn: '');
 
         await viewModel.assignScheduleActivities([]);
 
@@ -612,7 +612,7 @@ void main() {
       test('assignScheduleActivities - format the schedule activities in a map',
           () async {
         // Test if null, return without doing any change to the schedule list
-        await viewModel.assignScheduleActivities(null);
+        await viewModel.assignScheduleActivities([]);
         expect(viewModel.scheduleActivitiesByCourse.entries.length, 0);
 
         // Test if empty list is passed, do nothing
@@ -682,7 +682,7 @@ void main() {
         expect(await viewModel.futureToRun(), activities,
             reason: "Even if SignetsAPI fails we should receives a list.");
 
-        List<ScheduleActivity> listScheduleActivities;
+        late List<ScheduleActivity> listScheduleActivities;
         await courseRepository.getScheduleActivities().then((value) {
           listScheduleActivities = value;
         });
@@ -695,7 +695,7 @@ void main() {
           courseRepository.getCoursesActivities(fromCacheOnly: true),
           courseRepository.getCoursesActivities(),
           courseRepository.getScheduleActivities(
-              fromCacheOnly: anyNamed("fromCacheOnly"))
+              fromCacheOnly: true)
         ]);
 
         // Await the end of the future to run
@@ -707,7 +707,7 @@ void main() {
                 classOneWithLaboratoryABscheduleActivities.first.courseAcronym],
             "Laboratoire (Groupe A)");
 
-        verify(settingsManager.getDynamicString(any, any)).called(2);
+        verify(settingsManager.getDynamicString(PreferencesFlag.scheduleCard, '')).called(2);
       });
 
       test(
@@ -820,7 +820,7 @@ void main() {
             settingsManager as SettingsManagerMock,
             PreferencesFlag.scheduleLaboratoryGroup,
             "GEN103",
-            toReturn: null);
+            toReturn: '');
 
         await viewModel.assignScheduleActivities([]);
 

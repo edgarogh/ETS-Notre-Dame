@@ -12,11 +12,11 @@ import 'package:notredame/core/viewmodels/choose_language_viewmodel.dart';
 import '../helpers.dart';
 import '../mock/managers/settings_manager_mock.dart';
 
-ChooseLanguageViewModel viewModel;
+late ChooseLanguageViewModel viewModel;
 
 void main() {
-  NavigationService navigationService;
-  SettingsManager settingsManager;
+  late NavigationService navigationService;
+  late SettingsManager settingsManager;
 
   group("ChooseLanguageViewModel - ", () {
     setUp(() async {
@@ -72,16 +72,6 @@ void main() {
         final languages = viewModel.languages;
 
         expect(['English', 'Français'], languages);
-      });
-
-      test('returns the languages with an exception', () async {
-        const AppIntl intlNull = null;
-        final ChooseLanguageViewModel viewModelWithInvalidIntl =
-            ChooseLanguageViewModel(intl: intlNull);
-
-        expect(
-            () => viewModelWithInvalidIntl.languages, throwsNoSuchMethodError,
-            reason: "The getter 'settings_english' was called on null");
       });
     });
   });
