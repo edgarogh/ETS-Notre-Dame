@@ -25,11 +25,11 @@ import '../../mock/services/in_app_review_service_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  SettingsManager settingsManager;
-  CourseRepository courseRepository;
-  RemoteConfigService remoteConfigService;
-  AppIntl intl;
-  InAppReviewServiceMock inAppReviewServiceMock;
+  late SettingsManager settingsManager;
+  late CourseRepository courseRepository;
+  late RemoteConfigService remoteConfigService;
+  late AppIntl intl;
+  late InAppReviewServiceMock inAppReviewServiceMock;
 
   // Activities for today
   final gen101 = CourseActivity(

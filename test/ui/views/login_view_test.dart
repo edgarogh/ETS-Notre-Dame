@@ -19,7 +19,7 @@ import '../../mock/services/analytics_service_mock.dart';
 import '../../mock/services/launch_url_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
   group('LoginView - ', () {
     setUp(() async {

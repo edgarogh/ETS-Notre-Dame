@@ -22,11 +22,11 @@ import '../../mock/services/in_app_review_service_mock.dart';
 import '../../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  NavigationService navigation;
-  RemoteConfigService remoteConfigService;
-  InAppReviewServiceMock inAppReviewServiceMock;
-  SettingsManagerMock settingsManagerMock;
+  late AppIntl intl;
+  late NavigationService navigation;
+  late RemoteConfigService remoteConfigService;
+  late InAppReviewServiceMock inAppReviewServiceMock;
+  late SettingsManagerMock settingsManagerMock;
 
   group('MoreView - ', () {
     setUp(() async {

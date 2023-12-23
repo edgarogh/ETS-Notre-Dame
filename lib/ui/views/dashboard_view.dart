@@ -32,8 +32,8 @@ import 'package:notredame/ui/widgets/grade_button.dart';
 import 'package:notredame/ui/widgets/haptics_container.dart';
 
 class DashboardView extends StatefulWidget {
-  final UpdateCode updateCode;
-  const DashboardView({Key? key, required this.updateCode}) : super(key: key);
+  final UpdateCode? updateCode;
+  const DashboardView({Key? key, this.updateCode}) : super(key: key);
 
   @override
   _DashboardViewState createState() => _DashboardViewState();

@@ -23,9 +23,9 @@ import '../../mock/services/internal_info_service_mock.dart';
 import '../../mock/services/navigation_service_mock.dart';
 
 void main() {
-  AppIntl intl;
+  late AppIntl intl;
 
-  QuickLinkRepository quickLinkRepository;
+  late QuickLinkRepository quickLinkRepository;
 
   group('QuickLinksView - ', () {
     setUp(() async {

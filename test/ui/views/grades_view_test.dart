@@ -20,8 +20,8 @@ import '../../helpers.dart';
 import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
-  CourseRepository courseRepository;
-  AppIntl intl;
+  late CourseRepository courseRepository;
+  late AppIntl intl;
 
   final Course courseSummer = Course(
       acronym: 'GEN101',

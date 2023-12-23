@@ -19,7 +19,7 @@ import '../../mock/managers/course_repository_mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  CourseRepository courseRepository;
+  late CourseRepository courseRepository;
 
   final CourseSummary courseSummary = CourseSummary(
     currentMark: 5,
@@ -34,7 +34,7 @@ void main() {
         courseGroup: "02",
         title: "Laboratoire 1",
         weight: 10,
-        teacherMessage: null,
+        teacherMessage: '',
         ignore: false,
         mark: 24,
         correctedEvaluationOutOf: "35",

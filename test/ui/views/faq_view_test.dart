@@ -15,9 +15,9 @@ import '../../mock/managers/settings_manager_mock.dart';
 
 void main() {
   group('FaqView - ', () {
-    AppIntl appIntl;
+    late AppIntl appIntl;
 
-    SettingsManager settingsManager;
+    late SettingsManager settingsManager;
 
     setUp(() async {
       setupLaunchUrlServiceMock();

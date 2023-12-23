@@ -18,8 +18,8 @@ import '../../mock/managers/user_repository_mock.dart';
 import '../../mock/services/analytics_service_mock.dart';
 
 void main() {
-  AppIntl intl;
-  UserRepository userRepository;
+  late AppIntl intl;
+  late UserRepository userRepository;
 
   final profileStudent = ProfileStudent(
       firstName: "John",
