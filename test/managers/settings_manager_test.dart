@@ -20,10 +20,10 @@ import '../mock/services/preferences_service_mock.dart';
 import '../mock/services/remote_config_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  RemoteConfigService remoteConfigService;
-  PreferencesService preferencesService;
-  SettingsManager manager;
+  late AnalyticsService analyticsService;
+  late RemoteConfigService remoteConfigService;
+  late PreferencesService preferencesService;
+  late SettingsManager manager;
 
   group("SettingsManager - ", () {
     setUp(() async {
@@ -179,7 +179,7 @@ void main() {
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         manager.setThemeMode(ThemeMode.dark);
@@ -190,7 +190,7 @@ void main() {
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         manager.setThemeMode(ThemeMode.system);
@@ -201,7 +201,7 @@ void main() {
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -242,7 +242,7 @@ void main() {
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -258,11 +258,11 @@ void main() {
 
         untilCalled(analyticsService.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any));
+            ''));
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         manager.setLocale('en');
@@ -272,11 +272,11 @@ void main() {
 
         untilCalled(analyticsService.logEvent(
             "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-            any));
+            ''));
 
         verify(analyticsService.logEvent(
                 "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-                any))
+                ''))
             .called(1);
 
         verifyNoMoreInteractions(preferencesService);
@@ -348,13 +348,13 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ''));
 
       verify(analyticsService.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ''))
           .called(1);
-      verify(preferencesService.setString(flag, any));
+      verify(preferencesService.setString(flag, ''));
     });
 
     test("setInt", () async {
@@ -367,13 +367,13 @@ void main() {
               "setInt should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ''));
 
       verify(analyticsService.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ''))
           .called(1);
-      verify(preferencesService.setInt(flag, any));
+      verify(preferencesService.setInt(flag, 0));
     });
 
     test("getString", () async {
@@ -386,11 +386,11 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ''));
 
       verify(analyticsService.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ''))
           .called(1);
       verify(preferencesService.getString(flag));
     });
@@ -405,13 +405,13 @@ void main() {
               "setString should return true if the PreferenceService return true");
 
       untilCalled(analyticsService.logEvent(
-          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", any));
+          "${SettingsManager.tag}_${EnumToString.convertToString(flag)}", ''));
 
       verify(analyticsService.logEvent(
               "${SettingsManager.tag}_${EnumToString.convertToString(flag)}",
-              any))
+              ''))
           .called(1);
-      verify(preferencesService.setBool(flag, value: anyNamed("value")));
+      verify(preferencesService.setBool(flag, value: true));
     });
 
     group("Dashboard - ", () {

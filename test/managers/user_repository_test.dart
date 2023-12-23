@@ -24,14 +24,14 @@ import '../mock/services/flutter_secure_storage_mock.dart';
 import '../mock/services/networking_service_mock.dart';
 
 void main() {
-  AnalyticsService analyticsService;
-  MonETSAPIClient monETSApi;
-  FlutterSecureStorageMock secureStorage;
-  CacheManager cacheManager;
-  SignetsAPIClient signetsApi;
-  NetworkingServiceMock networkingService;
+  late AnalyticsService analyticsService;
+  late MonETSAPIClient monETSApi;
+  late FlutterSecureStorageMock secureStorage;
+  late CacheManager cacheManager;
+  late SignetsAPIClient signetsApi;
+  late NetworkingServiceMock networkingService;
 
-  UserRepository manager;
+  late UserRepository manager;
 
   group('UserRepository - ', () {
     setUp(() {
@@ -98,7 +98,7 @@ void main() {
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsService.logError(UserRepository.tag, '', any, any))
             .called(1);
 
         // Verify the secureStorage isn't used
@@ -109,7 +109,7 @@ void main() {
 
         // Verify the user id is set in the analytics
         verifyNever(analyticsService.setUserProperties(
-            userId: username, domain: anyNamed("domain")));
+            userId: username, domain: ''));
 
         expect(manager.monETSUser, null,
             reason: "Verify the user stored should be null");
@@ -138,7 +138,7 @@ void main() {
 
         // Verify the user id is set in the analytics
         verify(analyticsService.setUserProperties(
-            userId: user.username, domain: anyNamed("domain")));
+            userId: user.username, domain: ''));
 
         expect(manager.monETSUser, user);
         // Verify the secureStorage is deleted
@@ -197,7 +197,7 @@ void main() {
             reason: "The authentication failed so the result should be false");
 
         // Verify the user id isn't set in the analytics
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsService.logError(UserRepository.tag, '', any, any))
             .called(1);
 
         // Verify the secureStorage isn't used
@@ -208,7 +208,7 @@ void main() {
 
         // Verify the user id is set in the analytics
         verifyNever(analyticsService.setUserProperties(
-            userId: username, domain: anyNamed("domain")));
+            userId: username, domain: ''));
 
         expect(manager.monETSUser, null,
             reason: "Verify the user stored should be null");
@@ -266,7 +266,7 @@ void main() {
           secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
-          analyticsService.logError(UserRepository.tag, any, any, any)
+          analyticsService.logError(UserRepository.tag, '', any, any)
         ]);
 
         expect(manager.monETSUser, null,
@@ -276,9 +276,9 @@ void main() {
       test('credentials are not saved so the authentication should not be done',
           () async {
         FlutterSecureStorageMock.stubRead(secureStorage,
-            key: UserRepository.usernameSecureKey, valueToReturn: null);
+            key: UserRepository.usernameSecureKey, valueToReturn: '');
         FlutterSecureStorageMock.stubRead(secureStorage,
-            key: UserRepository.passwordSecureKey, valueToReturn: null);
+            key: UserRepository.passwordSecureKey, valueToReturn: '');
 
         expect(await manager.silentAuthenticate(), isFalse,
             reason: "Result should be false");
@@ -313,7 +313,7 @@ void main() {
         verifyInOrder([
           secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.deleteAll(),
-          analyticsService.logError(UserRepository.tag, any, any, any)
+          analyticsService.logError(UserRepository.tag, '', any, any)
         ]);
       });
     });
@@ -329,7 +329,7 @@ void main() {
         verify(secureStorage.delete(key: UserRepository.passwordSecureKey));
 
         verifyNever(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsService.logError(UserRepository.tag, '', any, any));
       });
 
       test('Verify that localstorage is safely deleted if an exception occurs',
@@ -345,7 +345,7 @@ void main() {
 
         verify(secureStorage.delete(key: UserRepository.usernameSecureKey));
         verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(analyticsService.logError(UserRepository.tag, '', any, any));
       });
     });
 
@@ -403,7 +403,7 @@ void main() {
             reason: "Result should be 'password'");
 
         verifyInOrder([
-          analyticsService.logEvent(UserRepository.tag, any),
+          analyticsService.logEvent(UserRepository.tag, ''),
           secureStorage.read(key: UserRepository.usernameSecureKey),
           secureStorage.read(key: UserRepository.passwordSecureKey),
           monETSApi.authenticate(username: username, password: password),
@@ -432,9 +432,9 @@ void main() {
                 'The authentication failed so an ApiException should be raised.');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsService.logError(UserRepository.tag, '', any, any));
 
-        verify(analyticsService.logError(UserRepository.tag, any, any, any))
+        verify(analyticsService.logError(UserRepository.tag, '', any, any))
             .called(1);
       });
 
@@ -458,10 +458,10 @@ void main() {
             reason: "localStorage failed, should sent out a custom exception");
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsService.logError(UserRepository.tag, '', any, any));
 
         verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(analyticsService.logError(UserRepository.tag, '', any, any));
       });
     });
 
@@ -582,13 +582,13 @@ void main() {
             reason: 'The programs list should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsService.logError(UserRepository.tag, '', any, any));
 
         verify(cacheManager.get(UserRepository.programsCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(analyticsService.logError(UserRepository.tag, '', any, any));
 
-        verifyNever(cacheManager.update(UserRepository.programsCacheKey, any));
+        verifyNever(cacheManager.update(UserRepository.programsCacheKey, ''));
       });
 
       test("Cache update fail", () async {
@@ -655,7 +655,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         SignetsAPIClientMock.stubGetInfo(
-            signetsApi as SignetsAPIClientMock, username, null);
+            signetsApi as SignetsAPIClientMock, username, info);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingService);
@@ -757,13 +757,13 @@ void main() {
         expect(manager.info, null, reason: 'The info should be empty');
 
         await untilCalled(
-            analyticsService.logError(UserRepository.tag, any, any, any));
+            analyticsService.logError(UserRepository.tag, '', any, any));
 
         verify(cacheManager.get(UserRepository.infoCacheKey));
         verify(manager.getPassword());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(analyticsService.logError(UserRepository.tag, '', any, any));
 
-        verifyNever(cacheManager.update(UserRepository.infoCacheKey, any));
+        verifyNever(cacheManager.update(UserRepository.infoCacheKey, ''));
       });
 
       test("Cache update fail", () async {
@@ -839,7 +839,7 @@ void main() {
 
         expect(await manager.wasPreviouslyLoggedIn(), isFalse);
         verify(secureStorage.deleteAll());
-        verify(analyticsService.logError(UserRepository.tag, any, any, any));
+        verify(analyticsService.logError(UserRepository.tag, '', any, any));
       });
     });
   });
