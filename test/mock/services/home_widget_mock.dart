@@ -58,7 +58,7 @@ class HomeWidgetMock extends Mock {
 
   /// Overrides [HomeWidget]'s channel messenger behavior on [HomeWidget.saveWidgetData]
   /// to enable [AppWidgetService] send...Data testing
-  void stubUpdateWidgetMock(String name, String androidName, String iOSName) {
+  void stubUpdateWidgetMock(String? name, String? androidName, String? iOSName) {
     _messenger.setMockMethodCallHandler(_channel,
         (MethodCall methodCall) async {
       if (methodCall.method == 'updateWidget' &&
