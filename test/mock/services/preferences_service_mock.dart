@@ -8,7 +8,7 @@ import 'package:notredame/core/services/preferences_service.dart';
 
 import 'preferences_service_mock.mocks.dart';
 
-@GenerateMocks([PreferencesService])
+@GenerateNiceMocks([MockSpec<PreferencesService>()])
 class PreferencesServiceMock extends MockPreferencesService {
   /// Stub the answer of [setString] when the [flag] is used.
   static void stubSetString(PreferencesServiceMock mock, PreferencesFlag flag,

@@ -9,7 +9,7 @@ import 'package:notredame/core/services/siren_flutter_service.dart';
 import 'siren_flutter_service_mock.mocks.dart';
 
 /// Mock for the [SirenFlutterService]
-@GenerateMocks([SirenFlutterService])
+@GenerateNiceMocks([MockSpec<SirenFlutterService>()])
 class SirenFlutterServiceMock extends MockSirenFlutterService {
   /// Stub the updateIsAvailable function of [SirenFlutterService]
   static void stubUpdateIsAvailable(SirenFlutterServiceMock mock,

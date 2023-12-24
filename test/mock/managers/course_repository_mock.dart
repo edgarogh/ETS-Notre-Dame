@@ -9,7 +9,7 @@ import 'package:notredame/core/managers/course_repository.dart';
 
 import 'course_repository_mock.mocks.dart';
 
-@GenerateMocks([CourseRepository])
+@GenerateNiceMocks([MockSpec<CourseRepository>()])
 class CourseRepositoryMock extends MockCourseRepository {
   /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
   static void stubCoursesActivities(CourseRepositoryMock mock,

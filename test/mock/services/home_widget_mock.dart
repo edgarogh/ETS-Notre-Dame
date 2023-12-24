@@ -12,7 +12,7 @@ import 'package:notredame/core/services/app_widget_service.dart';
 import 'home_widget_mock.mocks.dart';
 
 /// Pseudo-mock for the static [HomeWidget] class (mocks the channel instead)
-@GenerateMocks([HomeWidget])
+@GenerateNiceMocks([MockSpec<HomeWidget>()])
 class HomeWidgetMock extends MockHomeWidget {
   late MethodChannel _channel;
   late TestDefaultBinaryMessenger _messenger;

@@ -9,7 +9,7 @@ import 'package:notredame/core/services/networking_service.dart';
 import 'networking_service_mock.mocks.dart';
 
 /// Mock for the [NetworkingService]
-@GenerateMocks([NetworkingService])
+@GenerateNiceMocks([MockSpec<NetworkingService>()])
 class NetworkingServiceMock extends MockNetworkingService {
   /// Stub the user connection state
   static void stubHasConnectivity(NetworkingServiceMock service,

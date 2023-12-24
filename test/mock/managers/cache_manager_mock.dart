@@ -9,7 +9,7 @@ import 'package:notredame/core/utils/cache_exception.dart';
 import 'cache_manager_mock.mocks.dart';
 
 /// Mock for the [CacheManager]
-@GenerateMocks([CacheManager])
+@GenerateNiceMocks([MockSpec<CacheManager>()])
 class CacheManagerMock extends MockCacheManager {
   /// Stub the get function of [mock], when [key] is used, [valueToReturn] is answered.
   static void stubGet(CacheManagerMock mock, String key, String valueToReturn) {

@@ -8,7 +8,7 @@ import 'package:notredame/core/services/launch_url_service.dart';
 import 'launch_url_service_mock.mocks.dart';
 
 /// Mock for the [LaunchUrlService]
-@GenerateMocks([LaunchUrlService])
+@GenerateNiceMocks([MockSpec<LaunchUrlService>()])
 class LaunchUrlServiceMock extends MockLaunchUrlService {
   static void stubCanLaunchUrl(LaunchUrlServiceMock client, String url,
       {bool toReturn = true}) {

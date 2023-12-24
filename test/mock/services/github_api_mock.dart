@@ -13,7 +13,7 @@ import 'package:notredame/core/services/github_api.dart';
 import 'github_api_mock.mocks.dart';
 
 /// Mock for the [GithubApi]
-@GenerateMocks([GithubApi])
+@GenerateNiceMocks([MockSpec<GithubApi>()])
 class GithubApiMock extends MockGithubApi {
   /// Stub the localFile of propertie [localFile] and return [fileToReturn].
   static void stubLocalFile(GithubApiMock client, File fileToReturn) {

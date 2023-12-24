@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'flutter_secure_storage_mock.mocks.dart';
 
 /// Mock for the [FlutterSecureStorage]
-@GenerateMocks([FlutterSecureStorage])
+@GenerateNiceMocks([MockSpec<FlutterSecureStorage>()])
 class FlutterSecureStorageMock extends MockFlutterSecureStorage {
   /// Stub the read function of [FlutterSecureStorage]
   static void stubRead(FlutterSecureStorageMock mock,

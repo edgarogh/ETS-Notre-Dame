@@ -8,7 +8,7 @@ import 'package:notredame/core/services/internal_info_service.dart';
 
 import 'internal_info_service_mock.mocks.dart';
 
-@GenerateMocks([InternalInfoService])
+@GenerateNiceMocks([MockSpec<InternalInfoService>()])
 class InternalInfoServiceMock extends MockInternalInfoService {
   /// Stub the answer of [getDeviceInfoForErrorReporting]
   static void stubGetDeviceInfoForErrorReporting(InternalInfoServiceMock mock) {

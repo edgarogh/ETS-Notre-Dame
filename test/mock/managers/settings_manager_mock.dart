@@ -11,7 +11,7 @@ import 'package:notredame/core/managers/settings_manager.dart';
 
 import 'settings_manager_mock.mocks.dart';
 
-@GenerateMocks([SettingsManager])
+@GenerateNiceMocks([MockSpec<SettingsManager>()])
 class SettingsManagerMock extends MockSettingsManager {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
   static void stubGetScheduleSettings(SettingsManagerMock mock,

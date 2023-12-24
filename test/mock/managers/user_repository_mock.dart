@@ -10,7 +10,7 @@ import 'package:notredame/core/managers/user_repository.dart';
 import 'user_repository_mock.mocks.dart';
 
 /// Mock for the [UserRepository]
-@GenerateMocks([UserRepository])
+@GenerateNiceMocks([MockSpec<UserRepository>()])
 class UserRepositoryMock extends MockUserRepository {
   /// When [monETSUser] is called will return [userToReturn]
   static void stubMonETSUser(UserRepositoryMock mock, MonETSUser userToReturn) {

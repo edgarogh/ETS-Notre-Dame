@@ -10,7 +10,7 @@ import 'package:notredame/core/models/quick_link_data.dart';
 
 import 'quick_links_repository_mock.mocks.dart';
 
-@GenerateMocks([QuickLinkRepository])
+@GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
 class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will return [toReturn].
   static void stubGetQuickLinkDataFromCache(QuickLinkRepositoryMock mock,

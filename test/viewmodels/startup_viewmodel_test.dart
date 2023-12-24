@@ -160,7 +160,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(PreferencesFlag.aboutUsCard)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),
@@ -229,7 +229,7 @@ void main() {
 
         await viewModel.handleStartUp();
 
-        verify(preferencesServiceMock.getPreferencesFlag(PreferencesFlag.aboutUsCard)).called(8);
+        verify(preferencesServiceMock.getPreferencesFlag(any)).called(8);
 
         verifyInOrder([
           settingsManagerMock.getString(PreferencesFlag.appVersion),

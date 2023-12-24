@@ -10,7 +10,7 @@ import 'package:notredame/core/utils/animation_exception.dart';
 import 'rive_animation_service_mock.mocks.dart';
 
 /// Mock for the [RiveAnimationService]
-@GenerateMocks([RiveAnimationService])
+@GenerateNiceMocks([MockSpec<RiveAnimationService>()])
 class RiveAnimationServiceMock extends MockRiveAnimationService {
   static const startException = AnimationException(
       prefix: "addControllerToAnimation",

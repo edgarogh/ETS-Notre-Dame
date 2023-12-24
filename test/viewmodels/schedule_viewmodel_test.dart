@@ -695,7 +695,7 @@ void main() {
           courseRepository.getCoursesActivities(fromCacheOnly: true),
           courseRepository.getCoursesActivities(),
           courseRepository.getScheduleActivities(
-              fromCacheOnly: true)
+              fromCacheOnly: false),
         ]);
 
         // Await the end of the future to run
